@@ -1,24 +1,3 @@
-const steps = [
-  {
-    number: "1",
-    title: "Input a Scenario",
-    desc: "Type or select from templates (Pricing, Hiring, Expansion, etc.) to define the decision you want to test.",
-    icon: "🎯"
-  },
-  {
-    number: "2",
-    title: "Simulation Engine",
-    desc: "CloudiCore uses your company data and industry models to forecast outcomes across multiple scenarios.",
-    icon: "🧠"
-  },
-  {
-    number: "3",
-    title: "Dashboard",
-    desc: "Review financial projections, risk index, and AI recommendations in a clear, interactive dashboard.",
-    icon: "📊"
-  }
-];
-
 export default function CloudiCoreSection() {
   return (
     <section id="cloudicore" className="section space-y-12">
@@ -79,3 +58,5 @@ export default function CloudiCoreSection() {
         </div>
       </div>
     </section>
+  );
+}
