@@ -5,27 +5,49 @@ const steps = [
     number: "1",
     title: "Input a Scenario",
     desc: "Type or select from templates (Pricing, Hiring, Expansion, etc.) to define the decision you want to test.",
-    icon: "🎯"
+    icon: "🎯",
   },
   {
     number: "2",
     title: "Simulation Engine",
     desc: "Uses your company data and industry models to forecast outcomes across multiple possibilities.",
-    icon: "🧠"
+    icon: "🧠",
   },
   {
     number: "3",
     title: "Dashboard",
     desc: "Shows financial projections, risk index, and AI recommendations so you can decide with confidence.",
-    icon: "📊"
-  }
+    icon: "📊",
+  },
 ];
 
 export default function CloudiCoreSection() {
   return (
-    <section id="cloudicore" className="section space-y-12">
-      {/* Top CloudiCore hero */}
-      <div className="space-y-6 text-center">
+    <section id="cloudicore" className="section space-y-14">
+      {/* CTA buttons moved ABOVE */}
+      <div className="flex flex-col items-center space-y-6">
+        {/* Pricing Card */}
+        <div className="card max-w-xl mx-auto text-center space-y-2">
+          <p className="text-lg font-semibold">
+            Pricing: <span className="gradient-text">Custom-based</span>
+          </p>
+          <p className="text-sm text-slate-300">
+            Tailored to your requirements and business complexity
+          </p>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-4">
+          <a href="#contact" className="btn-primary text-sm">
+            Get a Custom AI Agent
+          </a>
+          <a href="#contact" className="btn-secondary text-sm">
+            Let&apos;s Automate Your Business
+          </a>
+        </div>
+      </div>
+
+      {/* Main Hero Section */}
+      <div className="space-y-6 text-center pt-2">
         <div className="inline-flex px-4 py-1 rounded-full border border-slate-700 bg-cloudi-card/80 text-xs text-slate-300">
           CloudiCore AI Simulator
         </div>
@@ -39,15 +61,6 @@ export default function CloudiCoreSection() {
           test decisions before making them. Predict outcomes, risks, and profits
           based on real-world logic.
         </p>
-
-        <div className="flex flex-wrap justify-center gap-4 pt-2">
-          <a href="#contact" className="btn-primary text-sm">
-            Get a Custom AI Agent
-          </a>
-          <a href="#contact" className="btn-secondary text-sm">
-            Let&apos;s Automate Your Business
-          </a>
-        </div>
       </div>
 
       {/* The Problem We Solve */}
@@ -65,7 +78,7 @@ export default function CloudiCoreSection() {
         <h3 className="text-center text-2xl font-semibold">How It Works</h3>
 
         <div className="grid gap-6 md:grid-cols-3">
-          {steps.map(step => (
+          {steps.map((step) => (
             <div
               key={step.number}
               className="card flex flex-col items-center text-center space-y-4"
