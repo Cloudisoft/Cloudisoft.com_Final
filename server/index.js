@@ -45,7 +45,7 @@ app.post("/api/contact", async (req, res) => {
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,               // mail.privateemail.com
       port: Number(process.env.SMTP_PORT) || 587, // 587 for TLS
-      secure: process.env.SMTP_SECURE === "true", // false for 587
+      secure: process.env.SMTP_SECURE === "false", // false for 587
       auth: {
         user: process.env.SMTP_USER,             // connect@cloudisoft.com
         pass: process.env.SMTP_PASS,             // mailbox password
@@ -86,4 +86,5 @@ ${message}
 app.listen(PORT, () => {
   console.log(`Cloudisoft contact API listening on port ${PORT}`);
 });
+
 
