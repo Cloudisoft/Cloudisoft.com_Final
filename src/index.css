@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  @apply bg-cloudi-bg text-white scroll-smooth;
+}
+
+/* Gradient Text */
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-500;
+}
+
+/* Buttons */
+.btn-primary {
+  @apply px-6 py-3 rounded-xl font-medium bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-400 hover:to-purple-400 transition shadow-lg shadow-purple-900/40;
+}
+
+.btn-secondary {
+  @apply px-6 py-3 rounded-xl font-medium bg-cloudi-card hover:bg-slate-900 border border-slate-700 transition;
+}
+
+/* Card */
+.card {
+  @apply bg-cloudi-card/90 border border-slate-800 rounded-3xl p-6 shadow-lg shadow-black/40;
+}
+
+.section {
+  @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+}
