@@ -5,14 +5,17 @@ import nodemailer from "nodemailer";
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// Allow your frontend origin (cloudisoft.com)
-const allowedOrigin = process.env.ALLOWED_ORIGIN || "*";
+app.use(cors()); // allows all origins for now
 
-app.use(
-  cors({
-    origin: allowedOrigin,
-  })
-);
+
+// Allow your frontend origin (cloudisoft.com)
+//const allowedOrigin = process.env.ALLOWED_ORIGIN || "*";
+
+//app.use(
+  //cors({
+ //   origin: allowedOrigin,
+ // })
+// );
 
 // Parse JSON body
 app.use(express.json());
@@ -83,3 +86,4 @@ ${message}
 app.listen(PORT, () => {
   console.log(`Cloudisoft contact API listening on port ${PORT}`);
 });
+
