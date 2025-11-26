@@ -1,7 +1,9 @@
 import { FormEvent, useState } from "react";
 
 // This will be set in Render as VITE_API_URL
-const API_URL = import.meta.env.VITE_API_URL || "";
+//const API_URL = import.meta.env.VITE_API_URL || "";
+
+const API_URL = "https://cloudisoft-contact-api.onrender.com";
 
 export default function ContactSection() {
   const [status, setStatus] =
