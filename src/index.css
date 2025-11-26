@@ -26,6 +26,29 @@ body {
   @apply bg-cloudi-card/90 border border-slate-800 rounded-3xl p-6 shadow-lg shadow-black/40;
 }
 
+/* Hero animated icons */
+.hero-icon {
+  @apply w-12 h-12 rounded-full bg-gradient-to-b from-blue-500 to-purple-500 flex items-center justify-center text-2xl shadow-lg shadow-purple-900/40;
+  animation: hero-float 3s ease-in-out infinite;
+}
+
+.hero-icon-2 {
+  animation-delay: 0.2s;
+}
+
+.hero-icon-3 {
+  animation-delay: 0.4s;
+}
+
+@keyframes hero-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
 .section {
   @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
 }
