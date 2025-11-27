@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { Resend } from "resend";
+import { resend } from "resend";
 
 const app = express();
 const PORT = process.env.PORT || 10000;
@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 // INIT resend client
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new resend(process.env.RESEND_API_KEY);
 
 app.post("/api/contact", async (req, res) => {
   try {
@@ -20,7 +20,7 @@ app.post("/api/contact", async (req, res) => {
     }
 
     await resend.emails.send({
-      from: "<anything>@uldeiv.resend.app",
+      from: "Cloudisoft <connect>@cloudisoft.com",
       to: "connect@cloudisoft.com",
       subject: "New Contact Inquiry - Cloudisoft",
       text: "Welcome" `
@@ -46,5 +46,6 @@ ${message}
 app.listen(PORT, () => {
   console.log(`Cloudisoft Contact API running on ${PORT}`);
 });
+
 
 
