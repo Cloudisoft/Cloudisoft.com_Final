@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
   res.send("Cloudisoft Contact API is running.");
 });
 
-app.get("/cloudisoft-contact-api
+app.get("/Cloudisoft.com
 /contact", (req, res) => {
   res.json({
     ok: true,
@@ -78,5 +78,6 @@ app.post("/api/contact", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Cloudisoft Contact API running on ${PORT}`);
 });
+
 
 
