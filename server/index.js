@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
   res.send("Cloudisoft Contact API is running.");
 });
 
-app.get("/api/contact", (req, res) => {
+app.get("/api/RESEND_API_KEY", (req, res) => {
   res.json({
     ok: true,
     message: "Use POST /api/contact to send the form.",
@@ -28,7 +28,7 @@ app.get("/api/contact", (req, res) => {
 });
 
 // ✅ contact form POST
-app.post("/api/contact", async (req, res) => {
+app.post("/api/RESEND_API_KEY", async (req, res) => {
   try {
     const { name, business, email, phone, message } = req.body;
 
@@ -76,3 +76,4 @@ app.post("/api/contact", async (req, res) => {
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Cloudisoft Contact API running on ${PORT}`);
 });
+
