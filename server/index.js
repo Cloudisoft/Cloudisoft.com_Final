@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { Resend } from "resend"; // ✅ correct import
+import { Resend } from "resend";
 
 const app = express();
 const PORT = process.env.PORT || 10000;
@@ -8,9 +8,25 @@ const PORT = process.env.PORT || 10000;
 app.use(cors());
 app.use(express.json());
 
-// ✅ init Resend client correctly
-const resend = new Resend(process.env.RESEND_API_KEY);
+// ✅ init Resend client
+if (!process.env.RESEND_API_KEY) {
+  console.warn("⚠️ RESEND_API_KEY is not set in environment variables");
+}
+const resend = new Resend(process.env.RESEND_API_KEY || "");
 
+// ✅ health routes so GET works in browser
+app.get("/", (req, res) => {
+  res.send("Cloudisoft Contact API is running.");
+});
+
+app.get("/api/contact", (req, res) => {
+  res.json({
+    ok: true,
+    message: "Use POST /api/contact to send the form.",
+  });
+});
+
+// ✅ contact form POST
 app.post("/api/contact", async (req, res) => {
   try {
     const { name, business, email, phone, message } = req.body;
@@ -21,10 +37,11 @@ app.post("/api/contact", async (req, res) => {
         .json({ success: false, message: "Missing fields" });
     }
 
-    // ✅ clean email payload
+    // 👉 if cloudisoft.com is NOT verified in Resend yet,
+    // use this temporary from:
+    // from: "Cloudisoft <onboarding@resend.dev>",
     const { data, error } = await resend.emails.send({
-      // ✅ must be a valid email format: "Name <email@domain>"
-      from: "Cloudisoft <connect@cloudisoft.com>",
+      from: "Cloudisoft <onboarding@resend.dev>",
       to: ["connect@cloudisoft.com"],
       subject: "New Contact Inquiry - Cloudisoft",
       text: [
