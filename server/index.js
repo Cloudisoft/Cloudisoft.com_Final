@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import {contact} from "contact";
 import { Resend } from "resend";
 
 const app = express();
@@ -19,7 +20,8 @@ app.get("/", (req, res) => {
   res.send("Cloudisoft Contact API is running.");
 });
 
-app.get("/api/contact", (req, res) => {
+app.get("/cloudisoft-contact-api
+/contact", (req, res) => {
   res.json({
     ok: true,
     message: "Use POST /api/contact to send the form.",
@@ -27,7 +29,7 @@ app.get("/api/contact", (req, res) => {
 });
 
 // ✅ contact form POST
-app.post("/api/contact", async (req, res) => {
+app.post("/api", async (req, res) => {
   try {
     const { name, business, email, phone, message } = req.body;
 
@@ -76,3 +78,4 @@ app.post("/api/contact", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Cloudisoft Contact API running on ${PORT}`);
 });
+
