@@ -20,7 +20,7 @@ app.post("/api/contact", async (req, res) => {
     }
 
     await resend.emails.send({
-      from: "Cloudisoft <connect@cloudisoft.com>",
+      from: "<anything>@uldeiv.resend.app",
       to: "connect@cloudisoft.com",
       subject: "New Contact Inquiry - Cloudisoft",
       text: "Welcome" `
@@ -46,4 +46,5 @@ ${message}
 app.listen(PORT, () => {
   console.log(`Cloudisoft Contact API running on ${PORT}`);
 });
+
 
