@@ -29,7 +29,7 @@ app.get("/cloudisoft-contact-api
 });
 
 // ✅ contact form POST
-app.post("/api", async (req, res) => {
+app.post("/api/contact", async (req, res) => {
   try {
     const { name, business, email, phone, message } = req.body;
 
@@ -78,4 +78,5 @@ app.post("/api", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Cloudisoft Contact API running on ${PORT}`);
 });
+
 
