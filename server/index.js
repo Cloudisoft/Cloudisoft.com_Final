@@ -1,7 +1,7 @@
-import express from "express";
-import cors from "cors";
-import {contact} from "contact";
-import { Resend } from "resend";
+// server.js
+const express = require("express");
+const cors = require("cors");
+const { Resend } = require("resend");
 
 const app = express();
 const PORT = process.env.PORT || 10000;
@@ -15,13 +15,12 @@ if (!process.env.RESEND_API_KEY) {
 }
 const resend = new Resend(process.env.RESEND_API_KEY || "");
 
-// ✅ health routes so GET works in browser
+// ✅ health route
 app.get("/", (req, res) => {
   res.send("Cloudisoft Contact API is running.");
 });
 
-app.get("/Cloudisoft.com
-/contact", (req, res) => {
+app.get("/api/contact", (req, res) => {
   res.json({
     ok: true,
     message: "Use POST /api/contact to send the form.",
@@ -39,10 +38,8 @@ app.post("/api/contact", async (req, res) => {
         .json({ success: false, message: "Missing fields" });
     }
 
-    // 👉 if cloudisoft.com is NOT verified in Resend yet,
-    // use this temporary from:
-    // from: "Cloudisoft <onboarding@resend.dev>",
     const { data, error } = await resend.emails.send({
+      // use onboarding@resend.dev until your domain is verified
       from: "Cloudisoft <onboarding@resend.dev>",
       to: ["connect@cloudisoft.com"],
       subject: "New Contact Inquiry - Cloudisoft",
@@ -75,9 +72,7 @@ app.post("/api/contact", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
+// ✅ explicitly bind to 0.0.0.0 for Render
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Cloudisoft Contact API running on ${PORT}`);
 });
-
-
-
