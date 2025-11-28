@@ -1,9 +1,9 @@
 import { FormEvent, useState } from "react";
 
-// This will be set in Render as VITE_API_URL
-//const API_URL = import.meta.env.VITE_API_URL || "";
-
-const API_URL = "https://cloudisoft-contact-api.onrender.com";
+// In production, set this via VITE_API_URL in Render.
+// For quick test you can hardcode:
+// const API_URL = "https://your-contact-api.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL || "";
 
 export default function ContactSection() {
   const [status, setStatus] =
@@ -18,16 +18,17 @@ export default function ContactSection() {
     const form = e.currentTarget;
     const formData = new FormData(form);
 
-    // Convert FormData → plain object → JSON
     const payload: Record<string, string> = {};
     formData.forEach((value, key) => {
       payload[key] = String(value);
     });
 
     try {
-      const res = await fetch(`${API_URL}/api/RESEND_API_KEY`, {
+      const res = await fetch(`${API_URL}/api/contact`, {
         method: "POST",
-    headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(payload),
       });
 
@@ -39,7 +40,7 @@ export default function ContactSection() {
       } else {
         setStatus("error");
         setErrorMsg(
-          data.message || "Something went wrong. Please try again in a moment."
+          data.message || "Failed to send email. Please try again in a moment."
         );
       }
     } catch (err) {
@@ -129,4 +130,3 @@ export default function ContactSection() {
     </section>
   );
 }
-
