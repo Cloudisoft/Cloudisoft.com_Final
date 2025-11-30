@@ -1,4 +1,4 @@
-{
+
 {
   "name": "cloudisoft-landing",
   "version": "1.0.0",
@@ -35,5 +35,5 @@
     "express": "^4.19.2",
     "nodemailer": "^6.9.8"
   }
-}
+
 
