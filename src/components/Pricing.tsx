@@ -24,9 +24,10 @@ export default function PricingSection() {
           target="_blank"
           rel="noreferrer"
         >
-      <div className="mt-4 flex flex-col items-center justify-center gap-3 md:flex-row">
+      <Link className="mt-4 flex flex-col items-center justify-center gap-3 md:flex-row">
           Start Your Free Trial
           <span>▶</span>
+        </Link>
         </a>
 
         <p className="text-xs text-slate-500">
