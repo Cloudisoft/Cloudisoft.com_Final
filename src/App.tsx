@@ -6,6 +6,14 @@ import Pricing from "./components/Pricing";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 
+import CloudiCore from "./pages/CloudiCore";
+
+<Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="/cloudicore" element={<CloudiCore />} />
+</Routes>
+
+
 export default function App() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-cloudi-bg to-black text-white">
