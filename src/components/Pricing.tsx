@@ -17,11 +17,17 @@ export default function PricingSection() {
           No credit card required during the trial.
         </p>
       </div>
-      <div>
-      <Link className="mt-4 flex flex-col items-center justify-center gap-3 md:flex-row" to="/cloudicore">
+     <div className="mt-4 flex flex-col items-center justify-center gap-3 md:flex-row">
+        <a
+          to="/cloudicore"
+          className="btn-primary inline-flex items-center gap-2"
+          target="_blank"
+          rel="noreferrer"
+        >
+      <div className="mt-4 flex flex-col items-center justify-center gap-3 md:flex-row">
           Start Your Free Trial
           <span>▶</span>
-        <Link/>
+        </a>
 
         <p className="text-xs text-slate-500">
           7 days full access · Unlimited simulations · Cancel anytime during trial
