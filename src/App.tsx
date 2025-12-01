@@ -8,9 +8,8 @@ import Pricing from "./components/Pricing";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 
-import CloudiCore from "./pages/CloudiCore";
+import CloudiCore from "./pages/CloudiCore"; // <— this is your simulator page
 
-// Home page (your existing landing layout)
 function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-cloudi-bg to-black text-white">
@@ -31,7 +30,7 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        {/* Landing page */}
+        {/* Landing page / homepage */}
         <Route path="/" element={<Home />} />
 
         {/* CloudiCore simulator page */}
