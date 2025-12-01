@@ -8,7 +8,7 @@ import Pricing from "./components/Pricing";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 
-import CloudiCore from "./pages/cloudicore"; // <— this is your simulator page
+import CloudiCore from "./pages/cloudicore"; // correct import
 
 function Home() {
   return (
@@ -26,14 +26,15 @@ function Home() {
   );
 }
 
- function App() {
+function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/cloudicore" element={<CloudiCore />} />
+        <Route path="/cloudicore" element={<CloudiCore />} /> 
       </Routes>
     </Router>
   );
 }
+
 export default App;
