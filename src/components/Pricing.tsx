@@ -6,7 +6,7 @@ export default function PricingSection() {
       </span>
 
       <div className="space-y-4">
-        <h2 className="text-4xl font-bold md:text-5xl">
+        <h2 className="text-4xl font-bold md:text-5xl" to="/cloudicore">
           Start Your <span className="gradient-text">Free Trial</span>
         </h2>
         <p className="mx-auto max-w-2xl text-sm md:text-base text-slate-400">
@@ -17,13 +17,7 @@ export default function PricingSection() {
         </p>
       </div>
 
-      <div className="mt-4 flex flex-col items-center justify-center gap-3 md:flex-row">
-        <a
-          href="/cloudicore"
-          className="btn-primary inline-flex items-center gap-2"
-          target="_blank"
-          rel="noreferrer"
-        >
+      <div className="mt-4 flex flex-col items-center justify-center gap-3 md:flex-row" to="/cloudicore">
           Start Your Free Trial
           <span>▶</span>
         </a>
