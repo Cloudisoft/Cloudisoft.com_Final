@@ -30,7 +30,7 @@ export default function Hero() {
   </a>
 
   <Link className="btn-secondary" to="/cloudicore">
-    Start Your Free Trial ▶
+    Start Your Free Trial 🚀
   </Link>
 </div>
     </section>
