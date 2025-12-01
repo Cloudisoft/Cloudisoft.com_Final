@@ -17,7 +17,7 @@ export default function PricingSection() {
           No credit card required during the trial.
         </p>
       </div>
-
+      <div>
       <Link className="mt-4 flex flex-col items-center justify-center gap-3 md:flex-row" to="/cloudicore">
           Start Your Free Trial
           <span>▶</span>
