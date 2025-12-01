@@ -30,10 +30,7 @@ function Home() {
   return (
     <Router>
       <Routes>
-        {/* Landing page / homepage */}
         <Route path="/" element={<Home />} />
-
-        {/* CloudiCore simulator page */}
         <Route path="/cloudicore" element={<cloudicore />} />
       </Routes>
     </Router>
