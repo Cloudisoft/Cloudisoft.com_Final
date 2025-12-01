@@ -18,10 +18,10 @@ export default function PricingSection() {
         </p>
       </div>
 
-      <link className="mt-4 flex flex-col items-center justify-center gap-3 md:flex-row" to="/cloudicore">
+      <Link className="mt-4 flex flex-col items-center justify-center gap-3 md:flex-row" to="/cloudicore">
           Start Your Free Trial
           <span>▶</span>
-        <linl/>
+        <Link/>
 
         <p className="text-xs text-slate-500">
           7 days full access · Unlimited simulations · Cancel anytime during trial
