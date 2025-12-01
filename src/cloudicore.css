@@ -1,4 +1,4 @@
-<style>
+
     :root {
       --bg: #f6f8fc;
       --card-bg: #ffffff;
@@ -731,5 +731,6 @@
       align-self: flex-start;
       margin-bottom: 6px;
     }
-  </style>
+  
+
 
