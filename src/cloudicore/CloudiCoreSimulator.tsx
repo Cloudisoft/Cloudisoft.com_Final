@@ -249,12 +249,10 @@ const CLOUDICORE_HTML = `
 
 // 2) All the simulator JS logic goes here
 function initCloudiCore(root: HTMLElement) {
-  // Instead of document.getElementById, we use root.querySelector
-  // Example of how to adapt your script:
-
-  // const templateSelect = document.getElementById("cc-template");
+  // Scoped DOM queries
   const templateSelect = root.querySelector("#cc-template") as HTMLSelectElement | null;
   const templateChipsContainer = root.querySelector("#cc-template-chips") as HTMLElement | null;
+  const templateHint = root.querySelector("#cc-template-hint") as HTMLElement | null;
   const descriptionEl = root.querySelector("#cc-description") as HTMLTextAreaElement | null;
   const revenueEl = root.querySelector("#cc-revenue") as HTMLInputElement | null;
   const costsEl = root.querySelector("#cc-costs") as HTMLInputElement | null;
@@ -274,17 +272,34 @@ function initCloudiCore(root: HTMLElement) {
   const outcomesContainer = root.querySelector("#cc-outcomes") as HTMLElement | null;
   const recosContainer = root.querySelector("#cc-recos") as HTMLElement | null;
 
-  // 👉 Now paste ALL your JS from <script> ... </script> BELOW,
-  // but:
-  // - remove the outer IIFE (the "(function initCloudiCore() { ... })();" wrapper)
-  // - wherever the script used document.getElementById / querySelector,
-  //   change it to use the variables above (templateSelect, revenueEl, etc.)
-  //
-  // Everything else (ccTemplates, ccSimulateDecision, ccRenderResult, etc.)
-  // can stay exactly the same.
-  <script>
+  // Guard against missing DOM (in case markup changes)
+  if (
+    !templateSelect ||
+    !templateChipsContainer ||
+    !templateHint ||
+    !descriptionEl ||
+    !revenueEl ||
+    !costsEl ||
+    !timeframeEl ||
+    !goalChipsContainer ||
+    !runBtn ||
+    !revenueError ||
+    !costsError ||
+    !timeframeError ||
+    !summaryMain ||
+    !summaryMeta ||
+    !riskScoreEl ||
+    !riskThumb ||
+    !riskNote ||
+    !outcomesContainer ||
+    !recosContainer
+  ) {
+    console.error("CloudiCore: missing required DOM elements");
+    return;
+  }
+
   // ------------------------------
-  // CloudiCore configuration (JSON-like)
+  // CloudiCore configuration
   // ------------------------------
   const ccTemplates = [
     {
@@ -295,8 +310,8 @@ function initCloudiCore(root: HTMLElement) {
       baseRisk: 0.62,
       sensitivity: {
         revenueUpside: 0.18,
-        churnRisk: 0.22
-      }
+        churnRisk: 0.22,
+      },
     },
     {
       id: "hiring_decision",
@@ -306,8 +321,8 @@ function initCloudiCore(root: HTMLElement) {
       baseRisk: 0.55,
       sensitivity: {
         revenueUpside: 0.14,
-        churnRisk: 0.08
-      }
+        churnRisk: 0.08,
+      },
     },
     {
       id: "expansion_location",
@@ -317,8 +332,8 @@ function initCloudiCore(root: HTMLElement) {
       baseRisk: 0.74,
       sensitivity: {
         revenueUpside: 0.32,
-        churnRisk: 0.12
-      }
+        churnRisk: 0.12,
+      },
     },
     {
       id: "marketing_budget",
@@ -328,8 +343,8 @@ function initCloudiCore(root: HTMLElement) {
       baseRisk: 0.61,
       sensitivity: {
         revenueUpside: 0.26,
-        churnRisk: 0.09
-      }
+        churnRisk: 0.09,
+      },
     },
     {
       id: "product_launch",
@@ -339,8 +354,8 @@ function initCloudiCore(root: HTMLElement) {
       baseRisk: 0.7,
       sensitivity: {
         revenueUpside: 0.3,
-        churnRisk: 0.14
-      }
+        churnRisk: 0.14,
+      },
     },
     {
       id: "operational_scaling",
@@ -350,8 +365,8 @@ function initCloudiCore(root: HTMLElement) {
       baseRisk: 0.52,
       sensitivity: {
         revenueUpside: 0.16,
-        churnRisk: 0.07
-      }
+        churnRisk: 0.07,
+      },
     },
     {
       id: "sales_strategy",
@@ -361,55 +376,58 @@ function initCloudiCore(root: HTMLElement) {
       baseRisk: 0.66,
       sensitivity: {
         revenueUpside: 0.24,
-        churnRisk: 0.18
-      }
-    }
+        churnRisk: 0.18,
+      },
+    },
   ];
 
-  const ccGoals = {
+  const ccGoals: Record<
+    string,
+    { label: string; weight: { revenue: number; profit: number } }
+  > = {
     growth: { label: "Growth", weight: { revenue: 0.7, profit: 0.3 } },
     profit: { label: "Profit", weight: { revenue: 0.4, profit: 0.6 } },
-    stability: { label: "Stability", weight: { revenue: 0.45, profit: 0.55 } }
+    stability: { label: "Stability", weight: { revenue: 0.45, profit: 0.55 } },
   };
 
   // ------------------------------
   // Utility helpers
   // ------------------------------
-  function ccCurrencyFormat(value) {
+  function ccCurrencyFormat(value: number) {
     if (isNaN(value)) return "–";
     if (Math.abs(value) < 1000) return value.toFixed(0);
     const abs = Math.abs(value);
-    if (abs < 1000000) {
+    if (abs < 1_000_000) {
       return (value / 1000).toFixed(1).replace(/\.0$/, "") + "k";
     }
-    return (value / 1000000).toFixed(1).replace(/\.0$/, "") + "m";
+    return (value / 1_000_000).toFixed(1).replace(/\.0$/, "") + "m";
   }
 
-  function ccPercentFormat(value) {
+  function ccPercentFormat(value: number) {
     if (isNaN(value)) return "–";
     return (value * 100).toFixed(1).replace(/\.0$/, "") + "%";
   }
 
-  function ccClamp(v, min, max) {
+  function ccClamp(v: number, min: number, max: number) {
     return Math.max(min, Math.min(max, v));
   }
 
-  function ccPickTemplate(id) {
-    return ccTemplates.find(t => t.id === id) || ccTemplates[0];
+  function ccPickTemplate(id: string) {
+    return ccTemplates.find((t) => t.id === id) || ccTemplates[0];
   }
 
   // ------------------------------
   // Core simulation logic
   // ------------------------------
-  function ccSimulateDecision(input) {
-    const {
-      templateId,
-      description,
-      revenue,
-      costs,
-      goalKey,
-      months
-    } = input;
+  function ccSimulateDecision(input: {
+    templateId: string;
+    description: string;
+    revenue: number;
+    costs: number;
+    goalKey: string;
+    months: number;
+  }) {
+    const { templateId, description, revenue, costs, goalKey, months } = input;
 
     const tmpl = ccPickTemplate(templateId);
     const goal = ccGoals[goalKey] || ccGoals.growth;
@@ -418,29 +436,30 @@ function initCloudiCore(root: HTMLElement) {
     const baseMargin = revenue > 0 ? baseMonthlyProfit / revenue : 0;
 
     // Baseline small drift to account for organic change
-    const organicFactor = 1 + (0.01 * timeframe / 3);
+    const organicFactor = 1 + (0.01 * timeframe) / 3;
 
-    // Scenario-specific multipliers (heuristic, simple but grounded)
+    // Scenario-specific multipliers
     const intensity = Math.min(1.5, timeframe / 6); // more months → stronger effect
     const upsideBase = tmpl.baseGrowth * intensity;
     const riskBase = tmpl.baseRisk;
 
-    // Goal slightly reweights aggressiveness
-    const goalAggFactor = goalKey === "growth" ? 1.1 : goalKey === "profit" ? 0.9 : 0.95;
+    // Goal reweights aggressiveness
+    const goalAggFactor =
+      goalKey === "growth" ? 1.1 : goalKey === "profit" ? 0.9 : 0.95;
 
     const optimisticRevenueLift = upsideBase * 1.4 * goalAggFactor;
     const expectedRevenueLift = upsideBase * 0.9 * goalAggFactor;
     const cautiousRevenueLift = upsideBase * 0.35 * goalAggFactor;
 
-    // Cost behaviour: decisions can increase fixed cost or variable cost
-    const costIntensityMap = {
+    // Cost behaviour: decisions can increase fixed / variable cost
+    const costIntensityMap: Record<string, number> = {
       pricing_change: 0.2,
       hiring_decision: 0.6,
       expansion_location: 0.8,
       marketing_budget: 0.5,
       product_launch: 0.5,
       operational_scaling: 0.7,
-      sales_strategy: 0.35
+      sales_strategy: 0.35,
     };
     const costIntensity = (costIntensityMap[tmpl.id] ?? 0.4) * intensity;
 
@@ -448,26 +467,27 @@ function initCloudiCore(root: HTMLElement) {
     const expectedCostLift = costIntensity * 0.85;
     const cautiousCostLift = costIntensity * 0.5;
 
-    // Break-even estimate: how many months to recover additional cost
-    function estimateOutcome(revLift, costLift, label) {
+    function estimateOutcome(
+      revLift: number,
+      costLift: number,
+      label: "optimistic" | "expected" | "cautious"
+    ) {
       const newRevenue = revenue * (organicFactor + revLift);
       const addedCost = costs * costLift;
       const newCosts = costs + addedCost;
       const newProfit = newRevenue - newCosts;
       const incrementalProfit = newProfit - baseMonthlyProfit;
 
-      let breakevenMonths;
+      let breakevenMonths: number | null;
       if (incrementalProfit <= 0 && addedCost > 0) {
-        breakevenMonths = null; // no breakeven in timeframe
+        breakevenMonths = null;
       } else if (addedCost <= 0 || incrementalProfit <= 0) {
         breakevenMonths = 0;
       } else {
-        // Rough: assume upfront drag = 1.5 months of added cost
         const upfront = addedCost * 1.5;
         breakevenMonths = upfront / incrementalProfit;
       }
 
-      // Risk per outcome: template risk ± sensitivity
       const churnPressure = tmpl.sensitivity.churnRisk * revLift * 1.2;
       const execPressure = costLift * 0.4;
       const marginPressure = baseMargin < 0.15 ? 0.15 : 0;
@@ -485,26 +505,36 @@ function initCloudiCore(root: HTMLElement) {
         profit: newProfit,
         incrementalProfit,
         revenueDeltaRate: newRevenue / revenue - 1,
-        profitDeltaRate: baseMonthlyProfit !== 0
-          ? newProfit / baseMonthlyProfit - 1
-          : 0,
+        profitDeltaRate:
+          baseMonthlyProfit !== 0 ? newProfit / baseMonthlyProfit - 1 : 0,
         costDeltaRate: newCosts / costs - 1,
         breakevenMonths,
-        riskScore: ccClamp(outcomeRisk * 100, 0, 100)
+        riskScore: ccClamp(outcomeRisk * 100, 0, 100),
       };
     }
 
-    const optimistic = estimateOutcome(optimisticRevenueLift, optimisticCostLift, "optimistic");
-    const expected = estimateOutcome(expectedRevenueLift, expectedCostLift, "expected");
-    const cautious = estimateOutcome(cautiousRevenueLift, cautiousCostLift, "cautious");
+    const optimistic = estimateOutcome(
+      optimisticRevenueLift,
+      optimisticCostLift,
+      "optimistic"
+    );
+    const expected = estimateOutcome(
+      expectedRevenueLift,
+      expectedCostLift,
+      "expected"
+    );
+    const cautious = estimateOutcome(
+      cautiousRevenueLift,
+      cautiousCostLift,
+      "cautious"
+    );
 
-    // Aggregate Risk Index (weighted)
     const riskIndex =
       (optimistic.riskScore * 0.2 +
         expected.riskScore * 0.5 +
-        cautious.riskScore * 0.3) / 1;
+        cautious.riskScore * 0.3) /
+      1;
 
-    // Recommendations: conservative / balanced / aggressive
     const recos = ccBuildRecommendations({
       tmpl,
       goal,
@@ -514,7 +544,7 @@ function initCloudiCore(root: HTMLElement) {
       optimistic,
       expected,
       cautious,
-      description
+      description,
     });
 
     return {
@@ -527,31 +557,34 @@ function initCloudiCore(root: HTMLElement) {
         description,
         baseMonthlyProfit,
         baseMargin,
-        expected
+        expected,
       }),
       riskIndex,
       outcomes: { optimistic, expected, cautious },
-      recos
+      recos,
     };
   }
 
-  function ccBuildSummaryText(ctx) {
-    const {
-      tmpl,
-      goal,
-      timeframe,
-      description,
-      baseMonthlyProfit,
-      baseMargin,
-      expected
-    } = ctx;
+  function ccBuildSummaryText(ctx: {
+    tmpl: any;
+    goal: { label: string };
+    timeframe: number;
+    description: string;
+    baseMonthlyProfit: number;
+    baseMargin: number;
+    expected: any;
+  }) {
+    const { tmpl, goal, timeframe, baseMargin, expected } = ctx;
 
     const label = tmpl.label.toLowerCase();
     const marginText =
-      baseMargin > 0.28 ? "healthy" :
-      baseMargin > 0.15 ? "tight" :
-      baseMargin > 0 ? "very tight" :
-      "negative";
+      baseMargin > 0.28
+        ? "healthy"
+        : baseMargin > 0.15
+        ? "tight"
+        : baseMargin > 0
+        ? "very tight"
+        : "negative";
 
     const expDelta =
       expected.incrementalProfit >= 0
@@ -563,7 +596,17 @@ function initCloudiCore(root: HTMLElement) {
     return `You’re planning a ${label} with a ${timeframe}-month window and a ${goalFocus} focus. Current margin is ${marginText}, and the expected path shows ${expDelta}.`;
   }
 
-  function ccBuildRecommendations(ctx) {
+  function ccBuildRecommendations(ctx: {
+    tmpl: any;
+    goal: { label: string };
+    timeframe: number;
+    baseMonthlyProfit: number;
+    baseMargin: number;
+    optimistic: any;
+    expected: any;
+    cautious: any;
+    description: string;
+  }) {
     const {
       tmpl,
       goal,
@@ -573,26 +616,32 @@ function initCloudiCore(root: HTMLElement) {
       optimistic,
       expected,
       cautious,
-      description
     } = ctx;
 
     const isCashTight = baseMonthlyProfit < 0 || baseMargin < 0.1;
-    const isMediumRisk = expected.riskScore >= 45 && expected.riskScore <= 70;
     const isHighRisk = expected.riskScore > 70 || cautious.riskScore > 75;
 
     const textLabel = tmpl.label.toLowerCase();
 
-    const recos = [];
+    const recos: {
+      id: string;
+      label: string;
+      mode: string;
+      body: string;
+      tradeoff: string;
+    }[] = [];
 
     // Conservative
     recos.push({
       id: "conservative",
       label: "Conservative",
       mode: "smaller bet, protect runway",
-      body:
-        `Run a limited ${textLabel} pilot first (1–2 segments or a small budget slice). Lock monthly downside so any loss stays below ${ccCurrencyFormat(Math.abs(baseMonthlyProfit) || (expected.incrementalProfit * -1 || 2000))}. Track churn, payback, and lead quality weekly.`,
+      body: `Run a limited ${textLabel} pilot first (1–2 segments or a small budget slice). Lock monthly downside so any loss stays below ${ccCurrencyFormat(
+        Math.abs(baseMonthlyProfit) ||
+          (expected.incrementalProfit * -1 || 2000)
+      )}. Track churn, payback, and lead quality weekly.`,
       tradeoff:
-        "Upside will be slower. If results are strong, you’ll need a second change cycle to fully ramp."
+        "Upside will be slower. If results are strong, you’ll need a second change cycle to fully ramp.",
     });
 
     // Balanced
@@ -600,10 +649,15 @@ function initCloudiCore(root: HTMLElement) {
       id: "balanced",
       label: "Balanced",
       mode: "controlled rollout",
-      body:
-        `Roll out the ${textLabel} in phased waves over ${Math.min(timeframe, 6)} months. Tie spend or headcount unlocks to hard triggers: CAC, payback under ${Math.max(6, Math.round(timeframe * 1.2))} months, and no more than 2–3 pts drop in margin.`,
+      body: `Roll out the ${textLabel} in phased waves over ${Math.min(
+        timeframe,
+        6
+      )} months. Tie spend or headcount unlocks to hard triggers: CAC, payback under ${Math.max(
+        6,
+        Math.round(timeframe * 1.2)
+      )} months, and no more than 2–3 pts drop in margin.`,
       tradeoff:
-        "You avoid extreme outcomes, but if a competitor moves faster you may miss some upside in the optimistic path."
+        "You avoid extreme outcomes, but if a competitor moves faster you may miss some upside in the optimistic path.",
     });
 
     // Aggressive
@@ -611,178 +665,48 @@ function initCloudiCore(root: HTMLElement) {
       id: "aggressive",
       label: "Aggressive",
       mode: "front-load upside, accept volatility",
-      body:
-        `Move ahead with the full ${textLabel} plan quickly if you can tolerate a temporary margin hit. Use the expected path as the minimum acceptable result and cut back fast if you see churn, CAC, or sales cycle time trending toward the cautious case.`,
+      body: `Move ahead with the full ${textLabel} plan quickly if you can tolerate a temporary margin hit. Use the expected path as the minimum acceptable result and cut back fast if you see churn, CAC, or sales cycle time trending toward the cautious case.`,
       tradeoff:
-        "Runway and team capacity will be under pressure. Requires tight weekly dashboards and willingness to reverse if signals go bad."
+        "Runway and team capacity will be under pressure. Requires tight weekly dashboards and willingness to reverse if signals go bad.",
     });
 
-    // Adjust wording if cash is very tight
     if (isCashTight || isHighRisk) {
-      recos[2].body =
-        `Only choose the aggressive path if you have buffer for several months of lower profit. With current margins, protect payroll and core operations first, then scale the ${textLabel} as you see repeatable success.`;
+      recos[2].body = `Only choose the aggressive path if you have buffer for several months of lower profit. With current margins, protect payroll and core operations first, then scale the ${textLabel} as you see repeatable success.`;
       recos[2].tradeoff =
         "You may have to say no to attractive opportunities until cash improves, but you avoid a forced reset later.";
     }
 
     if (goal.label === "Profit") {
-      recos[1].body =
-        `Phase the ${textLabel} with strict payback rules. Any extra spend or hiring must pay back in under ${Math.max(6, Math.round(timeframe))} months. Use the cautious path as a guardrail and pause rollout if profit drops below today’s level.`;
+      recos[1].body = `Phase the ${textLabel} with strict payback rules. Any extra spend or hiring must pay back in under ${Math.max(
+        6,
+        Math.round(timeframe)
+      )} months. Use the cautious path as a guardrail and pause rollout if profit drops below today’s level.`;
     }
 
     return recos;
   }
 
   // ------------------------------
-  // DOM wiring and interactions
-  // ------------------------------
-  (function initCloudiCore() {
-    const templateSelect = document.getElementById("cc-template");
-    const templateChipsContainer = document.getElementById("cc-template-chips");
-    const descriptionEl = document.getElementById("cc-description");
-    const revenueEl = document.getElementById("cc-revenue");
-    const costsEl = document.getElementById("cc-costs");
-    const timeframeEl = document.getElementById("cc-timeframe");
-    const goalChipsContainer = document.getElementById("cc-goal-chips");
-    const runBtn = document.getElementById("cc-run");
-
-    const revenueError = document.getElementById("cc-revenue-error");
-    const costsError = document.getElementById("cc-costs-error");
-    const timeframeError = document.getElementById("cc-timeframe-error");
-
-    const summaryMain = document.getElementById("cc-summary-main");
-    const summaryMeta = document.getElementById("cc-summary-meta");
-    const riskScoreEl = document.getElementById("cc-risk-score");
-    const riskThumb = document.getElementById("cc-risk-thumb");
-    const riskNote = document.getElementById("cc-risk-note");
-    const outcomesContainer = document.getElementById("cc-outcomes");
-    const recosContainer = document.getElementById("cc-recos");
-
-    // Populate template select and chips
-    ccTemplates.forEach((tmpl, idx) => {
-      const opt = document.createElement("option");
-      opt.value = tmpl.id;
-      opt.textContent = tmpl.label;
-      templateSelect.appendChild(opt);
-
-      const chip = document.createElement("button");
-      chip.className = "cc-chip" + (idx === 0 ? " active" : "");
-      chip.textContent = tmpl.label;
-      chip.dataset.templateId = tmpl.id;
-      chip.title = tmpl.short;
-      templateChipsContainer.appendChild(chip);
-
-      chip.addEventListener("click", () => {
-        templateSelect.value = tmpl.id;
-        Array.from(templateChipsContainer.children).forEach(c => c.classList.remove("active"));
-        chip.classList.add("active");
-        ccHintForTemplate(tmpl);
-      });
-
-      if (idx === 0) {
-        templateSelect.value = tmpl.id;
-      }
-    });
-
-    templateSelect.addEventListener("change", () => {
-      const tmpl = ccPickTemplate(templateSelect.value);
-      Array.from(templateChipsContainer.children).forEach(chip => {
-        chip.classList.toggle("active", chip.dataset.templateId === tmpl.id);
-      });
-      ccHintForTemplate(tmpl);
-    });
-
-    function ccHintForTemplate(tmpl) {
-      const hint = document.getElementById("cc-template-hint");
-      const map = {
-        pricing_change: "Think % change, which plans, and when.",
-        hiring_decision: "Think role, seniority, start date, and salary band.",
-        expansion_location: "Think new market size, ramp time, and setup spend.",
-        marketing_budget: "Think channels, extra spend, and CAC expectations.",
-        product_launch: "Think launch scope, build cost, and target segment.",
-        operational_scaling: "Think infra, tools, and support capacity.",
-        sales_strategy: "Think ICP, territory, and deal cycle length."
-      };
-      hint.textContent = map[tmpl.id] || "Pick a decision type that matches your move.";
-    }
-
-    // Goal chips
-    let currentGoal = "growth";
-    Array.from(goalChipsContainer.children).forEach(chip => {
-      chip.addEventListener("click", () => {
-        currentGoal = chip.dataset.goal;
-        Array.from(goalChipsContainer.children).forEach(c => c.classList.remove("active"));
-        chip.classList.add("active");
-      });
-    });
-
-    // Core run handler
-    runBtn.addEventListener("click", () => {
-      // Basic validation for required inputs
-      const revenue = parseFloat(revenueEl.value);
-      const costs = parseFloat(costsEl.value);
-      let months = parseInt(timeframeEl.value, 10);
-
-      let hasError = false;
-      [revenueEl, costsEl, timeframeEl].forEach(el => el.classList.remove("cc-error"));
-      [revenueError, costsError, timeframeError].forEach(n => (n.style.display = "none"));
-
-      if (isNaN(revenue) || revenue <= 0) {
-        hasError = true;
-        revenueEl.classList.add("cc-error");
-        revenueError.style.display = "block";
-      }
-      if (isNaN(costs) || costs <= 0) {
-        hasError = true;
-        costsEl.classList.add("cc-error");
-        costsError.style.display = "block";
-      }
-
-      if (isNaN(months) || months <= 0) {
-        // default to 6 if missing
-        months = 6;
-        timeframeError.style.display = "block";
-        timeframeEl.classList.add("cc-error");
-      } else if (months < 3 || months > 12) {
-        timeframeError.style.display = "block";
-        timeframeEl.classList.add("cc-error");
-      }
-
-      if (hasError) {
-        return;
-      }
-
-      const input = {
-        templateId: templateSelect.value,
-        description: descriptionEl.value.trim(),
-        revenue,
-        costs,
-        goalKey: currentGoal,
-        months
-      };
-
-      const result = ccSimulateDecision(input);
-      ccRenderResult({
-        result,
-        input,
-        summaryMain,
-        summaryMeta,
-        riskScoreEl,
-        riskThumb,
-        riskNote,
-        outcomesContainer,
-        recosContainer
-      });
-    });
-
-    // Initial hint
-    ccHintForTemplate(ccPickTemplate(templateSelect.value));
-  })();
-
-  // ------------------------------
   // Rendering
   // ------------------------------
-  function ccRenderResult(ctx) {
+  function ccRenderResult(ctx: {
+    result: any;
+    input: {
+      templateId: string;
+      description: string;
+      revenue: number;
+      costs: number;
+      goalKey: string;
+      months: number;
+    };
+    summaryMain: HTMLElement;
+    summaryMeta: HTMLElement;
+    riskScoreEl: HTMLElement;
+    riskThumb: HTMLElement;
+    riskNote: HTMLElement;
+    outcomesContainer: HTMLElement;
+    recosContainer: HTMLElement;
+  }) {
     const {
       result,
       input,
@@ -792,7 +716,7 @@ function initCloudiCore(root: HTMLElement) {
       riskThumb,
       riskNote,
       outcomesContainer,
-      recosContainer
+      recosContainer,
     } = ctx;
 
     const { template, goal, summary, riskIndex, outcomes, recos } = result;
@@ -802,7 +726,9 @@ function initCloudiCore(root: HTMLElement) {
     const baseMargin = revenue > 0 ? baseProfit / revenue : 0;
 
     // Summary
-    const decisionText = input.description || `A ${template.label.toLowerCase()} focused on ${goal.label.toLowerCase()}.`;
+    const decisionText =
+      input.description ||
+      `A ${template.label.toLowerCase()} focused on ${goal.label.toLowerCase()}.`;
     summaryMain.innerHTML = `${summary}<br/><br/><strong>Decision:</strong> ${decisionText}`;
 
     summaryMeta.innerHTML = "";
@@ -811,9 +737,9 @@ function initCloudiCore(root: HTMLElement) {
       `Baseline profit: ${ccCurrencyFormat(baseProfit)}/month`,
       `Margin: ${ccPercentFormat(baseMargin)}`,
       `Goal: ${goal.label}`,
-      `Timeframe: ${months} month${months === 1 ? "" : "s"}`
+      `Timeframe: ${months} month${months === 1 ? "" : "s"}`,
     ];
-    metaItems.forEach(text => {
+    metaItems.forEach((text) => {
       const pill = document.createElement("span");
       pill.className = "cc-summary-pill";
       pill.textContent = text;
@@ -825,19 +751,21 @@ function initCloudiCore(root: HTMLElement) {
     riskScoreEl.innerHTML = `${riskClean}<span>/100</span>`;
     riskThumb.style.left = ccClamp(riskClean, 4, 96) + "%";
 
-    let riskLabel;
+    let riskLabel: string;
     if (riskClean < 35) {
       riskLabel = "Low structural risk. The main exposure is execution quality and focus.";
     } else if (riskClean < 65) {
-      riskLabel = "Moderate risk. Watch churn, CAC, and delivery load closely as you roll out.";
+      riskLabel =
+        "Moderate risk. Watch churn, CAC, and delivery load closely as you roll out.";
     } else {
-      riskLabel = "High risk. A misstep here can hit runway, team capacity, or customer trust.";
+      riskLabel =
+        "High risk. A misstep here can hit runway, team capacity, or customer trust.";
     }
     riskNote.textContent = riskLabel;
 
     // Outcomes
     outcomesContainer.innerHTML = "";
-    ["optimistic", "expected", "cautious"].forEach(key => {
+    (["optimistic", "expected", "cautious"] as const).forEach((key) => {
       const o = outcomes[key];
       const card = document.createElement("div");
       card.className = "cc-outcome-card";
@@ -848,16 +776,20 @@ function initCloudiCore(root: HTMLElement) {
       const title = document.createElement("div");
       title.className = "cc-outcome-title";
       title.textContent =
-        key === "optimistic" ? "Optimistic" :
-        key === "expected" ? "Expected" :
-        "Cautious";
+        key === "optimistic"
+          ? "Optimistic"
+          : key === "expected"
+          ? "Expected"
+          : "Cautious";
 
       const tag = document.createElement("div");
       tag.className = "cc-outcome-tag";
       tag.textContent =
-        key === "optimistic" ? "Strong signal · Fast payback" :
-        key === "expected" ? "Most likely path" :
-        "Downside guardrail";
+        key === "optimistic"
+          ? "Strong signal · Fast payback"
+          : key === "expected"
+          ? "Most likely path"
+          : "Downside guardrail";
 
       header.appendChild(title);
       header.appendChild(tag);
@@ -868,8 +800,11 @@ function initCloudiCore(root: HTMLElement) {
       const sign = monthlyRevDelta >= 0 ? "+" : "–";
       const absDelta = Math.abs(monthlyRevDelta);
       main.className = "cc-outcome-main";
-      main.innerHTML =
-        `${ccCurrencyFormat(o.profit)}/month profit&nbsp;<span>(${sign}${ccCurrencyFormat(absDelta)} vs now)</span>`;
+      main.innerHTML = `${ccCurrencyFormat(
+        o.profit
+      )}/month profit&nbsp;<span>(${sign}${ccCurrencyFormat(
+        absDelta
+      )} vs now)</span>`;
       card.appendChild(main);
 
       const grid = document.createElement("div");
@@ -877,39 +812,45 @@ function initCloudiCore(root: HTMLElement) {
 
       const m1 = document.createElement("div");
       m1.className = "cc-outcome-metric";
-      m1.innerHTML =
-        `<strong>${ccCurrencyFormat(o.revenue)}/mo</strong> revenue (${ccPercentFormat(o.revenueDeltaRate)})`;
+      m1.innerHTML = `<strong>${ccCurrencyFormat(
+        o.revenue
+      )}/mo</strong> revenue (${ccPercentFormat(o.revenueDeltaRate)})`;
 
       const m2 = document.createElement("div");
       m2.className = "cc-outcome-metric";
-      m2.innerHTML =
-        `<strong>${ccCurrencyFormat(o.costs)}/mo</strong> costs (${ccPercentFormat(o.costDeltaRate)})`;
+      m2.innerHTML = `<strong>${ccCurrencyFormat(
+        o.costs
+      )}/mo</strong> costs (${ccPercentFormat(o.costDeltaRate)})`;
 
       const m3 = document.createElement("div");
       m3.className = "cc-outcome-metric";
-      m3.innerHTML =
-        `<strong>${ccPercentFormat(o.profitDeltaRate)}</strong> profit change`;
+      m3.innerHTML = `<strong>${ccPercentFormat(
+        o.profitDeltaRate
+      )}</strong> profit change`;
 
       const m4 = document.createElement("div");
       m4.className = "cc-outcome-metric";
       m4.innerHTML =
         o.breakevenMonths == null
           ? "<strong>No clear break-even</strong> in this window"
-          : `<strong>${o.breakevenMonths <= 0 ? "Immediate" : o.breakevenMonths.toFixed(1).replace(/\\.0$/, "") + " mo"}</strong> to break-even`;
+          : `<strong>${
+              o.breakevenMonths <= 0
+                ? "Immediate"
+                : o.breakevenMonths.toFixed(1).replace(/\.0$/, "") + " mo"
+            }</strong> to break-even`;
 
-      [m1, m2, m3, m4].forEach(x => grid.appendChild(x));
+      [m1, m2, m3, m4].forEach((x) => grid.appendChild(x));
       card.appendChild(grid);
 
       const riskLine = document.createElement("div");
       riskLine.className = "cc-outcome-risk";
-      riskLine.textContent =
-        `Risk driver: ${
-          key === "optimistic"
-            ? "you must execute fast without overloading the team."
-            : key === "expected"
-            ? "you need disciplined tracking of churn, CAC, and cycle times."
-            : "you risk higher churn, lower win rates, or a heavier fixed-cost base."
-        }`;
+      riskLine.textContent = `Risk driver: ${
+        key === "optimistic"
+          ? "you must execute fast without overloading the team."
+          : key === "expected"
+          ? "you need disciplined tracking of churn, CAC, and cycle times."
+          : "you risk higher churn, lower win rates, or a heavier fixed-cost base."
+      }`;
       card.appendChild(riskLine);
 
       outcomesContainer.appendChild(card);
@@ -917,7 +858,7 @@ function initCloudiCore(root: HTMLElement) {
 
     // Recommendations
     recosContainer.innerHTML = "";
-    recos.forEach(r => {
+    recos.forEach((r: any) => {
       const card = document.createElement("div");
       card.className = "cc-reco-card";
 
@@ -949,7 +890,139 @@ function initCloudiCore(root: HTMLElement) {
       recosContainer.appendChild(card);
     });
   }
-</script>
+
+  // ------------------------------
+  // DOM wiring and interactions
+  // ------------------------------
+
+  // Populate template select and chips
+  ccTemplates.forEach((tmpl, idx) => {
+    const opt = document.createElement("option");
+    opt.value = tmpl.id;
+    opt.textContent = tmpl.label;
+    templateSelect.appendChild(opt);
+
+    const chip = document.createElement("button");
+    chip.className = "cc-chip" + (idx === 0 ? " active" : "");
+    chip.textContent = tmpl.label;
+    (chip as any).dataset.templateId = tmpl.id;
+    chip.title = tmpl.short;
+    templateChipsContainer.appendChild(chip);
+
+    chip.addEventListener("click", () => {
+      templateSelect.value = tmpl.id;
+      Array.from(templateChipsContainer.children).forEach((c) =>
+        c.classList.remove("active")
+      );
+      chip.classList.add("active");
+      ccHintForTemplate(tmpl);
+    });
+
+    if (idx === 0) {
+      templateSelect.value = tmpl.id;
+    }
+  });
+
+  templateSelect.addEventListener("change", () => {
+    const tmpl = ccPickTemplate(templateSelect.value);
+    Array.from(templateChipsContainer.children).forEach((chip) => {
+      const el = chip as HTMLButtonElement;
+      chip.classList.toggle(
+        "active",
+        (el.dataset.templateId || "") === tmpl.id
+      );
+    });
+    ccHintForTemplate(tmpl);
+  });
+
+  function ccHintForTemplate(tmpl: any) {
+    const map: Record<string, string> = {
+      pricing_change: "Think % change, which plans, and when.",
+      hiring_decision: "Think role, seniority, start date, and salary band.",
+      expansion_location: "Think new market size, ramp time, and setup spend.",
+      marketing_budget: "Think channels, extra spend, and CAC expectations.",
+      product_launch: "Think launch scope, build cost, and target segment.",
+      operational_scaling: "Think infra, tools, and support capacity.",
+      sales_strategy: "Think ICP, territory, and deal cycle length.",
+    };
+    templateHint.textContent =
+      map[tmpl.id] || "Pick a decision type that matches your move.";
+  }
+
+  // Goal chips
+  let currentGoal = "growth";
+  Array.from(goalChipsContainer.children).forEach((chip) => {
+    const btn = chip as HTMLButtonElement;
+    btn.addEventListener("click", () => {
+      currentGoal = btn.dataset.goal || "growth";
+      Array.from(goalChipsContainer.children).forEach((c) =>
+        c.classList.remove("active")
+      );
+      btn.classList.add("active");
+    });
+  });
+
+  // Core run handler
+  runBtn.addEventListener("click", () => {
+    const revenue = parseFloat(revenueEl.value);
+    const costs = parseFloat(costsEl.value);
+    let months = parseInt(timeframeEl.value, 10);
+
+    let hasError = false;
+    [revenueEl, costsEl, timeframeEl].forEach((el) =>
+      el.classList.remove("cc-error")
+    );
+    [revenueError, costsError, timeframeError].forEach(
+      (n) => (n.style.display = "none")
+    );
+
+    if (isNaN(revenue) || revenue <= 0) {
+      hasError = true;
+      revenueEl.classList.add("cc-error");
+      revenueError.style.display = "block";
+    }
+    if (isNaN(costs) || costs <= 0) {
+      hasError = true;
+      costsEl.classList.add("cc-error");
+      costsError.style.display = "block";
+    }
+
+    if (isNaN(months) || months <= 0) {
+      months = 6;
+      timeframeError.style.display = "block";
+      timeframeEl.classList.add("cc-error");
+    } else if (months < 3 || months > 12) {
+      timeframeError.style.display = "block";
+      timeframeEl.classList.add("cc-error");
+    }
+
+    if (hasError) return;
+
+    const input = {
+      templateId: templateSelect.value,
+      description: descriptionEl.value.trim(),
+      revenue,
+      costs,
+      goalKey: currentGoal,
+      months,
+    };
+
+    const result = ccSimulateDecision(input);
+    ccRenderResult({
+      result,
+      input,
+      summaryMain,
+      summaryMeta,
+      riskScoreEl,
+      riskThumb,
+      riskNote,
+      outcomesContainer,
+      recosContainer,
+    });
+  });
+
+  // Initial hint
+  ccHintForTemplate(ccPickTemplate(templateSelect.value));
 }
 
 export default function CloudiCoreSimulator() {
@@ -962,7 +1035,12 @@ export default function CloudiCoreSimulator() {
     containerRef.current.innerHTML = CLOUDICORE_HTML;
 
     // Initialize simulator logic on that HTML
-    initCloudiCore(containerRef.current.querySelector("#cloudicore-root") as HTMLElement);
+    const root = containerRef.current.querySelector(
+      "#cloudicore-root"
+    ) as HTMLElement | null;
+    if (root) {
+      initCloudiCore(root);
+    }
   }, []);
 
   return (
@@ -974,5 +1052,3 @@ export default function CloudiCoreSimulator() {
     </div>
   );
 }
-
-
