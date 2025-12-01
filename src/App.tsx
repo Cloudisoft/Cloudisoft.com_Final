@@ -31,7 +31,7 @@ function Home() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/cloudicore" element={<cloudicore />} />
+        <Route path="/cloudicore" element={<CloudiCore />} />
       </Routes>
     </Router>
   );
