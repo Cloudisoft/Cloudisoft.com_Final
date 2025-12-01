@@ -1,0 +1,5 @@
+﻿{
+  "Description": "Domain ownership verification file for Microsoft 365 - place in the website root",
+  "Domain": "Cloudisoft.com",
+  "Id": "727fb5fc-8a7f-48e9-8917-f2a021d4a704"
+}
