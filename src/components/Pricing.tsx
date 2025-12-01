@@ -19,12 +19,11 @@ export default function PricingSection() {
       </div>
      <div className="mt-4 flex flex-col items-center justify-center gap-3 md:flex-row">
         <a
-          to="/cloudicore"
           className="btn-primary inline-flex items-center gap-2"
           target="_blank"
           rel="noreferrer"
         >
-      <Link className="mt-4 flex flex-col items-center justify-center gap-3 md:flex-row">
+      <Link className="mt-4 flex flex-col items-center justify-center gap-3 md:flex-row" to="/cloudicore">
           Start Your Free Trial
           <span>▶</span>
         </Link>
