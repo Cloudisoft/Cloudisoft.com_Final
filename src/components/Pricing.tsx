@@ -11,9 +11,9 @@ export default function PricingSection() {
         </h2>
         <p className="mx-auto max-w-2xl text-sm md:text-base text-slate-400">
           Try the CloudiCore decision simulator free for 7 days. Run realistic
-          what-if scenarios, compare outcomes, and see risk and profit impact
-          before you commit budget or headcount. No credit card required during
-          the trial.
+          what-if scenarios, compare optimistic vs expected vs cautious paths,
+          and see risk and profit impact before you commit budget or headcount.
+          No credit card required during the trial.
         </p>
       </div>
 
