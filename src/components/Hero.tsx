@@ -24,14 +24,20 @@ export default function Hero() {
         to transform your operations and decision-making.
       </p>
 
-      <div className="flex justify-center gap-4 mt-2">
-        <a className="btn-primary" href="#agents">
-          Explore AI Agents ✨
-        </a>
-        <a className="btn-secondary" href="#cloudicore">
-          Try CloudiCore
-        </a>
-      </div>
+     <div className="flex justify-center gap-4 mt-2">
+  <a className="btn-primary" href="#agents">
+    Explore AI Agents ✨
+  </a>
+
+ <div className="flex justify-center gap-4 mt-2">
+  <a className="btn-primary" href="#agents">
+    Explore AI Agents ✨
+  </a>
+
+  <Link className="btn-secondary" to="/cloudicore">
+    Start Your Free Trial ▶
+  </Link>
+</div>
     </section>
   );
 }
