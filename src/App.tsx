@@ -8,6 +8,7 @@ import Pricing from "./components/Pricing";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 import CloudiCore from "./pages/cloudicore"; // correct import
+import Test from "./pages/Test";
 
 function Home() {
   return (
@@ -31,6 +32,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cloudicore" element={<CloudiCore />} /> 
+        <Route path="/test" element={<Test />} />
       </Routes>
     </Router>
   );
