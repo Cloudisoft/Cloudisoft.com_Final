@@ -7,7 +7,6 @@ import CloudiCoreSection from "./components/CloudiCoreSection";
 import Pricing from "./components/Pricing";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
-import Home from "./Home";  
 import CloudiCore from "./pages/cloudicore"; // correct import
 
 function Home() {
