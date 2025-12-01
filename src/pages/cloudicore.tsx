@@ -1,16 +1,10 @@
+// src/pages/CloudiCore.tsx
 import { useEffect } from "react";
 import "./cloudicore.css";
 
-export default function CloudiCore() {
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "/cloudicore.js";
-    script.defer = true;
-    document.body.appendChild(script);
-  }, []);
-
-  return (
-    <div dangerouslySetInnerHTML={{ <div id="cloudicore-root">
+// Put all your simulator HTML here as a single string
+const CLOUDICORE_HTML = `
+<div id="cloudicore-root">
   <div class="cc-shell">
     <!-- LEFT: INPUTS -->
     <div>
@@ -53,8 +47,11 @@ export default function CloudiCore() {
               <span>Describe your decision</span>
               <small>Short, natural language</small>
             </div>
-            <textarea id="cc-description" class="cc-textarea"
-                      placeholder="Example: Increase prices by 15% on our SaaS plans from next quarter to improve margins without losing key customers."></textarea>
+            <textarea
+              id="cc-description"
+              class="cc-textarea"
+              placeholder="Example: Increase prices by 15% on our SaaS plans from next quarter to improve margins without losing key customers."
+            ></textarea>
           </div>
 
           <div class="cc-split-2">
@@ -63,8 +60,14 @@ export default function CloudiCore() {
                 <span>Current monthly revenue</span>
                 <small>Approximate, in your currency</small>
               </div>
-              <input id="cc-revenue" class="cc-input" type="number" min="0" step="100"
-                     placeholder="e.g. 50000" />
+              <input
+                id="cc-revenue"
+                class="cc-input"
+                type="number"
+                min="0"
+                step="100"
+                placeholder="e.g. 50000"
+              />
               <div class="cc-error-text" id="cc-revenue-error" style="display:none;">
                 Enter a rough monthly revenue to simulate impact.
               </div>
@@ -74,8 +77,14 @@ export default function CloudiCore() {
                 <span>Major monthly costs / budget</span>
                 <small>Ops + salaries + spend</small>
               </div>
-              <input id="cc-costs" class="cc-input" type="number" min="0" step="100"
-                     placeholder="e.g. 35000" />
+              <input
+                id="cc-costs"
+                class="cc-input"
+                type="number"
+                min="0"
+                step="100"
+                placeholder="e.g. 35000"
+              />
               <div class="cc-error-text" id="cc-costs-error" style="display:none;">
                 Estimate your core monthly cost or budget.
               </div>
@@ -99,8 +108,14 @@ export default function CloudiCore() {
                 <span>Timeframe</span>
                 <small>Months</small>
               </div>
-              <input id="cc-timeframe" class="cc-input" type="number" min="1" max="12"
-                     placeholder="e.g. 6" />
+              <input
+                id="cc-timeframe"
+                class="cc-input"
+                type="number"
+                min="1"
+                max="12"
+                placeholder="e.g. 6"
+              />
               <div class="cc-error-text" id="cc-timeframe-error" style="display:none;">
                 Use 3–6 months for most decisions.
               </div>
@@ -180,8 +195,20 @@ export default function CloudiCore() {
     </div>
   </div>
 </div>
-     }} />
-  );
+`;
+
+export default function CloudiCore() {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "/cloudicore.js"; // cloudicore.js MUST be in /public
+    script.defer = true;
+    document.body.appendChild(script);
+
+    // clean up if user navigates away
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  return <div dangerouslySetInnerHTML={{ __html: CLOUDICORE_HTML }} />;
 }
-
-
