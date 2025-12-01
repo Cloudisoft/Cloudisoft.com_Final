@@ -23,7 +23,7 @@ export default function PricingSection() {
           target="_blank"
           rel="noreferrer"
         > */}
-      <Link to="/cloudicore">
+      <Link className="btn-primary inline-flex items-center gap-2" to="/cloudicore">
           Start Your Free Trial
           <span>▶</span>
         </Link>
