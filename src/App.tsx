@@ -1,3 +1,5 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import AgentsSection from "./components/AgentsSection";
@@ -8,13 +10,8 @@ import Footer from "./components/Footer";
 
 import CloudiCore from "./pages/CloudiCore";
 
-<Routes>
-  <Route path="/" element={<Home />} />
-  <Route path="/cloudicore" element={<CloudiCore />} />
-</Routes>
-
-
-export default function App() {
+// Home page (your existing landing layout)
+function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-cloudi-bg to-black text-white">
       <Navbar />
@@ -27,5 +24,19 @@ export default function App() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <Router>
+      <Routes>
+        {/* Landing page */}
+        <Route path="/" element={<Home />} />
+
+        {/* CloudiCore simulator page */}
+        <Route path="/cloudicore" element={<CloudiCore />} />
+      </Routes>
+    </Router>
   );
 }
