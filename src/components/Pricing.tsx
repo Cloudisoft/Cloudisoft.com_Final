@@ -1,51 +1,36 @@
-const plans = [
-  {
-    name: "Starter",
-    price: "$19.99",
-    features: ["5 simulations / month", "Summary reports", "Basic templates", "Email support"]
-  },
-  {
-    name: "Pro",
-    price: "$49.99",
-    tag: "Recommended",
-    highlight: true,
-    features: ["25 simulations / month", "Dashboard", "Scenario history", "Advanced templates", "Priority support"]
-  },
-  {
-    name: "Enterprise",
-    price: "$99.99",
-    features: ["Unlimited simulations", "Team collaboration", "Advanced analytics", "Custom templates", "API access"]
-  }
-];
-
-export default function Pricing() {
+export default function PricingSection() {
   return (
-    <section id="pricing" className="section space-y-8">
-      <h2 className="text-4xl font-bold text-center">Choose Your Plan</h2>
+    <section id="pricing" className="section text-center space-y-8">
+      <span className="inline-flex items-center rounded-full border border-purple-500/60 bg-purple-500/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-purple-200">
+        CloudiCore Free Trial
+      </span>
 
-      <div className="grid md:grid-cols-3 gap-6">
-        {plans.map(p => (
-          <div key={p.name} className={`card flex flex-col justify-between ${p.highlight ? "border-purple-500/70" : ""}`}>
-            <div>
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="text-xl font-semibold">{p.name}</h3>
-                {p.tag && <span className="text-xs px-2 py-1 rounded bg-purple-600">{p.tag}</span>}
-              </div>
+      <div className="space-y-4">
+        <h2 className="text-4xl font-bold md:text-5xl">
+          Start Your <span className="gradient-text">Free Trial</span>
+        </h2>
+        <p className="mx-auto max-w-2xl text-sm md:text-base text-slate-400">
+          Try the CloudiCore decision simulator free for 7 days. Run realistic
+          what-if scenarios, compare outcomes, and see risk and profit impact
+          before you commit budget or headcount. No credit card required during
+          the trial.
+        </p>
+      </div>
 
-              <p className="text-3xl font-bold">{p.price}</p>
+      <div className="mt-4 flex flex-col items-center justify-center gap-3 md:flex-row">
+        <a
+          href="/cloudicore.html#simulator"
+          className="btn-primary inline-flex items-center gap-2"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Start Your Free Trial
+          <span>▶</span>
+        </a>
 
-              <ul className="mt-3 text-sm text-slate-300 space-y-2">
-                {p.features.map(f => (
-                  <li key={f}>✔ {f}</li>
-                ))}
-              </ul>
-            </div>
-
-            <a href="#contact" className="block text-center mt-6 py-2 rounded-xl bg-cloudi-card hover:bg-slate-900">
-              Start Simulating
-            </a>
-          </div>
-        ))}
+        <p className="text-xs text-slate-500">
+          7 days full access · Unlimited simulations · Cancel anytime during trial
+        </p>
       </div>
     </section>
   );
