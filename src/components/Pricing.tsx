@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 export default function PricingSection() {
   return (
     <section id="pricing" className="section text-center space-y-8">
@@ -6,7 +7,7 @@ export default function PricingSection() {
       </span>
 
       <div className="space-y-4">
-        <h2 className="text-4xl font-bold md:text-5xl" to="/cloudicore">
+        <h2 className="text-4xl font-bold md:text-5xl">
           Start Your <span className="gradient-text">Free Trial</span>
         </h2>
         <p className="mx-auto max-w-2xl text-sm md:text-base text-slate-400">
@@ -17,10 +18,10 @@ export default function PricingSection() {
         </p>
       </div>
 
-      <div className="mt-4 flex flex-col items-center justify-center gap-3 md:flex-row" to="/cloudicore">
+      <link className="mt-4 flex flex-col items-center justify-center gap-3 md:flex-row" to="/cloudicore">
           Start Your Free Trial
           <span>▶</span>
-        </a>
+        <linl/>
 
         <p className="text-xs text-slate-500">
           7 days full access · Unlimited simulations · Cancel anytime during trial
