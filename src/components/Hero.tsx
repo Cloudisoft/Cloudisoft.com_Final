@@ -24,11 +24,6 @@ export default function Hero() {
         to transform your operations and decision-making.
       </p>
 
-     <div className="flex justify-center gap-4 mt-2">
-  <a className="btn-primary" href="#agents">
-    Explore AI Agents ✨
-  </a>
-
  <div className="flex justify-center gap-4 mt-2">
   <a className="btn-primary" href="#agents">
     Explore AI Agents ✨
