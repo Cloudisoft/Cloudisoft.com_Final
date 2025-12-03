@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "../index.css"; // ensures classes are available globally
-
+import Footer from "../components/Footer";
 export default function CloudiCore() {
   const [inputs, setInputs] = useState({
     scenario: "",
@@ -291,4 +291,5 @@ function PriceCard({ name, price, features, cta, highlight }: any) {
     </div>
   );
 }
+
 
