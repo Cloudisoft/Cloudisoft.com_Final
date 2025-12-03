@@ -399,4 +399,44 @@ function FAQ() {
   );
 }
 
-function FAQ
+function FAQItem({ q, a }: any) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="bg-cloudi-card p-4 rounded-xl border border-slate-800">
+      <button className="flex justify-between w-full font-semibold" onClick={() => setOpen(!open)}>
+        {q} <span>{open ? "−" : "+"}</span>
+      </button>
+      {open && <p className="text-slate-300 mt-2">{a}</p>}
+    </div>
+  );
+}
+
+// ===========================================
+// AUTH MODAL
+// ===========================================
+function AuthModal({ close }: any) {
+  return (
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[1000]">
+      <div className="bg-cloudi-card p-8 rounded-3xl w-[380px] border border-slate-800">
+        <h3 className="text-2xl font-bold text-center">Create an account</h3>
+
+        <div className="mt-6 space-y-3">
+          <input
+            placeholder="Work email"
+            className="w-full p-3 rounded-xl bg-cloudi-card/60 border border-slate-800"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full p-3 rounded-xl bg-cloudi-card/60 border border-slate-800"
+          />
+        </div>
+
+        <button className="btn-primary w-full mt-5">Sign Up</button>
+        <button className="btn-secondary w-full mt-3" onClick={close}>
+          Cancel
+        </button>
+      </div>
+    </div>
+  );
+}
