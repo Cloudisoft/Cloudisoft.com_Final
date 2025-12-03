@@ -190,70 +190,77 @@ function Outcome({ label, value, color }: any) {
 
 function PricingCards() {
   return (
-    <section className="section mt-28 text-center">
-      <h2 className="text-4xl font-bold">Choose Your Plan</h2>
+    {/* Pricing Section */}
+<section id="cloudicore-pricing" className="section mt-28 text-center">
+  <h2 className="text-4xl font-bold">Choose Your Plan</h2>
+  <p className="text-slate-400 mt-3">
+    Start free. Upgrade anytime.
+  </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mt-14">
+  <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mt-14">
 
-        {/* FREE PLAN */}
-        <PriceCard
-          name="Free"
-          price="0"
-          features={[
-            "2 simulations per month",
-            "Basic reports",
-            "Email support",
-          ]}
-          cta="Start Free"
-          highlight={false}
-        />
+    {/* FREE */}
+    <PriceCard
+      name="Free"
+      price="0"
+      features={[
+        "2 simulations per month",
+        "Basic reports",
+        "Email support",
+      ]}
+      cta="Start Free"
+    />
 
-        {/* STARTER PLAN */}
-        <PriceCard
-          name="Starter"
-          price="19.99"
-          features={[
-            "10 simulations per month",
-            "Summary reports",
-            "Basic templates",
-            "Email support",
-          ]}
-          cta="Start Simulating"
-          highlight={false}
-        />
+    {/* STARTER */}
+    <PriceCard
+      name="Starter"
+      price="19.99"
+      features={[
+        "10 simulations per month",
+        "Summary reports",
+        "Basic templates",
+        "Email support",
+      ]}
+      cta="Start Simulating"
+    />
 
-        {/* PRO PLAN — HIGHLIGHT */}
-        <PriceCard
-          name="Pro"
-          price="49.99"
-          features={[
-            "25 simulations per month",
-            "Interactive dashboard",
-            "Scenario history",
-            "Advanced templates",
-            "Priority support",
-          ]}
-          cta="Upgrade to Pro"
-          highlight={true}
-        />
+    {/* PRO */}
+    <PriceCard
+      name="Pro"
+      price="49.99"
+      highlight
+      features={[
+        "25 simulations per month",
+        "Interactive dashboard",
+        "Scenario history",
+        "Advanced templates",
+        "Priority support",
+      ]}
+      cta="Upgrade to Pro"
+    />
 
-        {/* ENTERPRISE */}
-        <PriceCard
-          name="Enterprise"
-          price="99.99"
-          features={[
-            "Unlimited simulations",
-            "Team access & collaboration",
-            "Advanced analytics",
-            "Custom templates",
-            "API access",
-            "Dedicated support",
-          ]}
-          cta="Talk to Sales"
-          highlight={false}
-        />
-      </div>
-    </section>
+    {/* ENTERPRISE */}
+    <PriceCard
+      name="Enterprise"
+      price="99.99"
+      features={[
+        "Unlimited simulations",
+        "Team access & collaboration",
+        "Advanced analytics",
+        "Custom templates",
+        "API access",
+        "Dedicated support",
+      ]}
+      cta="Talk to Sales"
+    />
+  </div>
+</section>
+
+{/* NEVER PUT FOOTER INSIDE GRID */}
+<div className="mt-20">
+  <Footer />
+</div>
+
   );
 }
 
@@ -291,6 +298,7 @@ function PriceCard({ name, price, features, cta, highlight }: any) {
 </div>
   );
 }
+
 
 
 
