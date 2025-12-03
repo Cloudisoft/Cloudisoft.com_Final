@@ -288,8 +288,10 @@ function PriceCard({ name, price, features, cta, highlight }: any) {
       >
         {cta}
       </button>
+      <Footer />
     </div>
   );
 }
+
 
 
