@@ -190,80 +190,81 @@ function Outcome({ label, value, color }: any) {
 
 function PricingCards() {
   return (
-    <div className="section mt-28 text-center">
+    <>
+      {/* Pricing Section */}
+      <section id="cloudicore-pricing" className="section mt-28 text-center">
+        <h2 className="text-4xl font-bold">Choose Your Plan</h2>
+        <p className="text-slate-400 mt-3">
+          Start free. Upgrade anytime.
+        </p>
 
-      {/* Title */}
-      <h2 className="text-4xl font-bold">Choose Your Plan</h2>
-      <p className="text-slate-400 mt-3">
-        Start free. Upgrade anytime.
-      </p>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mt-14">
 
-      {/* GRID */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mt-14">
+          {/* FREE */}
+          <PriceCard
+            name="Free"
+            price="0"
+            features={[
+              "2 simulations per month",
+              "Basic reports",
+              "Email support",
+            ]}
+            cta="Start Free"
+          />
 
-        {/* FREE PLAN */}
-        <PriceCard
-          name="Free"
-          price="0"
-          features={[
-            "2 simulations per month",
-            "Basic reports",
-            "Email support",
-          ]}
-          cta="Start Free"
-        />
+          {/* STARTER */}
+          <PriceCard
+            name="Starter"
+            price="19.99"
+            features={[
+              "10 simulations per month",
+              "Summary reports",
+              "Basic templates",
+              "Email support",
+            ]}
+            cta="Start Simulating"
+          />
 
-        {/* STARTER */}
-        <PriceCard
-          name="Starter"
-          price="19.99"
-          features={[
-            "10 simulations per month",
-            "Summary reports",
-            "Basic templates",
-            "Email support",
-          ]}
-          cta="Start Simulating"
-        />
+          {/* PRO */}
+          <PriceCard
+            name="Pro"
+            price="49.99"
+            highlight
+            features={[
+              "25 simulations per month",
+              "Interactive dashboard",
+              "Scenario history",
+              "Advanced templates",
+              "Priority support",
+            ]}
+            cta="Upgrade to Pro"
+          />
 
-        {/* PRO */}
-        <PriceCard
-          name="Pro"
-          price="49.99"
-          highlight
-          features={[
-            "25 simulations per month",
-            "Interactive dashboard",
-            "Scenario history",
-            "Advanced templates",
-            "Priority support",
-          ]}
-          cta="Upgrade to Pro"
-        />
+          {/* ENTERPRISE */}
+          <PriceCard
+            name="Enterprise"
+            price="99.99"
+            features={[
+              "Unlimited simulations",
+              "Team access & collaboration",
+              "Advanced analytics",
+              "Custom templates",
+              "API access",
+              "Dedicated support",
+            ]}
+            cta="Talk to Sales"
+          />
+        </div>
+      </section>
 
-        {/* ENTERPRISE */}
-        <PriceCard
-          name="Enterprise"
-          price="99.99"
-          features={[
-            "Unlimited simulations",
-            "Team access & collaboration",
-            "Advanced analytics",
-            "Custom templates",
-            "API access",
-            "Dedicated support",
-          ]}
-          cta="Talk to Sales"
-        />
-      </div>
-
-      {/* FOOTER BELOW THE GRID */}
-      <div className="mt-20">
+      {/* Footer — EXACT SINGLE COPY LIKE HOMEPAGE */}
+      <div className="mt-28">
         <Footer />
       </div>
-    </div>
+    </>
   );
 }
+
 
 function PriceCard({ name, price, features, cta, highlight }: any) {
   return (
@@ -296,9 +297,11 @@ function PriceCard({ name, price, features, cta, highlight }: any) {
       >
         {cta}
       </button>
-</div>
+    </div>
   );
 }
+
+
 
 
 
