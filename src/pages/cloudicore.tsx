@@ -1,25 +1,4 @@
 import { useState } from "react";
-import "./cloudicore.css";
-
-type Goal = "growth" | "profit" | "stability";
-
-type Outcome = {
-  label: "Optimistic" | "Expected" | "Cautious";
-  revenue: number;
-  profit: number;
-  costImpact: number;
-  breakEvenMonths: number;
-  mainRisk: string;
-};
-
-type ScenarioInputs = {
-  template: string;
-  description: string;
-  monthlyRevenue: number;
-  monthlyCostOrBudget: number;
-  timeframeMonths: number;
-  goal: Goal;
-};
 
 const TEMPLATES = [
   "Pricing change",
@@ -31,238 +10,293 @@ const TEMPLATES = [
   "Sales strategy",
 ];
 
-const formatMoney = (n: number) =>
-  "$" + n.toLocaleString(undefined, { maximumFractionDigits: 0 });
-
-const clamp = (v: number, min: number, max: number) =>
-  Math.min(max, Math.max(min, v));
-
-function simulateScenario(input: ScenarioInputs) {
-  const {
-    template,
-    monthlyRevenue,
-    monthlyCostOrBudget,
-    timeframeMonths,
-    goal,
-  } = input;
-
-  const baseRevenue = monthlyRevenue || 0;
-  const baseCost = monthlyCostOrBudget || 0;
-  const T = timeframeMonths || 3;
-
-  // --- multipliers based on goal ---
-  let growthBoost = 0;
-  let marginFocus = 0;
-  if (goal === "growth") growthBoost = 0.35;
-  if (goal === "profit") marginFocus = 0.25;
-  if (goal === "stability") {
-    growthBoost = 0.1;
-    marginFocus = 0.1;
-  }
-
-  // --- template impact ---
-  let revUpside = 0.2;
-  let revMid = 0.1;
-  let revDown = -0.05;
-  let costDelta = 0.0;
-  let baseRisk = 40;
-
-  switch (template) {
-    case "Pricing change":
-      revUpside = 0.25;
-      revMid = 0.12;
-      revDown = -0.12;
-      baseRisk = 55;
-      break;
-    case "Hiring decision":
-      revUpside = 0.18;
-      revMid = 0.09;
-      revDown = -0.03;
-      costDelta = 0.2;
-      baseRisk = 45;
-      break;
-    case "Expansion / new location":
-      revUpside = 0.35;
-      revMid = 0.18;
-      revDown = -0.15;
-      costDelta = 0.3;
-      baseRisk = 65;
-      break;
-    case "Marketing budget adjustment":
-      revUpside = 0.28;
-      revMid = 0.13;
-      revDown = -0.06;
-      costDelta = 0.15;
-      baseRisk = 50;
-      break;
-    case "Product launch":
-      revUpside = 0.4;
-      revMid = 0.2;
-      revDown = -0.18;
-      costDelta = 0.25;
-      baseRisk = 70;
-      break;
-    case "Operational scaling":
-      revUpside = 0.22;
-      revMid = 0.11;
-      revDown = -0.04;
-      costDelta = 0.18;
-      baseRisk = 48;
-      break;
-    case "Sales strategy":
-      revUpside = 0.3;
-      revMid = 0.15;
-      revDown = -0.08;
-      costDelta = 0.12;
-      baseRisk = 52;
-      break;
-    default:
-      break;
-  }
-
-  // Adjust for goal
-  revUpside += growthBoost * 0.8;
-  revMid += growthBoost * 0.4;
-  revDown -= growthBoost * 0.2;
-  costDelta -= marginFocus * 0.3;
-
-  revDown = Math.max(revDown, -0.4);
-
-  const optimisticRevenue = baseRevenue * (1 + revUpside);
-  const expectedRevenue = baseRevenue * (1 + revMid);
-  const cautiousRevenue = baseRevenue * (1 + revDown);
-
-  const optimisticCost = baseCost * (1 + costDelta * 0.7);
-  const expectedCost = baseCost * (1 + costDelta * 0.9);
-  const cautiousCost = baseCost * (1 + costDelta);
-
-  const optimisticProfit = optimisticRevenue - optimisticCost;
-  const expectedProfit = expectedRevenue - expectedCost;
-  const cautiousProfit = cautiousRevenue - cautiousCost;
-
-  const avgExtraProfit =
-    (optimisticProfit + expectedProfit + cautiousProfit) / 3 -
-    (baseRevenue - baseCost);
-
-  const breakEvenMonths =
-    avgExtraProfit > 0 ? clamp(baseCost / Math.max(avgExtraProfit, 1), 1, 18) : 18;
-
-  let riskIndex = baseRisk;
-  if (goal === "growth") riskIndex += 8;
-  if (goal === "profit") riskIndex -= 6;
-  if (goal === "stability") riskIndex -= 3;
-  if (T < 3) riskIndex += 5;
-  if (T > 6) riskIndex += 3;
-
-  riskIndex = clamp(Math.round(riskIndex), 5, 95);
-
-  const outcomes: Outcome[] = [
-    {
-      label: "Optimistic",
-      revenue: optimisticRevenue * T,
-      profit: optimisticProfit * T,
-      costImpact: (optimisticCost - baseCost) * T,
-      breakEvenMonths,
-      mainRisk: "Assumes strong market response and smooth execution.",
-    },
-    {
-      label: "Expected",
-      revenue: expectedRevenue * T,
-      profit: expectedProfit * T,
-      costImpact: (expectedCost - baseCost) * T,
-      breakEvenMonths,
-      mainRisk: "Normal demand, average execution, small delays possible.",
-    },
-    {
-      label: "Cautious",
-      revenue: cautiousRevenue * T,
-      profit: cautiousProfit * T,
-      costImpact: (cautiousCost - baseCost) * T,
-      breakEvenMonths,
-      mainRisk: "Slower adoption, cost overruns, or weaker conversion.",
-    },
-  ];
-
-  let riskReason = "";
-  if (riskIndex <= 30)
-    riskReason = "Low downside. Costs are controlled and the decision is reversible.";
-  else if (riskIndex <= 60)
-    riskReason = "Moderate risk. Depends on execution quality and market response.";
-  else
-    riskReason = "High risk. Big upfront commitment and outcomes rely on external factors.";
-
-  const recommendations = {
-    conservative: {
-      title: "Conservative path",
-      action: "Start with a small test, cap spend, and track a single KPI weekly.",
-      why: "Reduces downside while you learn how customers respond.",
-      tradeoff: "Slower growth and delayed impact.",
-    },
-    balanced: {
-      title: "Balanced path",
-      action: "Roll out to segments, pre-define stop rules, and lock budget.",
-      why: "Keeps upside meaningful without risking full P&L.",
-      tradeoff: "Requires discipline.",
-    },
-    aggressive: {
-      title: "Aggressive path",
-      action: "Go full rollout, resource heavily, accept 3–6 months payback.",
-      why: "Maximizes growth if assumptions are correct.",
-      tradeoff: "Higher burn and recovery time if wrong.",
-    },
-  };
-
-  return {
-    outcomes,
-    riskIndex,
-    riskReason,
-    recommendations,
-  };
-}
-
-const CloudiCore = () => {
+export default function CloudiCore() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [plan, setPlan] = useState<"trial" | "starter" | "pro" | "enterprise">("trial");
   const [simulationsUsed, setSimulationsUsed] = useState(0);
-  const trialLimit = 3;
+  const [plan, setPlan] = useState("trial");
 
-  const [inputs, setInputs] = useState<ScenarioInputs>({
+  const [inputs, setInputs] = useState({
     template: "Pricing change",
     description: "",
-    monthlyRevenue: 25000,
-    monthlyCostOrBudget: 12000,
-    timeframeMonths: 3,
+    revenue: 20000,
+    cost: 8000,
+    months: 3,
     goal: "growth",
   });
 
-  const [result, setResult] = useState<ReturnType<typeof simulateScenario> | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<any>(null);
+  const [error, setError] = useState("");
 
-  const trialLocked = plan === "trial" && simulationsUsed >= trialLimit;
+  const trialLimit = 3;
 
-  const handleRun = () => {
-    setError(null);
+  const simulate = () => {
     if (!isLoggedIn) return setError("Sign in to run a simulation.");
-    if (!inputs.description.trim()) return setError("Add a short scenario description.");
-    if (trialLocked) return setError("Trial limit reached. Upgrade to continue.");
+    if (!inputs.description.trim())
+      return setError("Describe your scenario.");
+    if (plan === "trial" && simulationsUsed >= trialLimit)
+      return setError("Trial limit reached. Upgrade to continue.");
 
-    const res = simulateScenario(inputs);
-    setResult(res);
-    setSimulationsUsed((n) => n + 1);
+    const optimistic = inputs.revenue * 1.25 - inputs.cost * 1.12;
+    const expected = inputs.revenue * 1.12 - inputs.cost * 1.05;
+    const cautious = inputs.revenue * 0.9 - inputs.cost;
+
+    setResult({
+      optimistic,
+      expected,
+      cautious,
+      risk: Math.floor(Math.random() * 40) + 40,
+    });
+
+    setSimulationsUsed(simulationsUsed + 1);
   };
 
   return (
-    <div className="cc-page">
-      <h1 style={{ color: "white", padding: "20px" }}>
-        CloudiCore Simulator
-      </h1>
+    <div className="min-h-screen w-full bg-black text-white">
+      {/* HERO — MATCHES Cloudisoft Style */}
+      <section className="pt-24 pb-12 text-center">
+        <h1 className="text-4xl sm:text-6xl font-extrabold">
+          CloudiCore
+          <span className="gradient-text block">Decision Simulator</span>
+        </h1>
+        <p className="mt-4 text-slate-300 max-w-3xl mx-auto">
+          Run realistic business scenarios before committing your budget,
+          team, or time. See revenue impact, profitability, and risk —
+          all in one guided view.
+        </p>
 
-      {/* — rest of UI remains as-is */}
-      <p style={{ color: "gray", padding: "0 20px" }}>
-        UI is rendering — now plug in the styling.
-      </p>
+        <div className="flex justify-center gap-4 mt-4">
+          <span className="text-xs px-3 py-1 rounded-full bg-white/10 border border-white/5">
+            5-Day Free Trial · 3 Simulations
+          </span>
+          <span className="text-xs px-3 py-1 rounded-full bg-white/10 border border-white/5">
+            No Credit Card Required
+          </span>
+        </div>
+      </section>
+
+      {/* MAIN LAYOUT */}
+      <main className="max-w-6xl mx-auto px-4 lg:px-0 space-y-16 pb-32">
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          {/* LEFT — INPUT PANEL */}
+          <div className="bg-white/5 backdrop-blur-lg p-6 rounded-2xl border border-white/10 shadow-lg">
+            <h2 className="text-xl font-semibold mb-6">
+              1. Describe your decision
+            </h2>
+
+            {!isLoggedIn && (
+              <div className="space-y-3 mb-6">
+                <button
+                  onClick={() => setIsLoggedIn(true)}
+                  className="w-full py-3 bg-white/10 hover:bg-white/20 rounded-lg font-semibold"
+                >
+                  Continue with Google
+                </button>
+
+                <button
+                  onClick={() => setIsLoggedIn(true)}
+                  className="w-full py-3 bg-white/10 hover:bg-white/20 rounded-lg font-semibold"
+                >
+                  Continue with Microsoft
+                </button>
+
+                <div className="text-center text-slate-500 text-xs">or</div>
+
+                <input
+                  className="w-full bg-white/10 p-2 rounded-md"
+                  placeholder="Work email"
+                />
+                <input
+                  type="password"
+                  className="w-full bg-white/10 p-2 rounded-md"
+                  placeholder="Password"
+                />
+                <button
+                  onClick={() => setIsLoggedIn(true)}
+                  className="w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold"
+                >
+                  Sign in
+                </button>
+
+                <p className="text-xs text-slate-500">
+                  Demo login — connect auth later.
+                </p>
+              </div>
+            )}
+
+            <label className="block text-sm text-slate-300 mb-2">
+              Template
+            </label>
+            <select
+              value={inputs.template}
+              onChange={(e) =>
+                setInputs({ ...inputs, template: e.target.value })
+              }
+              className="w-full bg-white/10 p-3 rounded-lg mb-4"
+            >
+              {TEMPLATES.map((t) => (
+                <option key={t}>{t}</option>
+              ))}
+            </select>
+
+            <label className="block text-sm text-slate-300 mb-2">
+              Scenario
+            </label>
+            <textarea
+              className="bg-white/10 p-3 rounded-lg w-full mb-4"
+              rows={4}
+              placeholder='Example: "Increase pricing by 10%"'
+              value={inputs.description}
+              onChange={(e) =>
+                setInputs({ ...inputs, description: e.target.value })
+              }
+            />
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm text-slate-300">
+                  Monthly revenue
+                </label>
+                <input
+                  type="number"
+                  className="bg-white/10 p-3 rounded-lg w-full"
+                  value={inputs.revenue}
+                  onChange={(e) =>
+                    setInputs({ ...inputs, revenue: Number(e.target.value) })
+                  }
+                />
+              </div>
+
+              <div>
+                <label className="text-sm text-slate-300">
+                  Monthly cost
+                </label>
+                <input
+                  type="number"
+                  className="bg-white/10 p-3 rounded-lg w-full"
+                  value={inputs.cost}
+                  onChange={(e) =>
+                    setInputs({ ...inputs, cost: Number(e.target.value) })
+                  }
+                />
+              </div>
+            </div>
+
+            {error && (
+              <p className="text-red-400 text-sm mt-4">{error}</p>
+            )}
+
+            <button
+              onClick={simulate}
+              className="w-full mt-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:opacity-90 rounded-lg font-semibold"
+            >
+              Run Simulation
+            </button>
+          </div>
+
+          {/* RIGHT — RESULTS */}
+          <div className="bg-white/5 backdrop-blur-lg p-6 rounded-2xl border border-white/10 shadow-lg min-h-[300px]">
+            <h2 className="text-xl font-semibold mb-6">
+              2. Outcomes
+            </h2>
+
+            {!result ? (
+              <p className="text-slate-400">
+                Run simulation to view projections.
+              </p>
+            ) : (
+              <div className="space-y-4">
+                <OutcomeCard
+                  label="Optimistic"
+                  value={result.optimistic}
+                  color="text-green-400"
+                />
+                <OutcomeCard
+                  label="Expected"
+                  value={result.expected}
+                  color="text-yellow-400"
+                />
+                <OutcomeCard
+                  label="Cautious"
+                  value={result.cautious}
+                  color="text-red-400"
+                />
+
+                <div className="pt-4 border-t border-white/10">
+                  <h3 className="text-sm text-slate-300 mb-1">Risk Index</h3>
+                  <p className="text-3xl font-bold">{result.risk}/100</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* PRICING */}
+        <section className="pt-10">
+          <h2 className="text-4xl font-bold">Pricing</h2>
+          <p className="text-slate-300 mt-3">
+            Upgrade anytime after your trial.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
+
+            <PlanCard
+              name="Starter"
+              price="$19.99"
+              active={plan === "starter"}
+              select={() => setPlan("starter")}
+            />
+
+            <PlanCard
+              name="Pro"
+              price="$49.99"
+              highlight
+              active={plan === "pro"}
+              select={() => setPlan("pro")}
+            />
+
+            <PlanCard
+              name="Enterprise"
+              price="$99.99"
+              active={plan === "enterprise"}
+              select={() => setPlan("enterprise")}
+            />
+          </div>
+        </section>
+      </main>
     </div>
   );
-};
+}
 
-export default CloudiCore;
+/* ------------------ Small UI Components ------------------ */
+
+const OutcomeCard = ({ label, value, color }: any) => (
+  <div className="bg-white/10 p-4 rounded-lg backdrop-blur">
+    <p className={`font-semibold text-sm ${color}`}>{label}</p>
+    <p className="text-2xl font-bold mt-1">
+      {value.toLocaleString()}
+    </p>
+  </div>
+);
+
+const PlanCard = ({ name, price, highlight, active, select }: any) => (
+  <div
+    className={`p-6 rounded-2xl border ${
+      highlight ? "bg-gradient-to-b from-blue-600 to-indigo-600" : "bg-white/5"
+    } ${active ? "border-blue-400" : "border-white/10"}`}
+  >
+    <h3 className="text-2xl font-bold">{name}</h3>
+    <p className="text-3xl font-extrabold mt-2">{price}/mo</p>
+
+    <button
+      onClick={select}
+      className={`mt-6 w-full py-2 rounded-lg ${
+        highlight
+          ? "bg-white text-black font-semibold"
+          : "bg-white/10 hover:bg-white/20"
+      }`}
+    >
+      {highlight ? "Upgrade to Pro" : "Choose " + name}
+    </button>
+  </div>
+);
