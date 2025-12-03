@@ -218,7 +218,7 @@ function PricingCards() {
             "Basic templates",
             "Email support",
           ]}
-          cta="Start Simulating Now"
+          cta="Start Simulating"
           highlight={false}
         />
 
@@ -291,3 +291,4 @@ function PriceCard({ name, price, features, cta, highlight }: any) {
     </div>
   );
 }
+
