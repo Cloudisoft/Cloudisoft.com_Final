@@ -193,21 +193,37 @@ function PricingCards() {
     <section className="section mt-28 text-center">
       <h2 className="text-4xl font-bold">Choose Your Plan</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-14">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mt-14">
 
+        {/* FREE PLAN */}
+        <PriceCard
+          name="Free"
+          price="0"
+          features={[
+            "2 simulations per month",
+            "Basic reports",
+            "Email support",
+          ]}
+          cta="Start Free"
+          highlight={false}
+        />
+
+        {/* STARTER PLAN */}
         <PriceCard
           name="Starter"
           price="19.99"
           features={[
-            "5 simulations per month",
+            "10 simulations per month",
             "Summary reports",
             "Basic templates",
             "Email support",
           ]}
+          cta="Start Simulating Now"
+          highlight={false}
         />
 
+        {/* PRO PLAN — HIGHLIGHT */}
         <PriceCard
-          highlight
           name="Pro"
           price="49.99"
           features={[
@@ -217,8 +233,11 @@ function PricingCards() {
             "Advanced templates",
             "Priority support",
           ]}
+          cta="Upgrade to Pro"
+          highlight={true}
         />
 
+        {/* ENTERPRISE */}
         <PriceCard
           name="Enterprise"
           price="99.99"
@@ -228,36 +247,46 @@ function PricingCards() {
             "Advanced analytics",
             "Custom templates",
             "API access",
+            "Dedicated support",
           ]}
+          cta="Talk to Sales"
+          highlight={false}
         />
       </div>
     </section>
   );
 }
 
-function PriceCard({ name, price, features, highlight }: any) {
+function PriceCard({ name, price, features, cta, highlight }: any) {
   return (
     <div
-      className={`card ${
-        highlight ? "bg-gradient-to-b from-blue-600 to-purple-600" : ""
+      className={`rounded-3xl p-8 border border-slate-800 shadow-xl shadow-black/40 
+      ${
+        highlight
+          ? "bg-gradient-to-b from-blue-500 to-purple-500 text-white"
+          : "bg-cloudi-card"
       }`}
     >
       <h3 className="text-2xl font-bold">{name}</h3>
-      <p className="text-4xl font-extrabold mt-2">
+
+      <p className="text-4xl font-extrabold mt-4">
         ${price}
-        <span className="text-lg opacity-60 ml-1">/mo</span>
+        <span className="text-lg opacity-70 ml-1">/mo</span>
       </p>
 
-      <ul className="text-left mt-6 space-y-2 text-sm">
+      <ul className="mt-6 space-y-2 text-left text-sm">
         {features.map((f: string, idx: number) => (
-          <li key={idx} className="flex gap-2 items-start">
-            ✔️ <span>{f}</span>
+          <li key={idx} className="flex gap-2">
+            <span>✔️</span>
+            <span>{f}</span>
           </li>
         ))}
       </ul>
 
-      <button className="btn-primary w-full mt-8">
-        Start Simulating Now
+      <button
+        className="btn-primary w-full mt-8 bg-gradient-to-r from-blue-500 to-purple-500"
+      >
+        {cta}
       </button>
     </div>
   );
