@@ -161,4 +161,364 @@ export default function CloudiCore() {
           />
 
           <Field label="Current monthly revenue" name="revenue" inputs={inputs} setInputs={setInputs} />
-          <Field label="Main monthly cost" name="cost" inputs
+          <Field label="Main monthly cost" name="cost" inputs={inputs} setInputs={setInputs} />
+          <Field label="Timeframe (months)" name="months" inputs={inputs} setInputs={setInputs} />
+
+          {/* AI ASSIST INPUT */}
+          <AIInput inputs={inputs} setInputs={setInputs} />
+
+          {error && <p className="text-red-400 mt-2">{error}</p>}
+
+          <button className="btn-primary w-full mt-6" onClick={runSimulation}>
+            Run Simulation 🚀
+          </button>
+        </div>
+
+        {/* RESULTS PANEL */}
+        <div className="card min-h-[260px]" id="sim-results">
+          {!result ? (
+            <p className="text-slate-400">Run a simulation to see results</p>
+          ) : (
+            <SimulationResult result={result} />
+          )}
+        </div>
+      </section>
+
+      <Pricing />
+      <FAQ />
+      <Footer />
+
+      {authOpen && <AuthModal close={() => setAuthOpen(false)} />}
+    </div>
+  );
+}
+
+// =====================================================================
+// COMPONENTS
+// =====================================================================
+function Field({ label, name, inputs, setInputs }: any) {
+  return (
+    <div className="mt-4">
+      <label className="text-sm text-slate-300">{label}</label>
+      <input
+        className="w-full bg-cloudi-card/60 rounded-xl p-3 border border-slate-800 mt-1"
+        type="number"
+        placeholder="Enter value"
+        value={inputs[name]}
+        onChange={(e) => setInputs({ ...inputs, [name]: e.target.value })}
+      />
+    </div>
+  );
+}
+
+// =========================================
+// AI Assist
+// =========================================
+function AIInput({ inputs, setInputs }: any) {
+  return (
+    <div className="mt-4">
+      <label className="text-sm text-slate-300">AI Assist (optional)</label>
+      <input
+        className="w-full bg-cloudi-card/60 rounded-xl p-3 border border-slate-800 mt-1"
+        placeholder='E.g. "Suggest pricing strategy"'
+        onBlur={(e) =>
+          setInputs({
+            ...inputs,
+            scenario:
+              inputs.scenario + (inputs.scenario ? " — " : "") + e.target.value,
+          })
+        }
+      />
+    </div>
+  );
+}
+
+// =========================================
+// RESULT COMPONENT (NO CHARTS)
+// =========================================
+function SimulationResult({ result }: any) {
+  return (
+    <>
+      <div className="bg-cloudi-card/60 p-4 rounded-xl border border-slate-800">
+        <p className="text-sm text-slate-300">Break-even</p>
+        <h2 className="text-3xl font-bold mt-1">
+          {result.breakEven ? `${result.breakEven} months` : "No recovery predicted"}
+        </h2>
+      </div>
+
+      <div className="grid grid-cols-3 gap-4 mt-6">
+        <Outcome label="Optimistic" value={result.optimistic} color="text-green-400" />
+        <Outcome label="Expected" value={result.expected} color="text-yellow-300" />
+        <Outcome label="Cautious" value={result.cautious} color="text-red-400" />
+      </div>
+
+      <p className="mt-6 text-lg">
+        <span className="font-semibold">Risk Index:</span> {result.risk}/100
+      </p>
+
+      <button className="btn-secondary w-full mt-6" onClick={() => exportPDF()}>
+        Export to PDF 📦
+      </button>
+
+      <button className="btn-primary w-full mt-3">
+        Save & Continue →
+      </button>
+    </>
+  );
+}
+
+function Outcome({ label, value, color }: any) {
+  return (
+    <div className="bg-cloudi-card/60 rounded-xl p-4 border border-slate-800">
+      <p className={`font-medium ${color}`}>{label}</p>
+      <p className="text-2xl font-bold mt-1">
+        ${value.toLocaleString()}
+      </p>
+    </div>
+  );
+}
+
+// =========================================
+// Pricing
+// =========================================
+function Pricing() {
+  return (
+    <section className="section text-center mt-28">
+      <h2 className="text-4xl font-bold">Choose Your Plan</h2>
+      <p className="text-slate-400 mt-2">
+        Start free. Upgrade anytime.
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mt-12">
+        <PriceCard
+          name="Free"
+          price="0"
+          features={[
+            "2 simulations / month",
+            "Basic reports",
+            "Email support",
+          ]}
+          cta="Start Free"
+        />
+
+        <PriceCard
+          name="Starter"
+          price="19.99"
+          features={[
+            "10 simulations / month",
+            "Summary reports",
+            "Basic templates",
+            "Email support",
+          ]}
+          cta="Start Simulating"
+        />
+
+        <PriceCard
+          highlight
+          name="Pro"
+          price="49.99"
+          features={[
+            "25 simulations / month",
+            "Scenario history",
+            "Interactive forecasting",
+            "Priority support",
+          ]}
+          cta="Upgrade to Pro"
+        />
+
+        <PriceCard
+          name="Enterprise"
+          price="99.99"
+          features={[
+            "Unlimited simulations",
+            "Team access",
+            "Custom templates",
+            "API access",
+            "Dedicated support",
+          ]}
+          cta="Talk to Sales"
+        />
+      </div>
+    </section>
+  );
+}
+
+function PriceCard({ name, price, features, cta, highlight }: any) {
+  return (
+    <div
+      className={`p-8 rounded-3xl border shadow-lg ${
+        highlight
+          ? "bg-gradient-to-b from-blue-500 to-purple-500 text-white"
+          : "bg-cloudi-card border-slate-800"
+      }`}
+    >
+      <h3 className="text-2xl font-bold">{name}</h3>
+      <p className="text-4xl font-extrabold mt-3">
+        ${price}
+        <span className="text-lg opacity-70 ml-1">/mo</span>
+      </p>
+
+      <ul className="mt-6 space-y-2 text-left text-sm">
+        {features.map((f: string, idx: number) => (
+          <li key={idx} className="flex gap-2">
+            <span>✔️</span>{f}
+          </li>
+        ))}
+      </ul>
+
+      <button className="btn-primary w-full mt-6">
+        {cta}
+      </button>
+    </div>
+  );
+}
+
+// =========================================
+// FAQ
+// =========================================
+function FAQ() {
+  const qa = [
+    {
+      q: "How accurate are simulations?",
+      a: "CloudiCore models realistic growth curves using profit, cost, and sensitivity assumptions. They are directional tools—not guaranteed forecasts."
+    },
+    {
+      q: "Do I need a credit card?",
+      a: "No. You can start the simulator free with no card required."
+    },
+    {
+      q: "Can I export simulations?",
+      a: "Yes. Export to PDF with full breakdowns and projected outcomes."
+    },
+    {
+      q: "Can teams use CloudiCore?",
+      a: "The Enterprise plan includes collaboration, roles, shared workspaces, and reporting."
+    },
+    {
+      q: "Does it support multiple markets?",
+      a: "Simulations handle industry pricing, staffing, advertising, SaaS, agencies, and more."
+    },
+    {
+      q: "How does support work?",
+      a: "Starter includes email support; Pro offers priority chat; Enterprise includes dedicated success managers."
+    },
+  ];
+
+  return (
+    <section className="section mt-28">
+      <h2 className="text-4xl font-bold text-center">
+        Frequently Asked Questions
+      </h2>
+
+      <div className="grid md:grid-cols-2 gap-6 mt-12 max-w-5xl mx-auto">
+        {qa.map((i, k) => (
+          <div key={k} className="bg-cloudi-card/60 rounded-2xl p-6 border border-slate-800">
+            <h3 className="text-xl font-semibold mb-2">{i.q}</h3>
+            <p className="text-slate-300 text-sm leading-relaxed">{i.a}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// =========================================
+// Footer
+// =========================================
+function Footer() {
+  return (
+    <footer className="section mt-28 pt-10 border-t border-slate-800 text-left">
+      <div className="grid md:grid-cols-3 gap-10">
+        <div>
+          <h3 className="text-purple-300 text-lg font-semibold">Cloudisoft</h3>
+          <p className="text-slate-400 text-sm mt-2">
+            Intelligent AI automations & predictive decision tools.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-purple-300 text-lg font-semibold">Contact</h3>
+          <p className="text-slate-400 text-sm mt-2">
+            connect@cloudisoft.com
+            <br />
+            +1 205-696-8477
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-purple-300 text-lg font-semibold">Location</h3>
+          <p className="text-slate-400 text-sm mt-2">
+            473 Mundet Place
+            <br />
+            Hillside, NJ 07205
+          </p>
+        </div>
+      </div>
+
+      <p className="text-center text-slate-500 text-sm mt-8">
+        © 2025 Cloudisoft — All Rights Reserved.
+      </p>
+    </footer>
+  );
+}
+
+// =========================================
+// Auth Modal
+// =========================================
+function AuthModal({ close }: { close: () => void }) {
+  const [mode, setMode] = useState<"signup" | "login">("signup");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  return (
+    <>
+      <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40" onClick={close} />
+
+      <div className="fixed z-50 w-[90%] max-w-[420px]
+        left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
+        bg-cloudi-card p-8 rounded-3xl border border-slate-700">
+        
+        <h2 className="text-2xl font-bold text-center">
+          {mode === "signup" ? "Create Account" : "Sign In"}
+        </h2>
+
+        <input
+          className="w-full bg-cloudi-card/60 rounded-xl p-3 mt-4 border border-slate-700"
+          placeholder="Work email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <input
+          className="w-full bg-cloudi-card/60 rounded-xl p-3 mt-3 border border-slate-700"
+          placeholder="Password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button className="btn-primary w-full mt-5">
+          {mode === "signup" ? "Sign Up" : "Sign In"}
+        </button>
+
+        <p className="text-center text-slate-400 text-sm mt-4">
+          {mode === "signup" ? (
+            <>
+              Already have an account?{" "}
+              <span className="text-purple-300 cursor-pointer" onClick={() => setMode("login")}>
+                Sign in
+              </span>
+            </>
+          ) : (
+            <>
+              New to CloudiCore?{" "}
+              <span className="text-purple-300 cursor-pointer" onClick={() => setMode("signup")}>
+                Create account
+              </span>
+            </>
+          )}
+        </p>
+      </div>
+    </>
+  );
+}
