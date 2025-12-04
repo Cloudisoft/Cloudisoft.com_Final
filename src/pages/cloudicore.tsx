@@ -458,4 +458,20 @@ function Auth({ close }: any) {
 
         <input
           placeholder="Email"
-          className="w-
+          className="w-full p-3 rounded-xl bg-cloudi-card/60 border border-slate-700 mb-3"
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          className="w-full p-3 rounded-xl bg-cloudi-card/60 border border-slate-700 mb-3"
+        />
+
+        <button className="btn-primary w-full mt-3">Continue</button>
+
+        <button className="btn-secondary w-full mt-4" onClick={close}>
+          Cancel
+        </button>
+      </div>
+    </div>
+  );
+}
