@@ -1,231 +1,183 @@
-// ============================================================
-// CLOUDICORE FULL PAGE — CLEAN VERSION (NO CHARTS)
-// ============================================================
-
-import { useState } from "react";
+// ==========================
+// CloudiCore.tsx (FINAL)
+// ==========================
+import { useState, useEffect } from "react";
 import "../index.css";
 import Footer from "../components/Footer";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { createClient } from "@supabase/supabase-js";
 
-// ============================================================
+// SUPABASE CLIENT (embedded key)
+const supabase = createClient(
+  "https://dfzmkyovvowkxwoovpnr.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRmem1reW92dm93a3h3b292cG5yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ4MzE2MjQsImV4cCI6MjA4MDQwNzYyNH0.Emdbla6DCXY1QAZhR_0wGUAHmovQAgafILxWFUr7i2I"
+);
+
+// ==========================
 // MAIN PAGE
-// ============================================================
-
+// ==========================
 export default function CloudiCore() {
+  const [user, setUser] = useState<any>(null);
+  const [authOpen, setAuthOpen] = useState(false);
+  const [shouldRunAfterAuth, setShouldRunAfterAuth] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setUser(data.session?.user || null);
+    });
+    const sub = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+      if (session?.user && shouldRunAfterAuth) {
+        setShouldRunAfterAuth(false);
+        runSimulation();
+        setAuthOpen(false);
+      }
+    });
+    return () => sub.data.subscription.unsubscribe();
+  }, []);
+
   const [inputs, setInputs] = useState({
     scenario: "",
     revenue: "",
     cost: "",
     months: "",
     goal: "growth",
-    businessType: "SaaS",
+    businessType: ""
   });
 
-  const [template, setTemplate] = useState("custom");
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState("");
-  const [authOpen, setAuthOpen] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
 
-  // ============================================================
-  // APPLY TEMPLATE
-  // ============================================================
+  // ==========================
+  // AI ASSIST v2 (Offline)
+  // ==========================
+  function runAIAssist() {
+    setAiLoading(true);
+    setTimeout(() => {
+      const { businessType, revenue, cost, goal } = inputs;
+      const templates: any = {
+        SaaS: [
+          "Increase subscription prices by 8–12% while bundling premium features.",
+          "Launch an annual plan with a 20% discount to improve cash flow.",
+          "Offer AI-powered add-ons to increase ARPU."
+        ],
+        "E-commerce": [
+          "Boost ad spend by 20% for high-converting campaigns.",
+          "Introduce free shipping over $75 to increase AOV.",
+          "Launch product bundles to increase cart value."
+        ],
+        Agency: [
+          "Raise retainers by 15% and introduce premium tiers.",
+          "Hire a senior strategist to increase capacity.",
+          "Remove low-margin service offerings to improve LTV."
+        ],
+        Startup: [
+          "Expand into one adjacent niche to accelerate early growth.",
+          "Cut burn by optimizing software/tooling expenses.",
+          "Launch early-adopter pricing to acquire first 50 customers."
+        ],
+        Marketplace: [
+          "Lower seller fees to attract new sellers quickly.",
+          "Add premium listings for high-volume sellers.",
+          "Expand product categories to boost liquidity."
+        ],
+        "Local Business": [
+          "Increase service pricing by 10% and add memberships.",
+          "Run local ads to boost walk-in conversions.",
+          "Add complementary services to increase per-customer revenue."
+        ]
+      };
 
-  function applyTemplate(t: string) {
-    setTemplate(t);
+      const goals: any = {
+        growth: [
+          "Focus on revenue acceleration through targeted demand generation.",
+          "Improve acquisition efficiency without high cost scaling.",
+          "Capture growth opportunities quickly."
+        ],
+        profit: [
+          "Improve margin by reducing non-essential operational costs.",
+          "Shift focus to sustainable recurring revenue.",
+          "Increase profitability through efficiency."
+        ],
+        stability: [
+          "Prioritize predictable cash flow.",
+          "Minimize risk and preserve operational readiness.",
+          "Stabilize revenue while reducing volatility."
+        ]
+      };
 
-    if (t === "Pricing Increase") {
-      setInputs({
-        ...inputs,
-        scenario: "Increase product pricing by 12%",
-        revenue: inputs.revenue || "20000",
-      });
-    }
+      const tBusiness = templates[businessType] || [];
+      const tGoal = goals[goal] || [];
 
-    if (t === "Hiring 3 Engineers") {
-      setInputs({
-        ...inputs,
-        scenario: "Hire 3 software engineers this quarter",
-        cost: inputs.cost || "15000",
-      });
-    }
-
-    if (t === "Marketing Boost") {
-      setInputs({
-        ...inputs,
-        scenario: "Increase marketing budget by 35% to drive new customers",
-        cost: inputs.cost || "8000",
-      });
-    }
-
-    if (t === "New Market Expansion") {
-      setInputs({
-        ...inputs,
-        scenario: "Expand product into a new international market",
-        revenue: inputs.revenue || "25000",
-      });
-    }
-
-    if (t === "Cost Reduction") {
-      setInputs({
-        ...inputs,
-        scenario: "Reduce operational costs by 18% across departments",
-        cost: inputs.cost || "9000",
-      });
-    }
-  }
-
-  // ============================================================
-  // AI ASSIST (Client-Side OpenAI call)
-  // ============================================================
-
-  // ============================================================
-// AI ASSIST v2 — OFFLINE, NO OPENAI
-// ============================================================
-
-function runAIAssist() {
-  setAiLoading(true);
-
-  setTimeout(() => {
-    const { businessType, revenue, cost, goal } = inputs;
-
-    const templates: any = {
-      SaaS: [
-        `Increase subscription pricing by 8–12% to improve margins while offering new feature bundles.`,
-        `Launch a limited-time annual billing discount to improve cash flow and reduce churn.`,
-        `Introduce a usage-based add-on to increase expansion revenue from power users.`,
-      ],
-      "E-commerce": [
-        `Increase ad spend by 20% during peak traffic weeks to boost conversion and AOV.`,
-        `Introduce a free-shipping threshold to lift average order value.`,
-        `Launch bundle promotions to increase cart size and reduce shipping cost per unit.`,
-      ],
-      Agency: [
-        `Raise retainers by 15% for legacy clients while offering premium service tiers.`,
-        `Hire one senior strategist to increase capacity for higher-ticket projects.`,
-        `Reduce low-margin service offerings to improve profitability.`,
-      ],
-      Startup: [
-        `Expand GTM into one adjacent niche market to accelerate early revenue.`,
-        `Cut burn by reducing non-essential SaaS expenses by ~15%.`,
-        `Launch early-adopter pricing for first 50 customers.`,
-      ],
-      Marketplace: [
-        `Lower transaction fees temporarily to increase seller acquisition.`,
-        `Introduce premium listings for power sellers to increase revenue.`,
-        `Expand supply categories to increase marketplace liquidity.`,
-      ],
-      "Local Business": [
-        `Increase service pricing by 10% and introduce membership packages.`,
-        `Run targeted local ads to increase walk-in conversions.`,
-        `Add complementary services to increase per-customer revenue.`,
-      ],
-    };
-
-    const goals: any = {
-      growth: [
-        "Capture new customers aggressively over the next 30–60 days.",
-        "Increase revenue velocity while maintaining stable CAC.",
-        "Accelerate top-line growth via targeted demand generation.",
-      ],
-      profit: [
-        "Improve net margins through operational efficiency.",
-        "Reduce low-ROI costs without hurting revenue capacity.",
-        "Focus on sustainable profitability over expansion.",
-      ],
-      stability: [
-        "Maintain predictable cash flow and reduce operational risk.",
-        "Strengthen financial stability through cost rebalancing.",
-        "Focus on dependable recurring revenue streams.",
-      ],
-    };
-
-    const tBusiness = templates[businessType] || [];
-    const tGoal = goals[goal] || [];
-
-    const generated = `
+      const generated = `
 ${tBusiness[Math.floor(Math.random() * tBusiness.length)]}
 
 Goal: ${tGoal[Math.floor(Math.random() * tGoal.length)]}
 
 Context:
-• Current revenue: $${revenue || "—"}
-• Monthly cost: $${cost || "—"}
-• Business type: ${businessType}
-`;
+• Revenue: $${revenue || "—"}
+• Costs: $${cost || "—"}
+• Type: ${businessType || "Not selected"}
+`.trim();
 
-    setInputs({ ...inputs, scenario: generated.trim() });
-    setAiLoading(false);
-  }, 700);
-}
+      setInputs({ ...inputs, scenario: generated });
+      setAiLoading(false);
+    }, 700);
+  }
 
-  // ============================================================
+  // ==========================
   // SIMULATION ENGINE
-  // ============================================================
-
+  // ==========================
   function runSimulation() {
-    const r = Number(inputs.revenue);
-    const c = Number(inputs.cost);
+    const rev = Number(inputs.revenue);
+    const cst = Number(inputs.cost);
     const t = Number(inputs.months);
 
+    if (!user) {
+      setAuthOpen(true);
+      setShouldRunAfterAuth(true);
+      return;
+    }
     if (!inputs.scenario) return setError("Describe your decision.");
-    if (!r) return setError("Enter monthly revenue.");
-    if (!c) return setError("Enter monthly cost.");
-    if (!t) return setError("Enter timeframe.");
+    if (!rev) return setError("Enter revenue.");
+    if (!cst) return setError("Enter cost.");
+    if (!t) return setError("Enter months.");
 
     setError("");
 
-    const optimistic = Math.round(r * 1.22 * t - c * 1.12 * t);
-    const expected = Math.round(r * 1.1 * t - c * 1.05 * t);
-    const cautious = Math.round(r * 0.92 * t - c * t);
+    const optimistic = rev * 1.22 * t - cst * 1.12 * t;
+    const expected = rev * 1.1 * t - cst * 1.05 * t;
+    const cautious = rev * 0.92 * t - cst * t;
+    const breakEven = expected > 0 ? Math.round(t / 1.5) : null;
     const risk = Math.floor(Math.random() * 30) + 35;
 
-    const breakEven = expected > 0 ? Math.ceil(c / (r - c)) : null;
-
-    setResult({ optimistic, expected, cautious, risk, breakEven });
-    setAuthOpen(true);
+    setResult({ optimistic, expected, cautious, breakEven, risk });
   }
 
-  // ============================================================
+  // ==========================
   // EXPORT PDF
-  // ============================================================
-
+  // ==========================
   async function exportPDF() {
-    const section = document.querySelector("#sim-output");
-    if (!section) return;
-
-    const canvas = await html2canvas(section as HTMLElement);
+    const capture = document.getElementById("sim-results");
+    if (!capture) return;
+    const canvas = await html2canvas(capture);
     const img = canvas.toDataURL("image/png");
-
     const pdf = new jsPDF("p", "mm", "a4");
-    pdf.addImage(img, "PNG", 8, 8, 195, 0);
+    pdf.addImage(img, "PNG", 5, 5, 200, 0);
     pdf.save("cloudicore_report.pdf");
   }
 
-  // ============================================================
-  // UI
-  // ============================================================
-
+  // ==========================
+  // PAGE UI
+  // ==========================
   return (
     <div className="bg-cloudi-bg min-h-screen text-white pb-32">
-
-      {/* HERO */}
-      <section className="section text-center pt-24 pb-12">
-        <h1 className="text-5xl sm:text-6xl font-extrabold">
-          CloudiCore
-          <br />
-          <span className="gradient-text">Decision Simulator</span>
-        </h1>
-
-        <p className="max-w-3xl mx-auto mt-4 text-slate-300 text-lg">
-          Simulate business decisions before spending money, hiring, or expanding.
-        </p>
-
-        <div className="flex justify-center gap-3 mt-6">
-          <span className="btn-secondary">7-Day Free Trial</span>
-          <span className="btn-secondary">No Credit Card Required</span>
-        </div>
+      <section className="section text-center pt-24 pb-10">
+        <h1 className="text-5xl font-extrabold">CloudiCore<br /><span className="gradient-text">Decision Simulator</span></h1>
+        <p className="text-slate-300 mt-4 max-w-2xl mx-auto">Simulate business decisions with realistic outcomes before committing budget, hiring, or time.</p>
+        {user && <p className="mt-3 text-slate-400 text-sm">Signed in as {user.email}</p>}
       </section>
 
       {/* SIMULATOR */}
@@ -233,360 +185,211 @@ Context:
 
         {/* LEFT */}
         <div className="card">
-          <h2 className="text-xl font-semibold mb-4">1. Describe Your Decision</h2>
+          <h2 className="text-xl font-semibold mb-4">Describe Your Decision</h2>
 
-          {/* Templates */}
-          <div className="flex gap-2 flex-wrap mb-5">
-            {[
-              "custom",
-              "Pricing Increase",
-              "Hiring 3 Engineers",
-              "Marketing Boost",
-              "New Market Expansion",
-              "Cost Reduction",
-            ].map((t) => (
-              <button
-                key={t}
-                onClick={() => applyTemplate(t)}
-                className={`px-3 py-1 rounded-xl border text-sm ${
-                  t === template ? "border-purple-500 bg-purple-500/20" : "border-slate-700"
-                }`}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
+          {/* Business Type */}
+          <label className="text-sm text-slate-300">Business Type</label>
+          <select className="w-full bg-cloudi-card/60 rounded-xl p-3 border border-slate-800 mb-3"
+            value={inputs.businessType}
+            onChange={(e) => setInputs({ ...inputs, businessType: e.target.value })}>
+            <option value="">Select type</option>
+            <option value="SaaS">SaaS</option>
+            <option value="E-commerce">E-commerce</option>
+            <option value="Agency">Agency</option>
+            <option value="Startup">Startup</option>
+            <option value="Marketplace">Marketplace</option>
+            <option value="Local Business">Local Business</option>
+          </select>
 
           {/* AI Assist */}
-          <button
-            onClick={runAIAssist}
-            className="btn-secondary w-full mb-4"
-            disabled={aiLoading}
-          >
-            {aiLoading ? "Thinking…" : "💡 AI Assist — Auto-Generate Scenario"}
+          <button className="btn-primary w-full mb-4" onClick={runAIAssist} disabled={aiLoading}>
+            {aiLoading ? "Generating..." : "💡 AI Assist — Auto Generate"}
           </button>
 
           {/* Scenario */}
-          <textarea
-            rows={4}
-            placeholder='Example: "Increase price by 10%"'
+          <textarea rows={4} placeholder="Describe your decision..."
+            className="w-full bg-cloudi-card/60 rounded-xl p-4 border border-slate-800 mb-3"
             value={inputs.scenario}
             onChange={(e) => setInputs({ ...inputs, scenario: e.target.value })}
-            className="w-full bg-cloudi-card/60 rounded-xl p-4 border border-slate-800"
           />
 
-          {/* Business Type */}
-          <div className="mt-4">
-            <label className="text-sm text-slate-300">Business Type</label>
-            <select
-              className="w-full bg-cloudi-card/60 rounded-xl p-3 border border-slate-800 mt-1"
-              value={inputs.businessType}
-              onChange={(e) => setInputs({ ...inputs, businessType: e.target.value })}
-            >
-              <option>SaaS</option>
-              <option>E-commerce</option>
-              <option>Agency</option>
-              <option>Startup</option>
-              <option>Marketplace</option>
-              <option>Local Business</option>
-            </select>
-          </div>
+          {/* Inputs */}
+          {["revenue", "cost", "months"].map((f) => (
+            <div key={f} className="mb-3">
+              <input
+                className="w-full bg-cloudi-card/60 rounded-xl p-3 border border-slate-800"
+                placeholder={f === "revenue" ? "Monthly revenue" : f === "cost" ? "Monthly cost" : "Timeframe (months)"}
+                value={(inputs as any)[f]}
+                onChange={(e) => setInputs({ ...inputs, [f]: e.target.value })}
+              />
+            </div>
+          ))}
 
-          {/* Fields */}
-          <Field label="Current monthly revenue" name="revenue" inputs={inputs} setInputs={setInputs} />
-          <Field label="Main monthly cost" name="cost" inputs={inputs} setInputs={setInputs} />
-          <Field label="Timeframe (months)" name="months" inputs={inputs} setInputs={setInputs} />
+          {error && <p className="text-red-400 mt-2">{error}</p>}
 
-          {error && <p className="text-red-400 mt-3">{error}</p>}
-
-          <button className="btn-primary w-full mt-6" onClick={runSimulation}>
-            Run Simulation 🚀
+          <button className="btn-primary w-full mt-4" onClick={runSimulation}>
+            Run Simulation →
           </button>
+
+          {user && (
+            <button className="btn-secondary w-full mt-3"
+              onClick={() => supabase.auth.signOut().then(() => setUser(null))}>
+              Logout
+            </button>
+          )}
         </div>
 
         {/* RESULTS */}
-        <div id="sim-output" className="card min-h-[260px]">
+        <div className="card min-h-[300px]" id="sim-results">
           {!result ? (
-            <p className="text-slate-400">Run a simulation to see projections…</p>
+            <p className="text-slate-400">Run a simulation to view results…</p>
           ) : (
             <>
-              <div className="bg-cloudi-card/60 p-4 rounded-xl border border-slate-800">
-                <p className="text-sm text-slate-300">Break-even time</p>
-                <h2 className="text-3xl font-bold mt-1">
-                  {result.breakEven ? `${result.breakEven} months` : "No break-even"}
-                </h2>
+              <h2 className="text-2xl font-semibold mb-2">Results</h2>
+              <div className="bg-cloudi-card/60 p-4 rounded-xl border border-slate-800 mb-3">
+                <p className="text-sm text-slate-400">Optimistic</p>
+                <p className="text-2xl font-bold text-green-400">${result.optimistic.toLocaleString()}</p>
               </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-                <Outcome label="Optimistic" value={result.optimistic} color="text-green-400" />
-                <Outcome label="Expected" value={result.expected} color="text-yellow-300" />
-                <Outcome label="Cautious" value={result.cautious} color="text-red-400" />
+              <div className="bg-cloudi-card/60 p-4 rounded-xl border border-slate-800 mb-3">
+                <p className="text-sm text-slate-400">Expected</p>
+                <p className="text-2xl font-bold text-yellow-300">${result.expected.toLocaleString()}</p>
               </div>
+              <div className="bg-cloudi-card/60 p-4 rounded-xl border border-slate-800 mb-3">
+                <p className="text-sm text-slate-400">Cautious</p>
+                <p className="text-2xl font-bold text-red-400">${result.cautious.toLocaleString()}</p>
+              </div>
+              <p className="mt-4"><b>Break-even:</b> {result.breakEven ? `${result.breakEven} months` : "No recovery"}</p>
+              <p><b>Risk Index:</b> {result.risk}/100</p>
 
-              <p className="mt-6 text-lg">
-                <span className="font-semibold">Risk Index:</span> {result.risk}/100
-              </p>
-
-              <button className="btn-secondary w-full mt-6" onClick={exportPDF}>
-                Export to PDF 📦
-              </button>
+              <button className="btn-secondary w-full mt-4" onClick={exportPDF}>Export to PDF</button>
             </>
           )}
         </div>
       </section>
 
       {/* PRICING */}
-      <Pricing />
+      <PricingSection />
 
       {/* FAQ */}
-      <FAQ />
+      <FAQSection />
 
+      {/* FOOTER */}
       <Footer />
 
-      {/* LOGIN MODAL */}
-      {authOpen && <Auth close={() => setAuthOpen(false)} />}
+      {/* AUTH MODAL */}
+      {authOpen && <AuthModal close={() => setAuthOpen(false)} />}
     </div>
   );
 }
 
-// ============================================================
-// FIELD COMPONENT
-// ============================================================
+// ==========================
+// AUTH MODAL
+// ==========================
+function AuthModal({ close }: any) {
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+  const [error, setError] = useState("");
 
-function Field({ label, name, inputs, setInputs }: any) {
+  async function loginGoogle() {
+    await supabase.auth.signInWithOAuth({ provider: "google" });
+  }
+  async function loginMicrosoft() {
+    await supabase.auth.signInWithOAuth({ provider: "azure" });
+  }
+  async function loginEmail() {
+    const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
+    if (error) setError(error.message);
+  }
+
   return (
-    <div className="mt-4">
-      <label className="text-sm text-slate-300">{label}</label>
-      <input
-        className="w-full bg-cloudi-card/60 rounded-xl p-3 border border-slate-800 mt-1"
-        type="number"
-        value={inputs[name]}
-        onChange={(e) => setInputs({ ...inputs, [name]: e.target.value })}
-      />
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[9999] p-4">
+      <div className="bg-cloudi-card p-8 rounded-3xl border border-slate-800 w-full max-w-md relative">
+        <button className="absolute right-4 top-4 text-slate-400" onClick={close}>✕</button>
+        <h2 className="text-2xl font-bold text-center mb-6">Sign In</h2>
+
+        <button className="btn-secondary w-full flex items-center justify-center gap-3 mb-3"
+          onClick={loginGoogle}>
+          <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5" />
+          Continue with Google
+        </button>
+
+        <button className="btn-secondary w-full flex items-center justify-center gap-3 mb-6"
+          onClick={loginMicrosoft}>
+          <img src="https://www.svgrepo.com/show/475665/microsoft.svg" className="w-5 h-5" />
+          Continue with Microsoft
+        </button>
+
+        <div className="text-center text-slate-400 text-sm mb-4">or sign in with email</div>
+
+        <input className="w-full p-3 rounded-xl bg-cloudi-card/60 border border-slate-800 mb-3"
+          placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input className="w-full p-3 rounded-xl bg-cloudi-card/60 border border-slate-800 mb-3"
+          placeholder="Password" type="password" value={pass} onChange={(e) => setPass(e.target.value)} />
+
+        {error && <p className="text-red-400 text-sm mb-3">{error}</p>}
+
+        <button className="btn-primary w-full" onClick={loginEmail}>Sign In</button>
+      </div>
     </div>
   );
 }
 
-// ============================================================
-// OUTCOME BOX
-// ============================================================
-
-function Outcome({ label, value, color }: any) {
+// ==========================
+// PRICING SECTION
+// ==========================
+function PricingSection() {
   return (
-    <div className="bg-cloudi-card/60 rounded-xl p-4 border border-slate-800">
-      <p className={`font-medium ${color}`}>{label}</p>
-      <p className="text-2xl font-bold mt-1">${value.toLocaleString()}</p>
-    </div>
-  );
-}
-
-// ============================================================
-// PRICING SECTION (UNCHANGED – YOUR ORIGINAL DESIGN)
-// ============================================================
-
-function Pricing() {
-  return (
-    <section className="section mt-28 text-center">
-      <h2 className="text-5xl font-bold">Choose Your Plan</h2>
+    <section className="section mt-24 text-center">
+      <h2 className="text-4xl font-bold">Choose Your Plan</h2>
       <p className="text-slate-400 mt-3">Start free. Upgrade anytime.</p>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mt-14">
-        <PriceCard
-          name="Free"
-          price="0"
-          features={["2 simulations / month", "Basic reports", "Email support"]}
-          cta="Start Free"
-        />
-
-        <PriceCard
-          name="Starter"
-          price="19.99"
-          features={["10 simulations / month", "Summary reports", "Basic templates", "Email support"]}
-          cta="Start Simulating"
-        />
-
-        <PriceCard
-          name="Pro"
-          price="49.99"
-          highlight
-          features={[
-            "25 simulations / month",
-            "Scenario history",
-            "Interactive forecasting",
-            "Priority support",
-          ]}
-          cta="Upgrade to Pro"
-        />
-
-        <PriceCard
-          name="Enterprise"
-          price="99.99"
-          features={[
-            "Unlimited simulations",
-            "Team access",
-            "Custom templates",
-            "API access",
-            "Dedicated support",
-          ]}
-          cta="Talk to Sales"
-        />
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mt-12">
+        {[
+          { name: "Free", price: "0", features: ["2 simulations/month", "Basic reports", "Email support"], cta: "Start Free" },
+          { name: "Starter", price: "19.99", features: ["10 simulations/month", "Summary reports", "Basic templates", "Email support"], cta: "Start Starter" },
+          { name: "Pro", price: "49.99", features: ["25 simulations/month", "Dashboard", "History", "Advanced templates", "Priority support"], highlight: true, cta: "Upgrade to Pro" },
+          { name: "Enterprise", price: "99.99", features: ["Unlimited simulations", "Team access", "Advanced analytics", "API access"], cta: "Talk to Sales" }
+        ].map((p, i) => (
+          <div key={i} className={`rounded-3xl p-8 border shadow-xl ${p.highlight ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white border-transparent" : "bg-cloudi-card border-slate-800"}`}>
+            <h3 className="text-2xl font-bold">{p.name}</h3>
+            <p className="text-4xl font-extrabold mt-3">${p.price}<span className="text-lg opacity-70">/mo</span></p>
+            <ul className="mt-4 space-y-2 text-left text-sm">
+              {p.features.map((f, idx) => <li key={idx} className="flex gap-2"><span>✔️</span>{f}</li>)}
+            </ul>
+            <button className={`btn-primary w-full mt-6 ${p.highlight ? "" : ""}`}>{p.cta}</button>
+          </div>
+        ))}
       </div>
     </section>
   );
 }
 
-function PriceCard({ name, price, features, cta, highlight }: any) {
-  return (
-    <div
-      className={`rounded-3xl p-8 border border-slate-800 shadow-xl shadow-black/40 ${
-        highlight ? "bg-gradient-to-b from-blue-500 to-purple-500 text-white" : "bg-cloudi-card"
-      }`}
-    >
-      <h3 className="text-2xl font-bold">{name}</h3>
-
-      <p className="text-4xl font-extrabold mt-4">
-        ${price}
-        <span className="text-lg opacity-70 ml-1">/mo</span>
-      </p>
-
-      <ul className="mt-6 space-y-2 text-left text-sm">
-        {features.map((f: string, i: number) => (
-          <li key={i} className="flex gap-2">
-            <span>✔️</span> {f}
-          </li>
-        ))}
-      </ul>
-
-      <button className="btn-primary w-full mt-8">{cta}</button>
-    </div>
-  );
-}
-
-// ============================================================
+// ==========================
 // FAQ SECTION
-// ============================================================
-
-function FAQ() {
-  const items = [
-    {
-      q: "What is CloudiCore?",
-      a: "CloudiCore is an AI-powered business decision simulator that helps founders test pricing, hiring, and growth strategies before spending money.",
-    },
-    {
-      q: "How accurate are the simulations?",
-      a: "CloudiCore uses real-world business patterns, financial models, and industry dynamics to generate realistic projections.",
-    },
-    {
-      q: "Is the free plan really free?",
-      a: "Yes — no credit card required. You get 2 simulations each month with basic insights.",
-    },
-    {
-      q: "Can I export results?",
-      a: "Yes! CloudiCore lets you export your full simulation report as a downloadable PDF.",
-    },
-    {
-      q: "Who is CloudiCore for?",
-      a: "Founders, managers, product teams, agencies, and anyone who makes budget or strategy decisions.",
-    },
-    {
-      q: "Do I need technical skills?",
-      a: "Not at all. CloudiCore is built for non-technical users — clean UI, simple inputs, powerful insights.",
-    },
-    {
-      q: "Is my data secure?",
-      a: "Yes — all data is encrypted, and we use Supabase authentication with industry-standard security.",
-    },
-    {
-      q: "Can I upgrade or cancel anytime?",
-      a: "Absolutely. Upgrade when you need more simulations or downgrade without penalties.",
-    },
+// ==========================
+function FAQSection() {
+  const faqs = [
+    { q: "How accurate are the simulations?", a: "CloudiCore uses directional financial logic to estimate outcomes. It is not exact forecasting but helps you understand risk, break-even, and expected impact." },
+    { q: "Do simulations work for all business types?", a: "Yes — SaaS, e-commerce, agencies, local businesses, marketplaces, and more." },
+    { q: "Can I export the results?", a: "Yes — export any simulation as PDF, perfect for investors or internal strategy meetings." },
+    { q: "Do I need a credit card for the trial?", a: "No — the 7-day trial is completely free." },
+    { q: "Is my data private?", a: "Yes. All data is secure and tied to your Supabase-authenticated account." },
+    { q: "Can I upgrade later?", a: "You can upgrade to Starter, Pro, or Enterprise anytime." },
+    { q: "Do you offer team access?", a: "Yes — Enterprise includes multi-user teams and collaboration." }
   ];
 
   return (
-    <section className="section mt-32">
-      <h2 className="text-4xl font-bold text-center">Frequently Asked Questions</h2>
+    <section className="section mt-24">
+      <h2 className="text-3xl font-bold text-center mb-10">Frequently Asked Questions</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
-        {items.map((f, i) => (
-          <details
-            key={i}
-            className="bg-cloudi-card p-5 rounded-xl border border-slate-800 cursor-pointer"
-          >
-            <summary className="text-lg font-semibold cursor-pointer">{f.q}</summary>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {faqs.map((f, i) => (
+          <details key={i} className="bg-cloudi-card/60 p-4 rounded-xl border border-slate-800">
+            <summary className="cursor-pointer font-semibold">{f.q}</summary>
             <p className="text-slate-300 mt-2">{f.a}</p>
           </details>
         ))}
       </div>
     </section>
-  );
-}
-
-// ============================================================
-// LOGIN / SIGNUP MODAL
-// ============================================================
-
-// ======================================================
-// AUTH MODAL — FINAL WORKING VERSION
-// ======================================================
-function Auth({ close }: any) {
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
-
-  return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-[9999] p-4">
-
-      <div className="bg-cloudi-card rounded-2xl border border-slate-800 p-8 w-full max-w-md shadow-xl">
-
-        {/* CLOSE BUTTON */}
-        <button
-          onClick={close}
-          className="absolute top-4 right-4 text-slate-400 hover:text-white"
-        >
-          ✕
-        </button>
-
-        {/* TITLE */}
-        <h2 className="text-3xl font-bold text-center mb-6">
-          Sign in to CloudiCore
-        </h2>
-
-        {/* GOOGLE */}
-        <button className="btn-secondary w-full flex items-center justify-center gap-3 mb-3">
-          <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5" />
-          Sign in with Google
-        </button>
-
-        {/* MICROSOFT */}
-        <button className="btn-secondary w-full flex items-center justify-center gap-3 mb-6">
-          <img src="https://www.svgrepo.com/show/475665/microsoft.svg" className="w-5 h-5" />
-          Sign in with Microsoft
-        </button>
-
-        {/* DIVIDER */}
-        <div className="text-center text-slate-400 text-sm my-4">or continue with email</div>
-
-        {/* EMAIL */}
-        <input
-          className="w-full bg-cloudi-card/60 rounded-xl p-3 border border-slate-800 mb-3"
-          placeholder="Work email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        {/* PASSWORD */}
-        <input
-          className="w-full bg-cloudi-card/60 rounded-xl p-3 border border-slate-800 mb-6"
-          type="password"
-          placeholder="Password"
-          value={pass}
-          onChange={(e) => setPass(e.target.value)}
-        />
-
-        {/* CTA */}
-        <button className="btn-primary w-full">
-          Continue →
-        </button>
-      </div>
-    </div>
   );
 }
