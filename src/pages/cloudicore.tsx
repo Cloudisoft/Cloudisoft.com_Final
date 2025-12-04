@@ -525,23 +525,47 @@ function FAQ() {
 // LOGIN / SIGNUP MODAL
 // ============================================================
 
+// ======================================================
+// AUTH MODAL — FINAL WORKING VERSION
+// ======================================================
 function Auth({ close }: any) {
   const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="card max-w-md w-full p-8 relative">
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-[9999] p-4">
 
+      <div className="bg-cloudi-card rounded-2xl border border-slate-800 p-8 w-full max-w-md shadow-xl">
+
+        {/* CLOSE BUTTON */}
         <button
           onClick={close}
-          className="absolute top-4 right-4 text-slate-400 hover:text-white text-xl"
+          className="absolute top-4 right-4 text-slate-400 hover:text-white"
         >
           ✕
         </button>
 
-        <h2 className="text-2xl font-bold mb-6 text-center">Create your CloudiCore account</h2>
+        {/* TITLE */}
+        <h2 className="text-3xl font-bold text-center mb-6">
+          Sign in to CloudiCore
+        </h2>
 
-        {/* Email */}
+        {/* GOOGLE */}
+        <button className="btn-secondary w-full flex items-center justify-center gap-3 mb-3">
+          <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5" />
+          Sign in with Google
+        </button>
+
+        {/* MICROSOFT */}
+        <button className="btn-secondary w-full flex items-center justify-center gap-3 mb-6">
+          <img src="https://www.svgrepo.com/show/475665/microsoft.svg" className="w-5 h-5" />
+          Sign in with Microsoft
+        </button>
+
+        {/* DIVIDER */}
+        <div className="text-center text-slate-400 text-sm my-4">or continue with email</div>
+
+        {/* EMAIL */}
         <input
           className="w-full bg-cloudi-card/60 rounded-xl p-3 border border-slate-800 mb-3"
           placeholder="Work email"
@@ -549,34 +573,20 @@ function Auth({ close }: any) {
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <button className="btn-primary w-full mb-4">Continue</button>
+        {/* PASSWORD */}
+        <input
+          className="w-full bg-cloudi-card/60 rounded-xl p-3 border border-slate-800 mb-6"
+          type="password"
+          placeholder="Password"
+          value={pass}
+          onChange={(e) => setPass(e.target.value)}
+        />
 
-        {/* Divider */}
-        <div className="flex items-center my-4">
-          <div className="flex-1 h-px bg-slate-700"></div>
-          <span className="px-3 text-slate-400 text-sm">or</span>
-          <div className="flex-1 h-px bg-slate-700"></div>
-        </div>
-
-        {/* Google */}
-        <button className="btn-secondary w-full mb-3 flex items-center justify-center gap-2">
-          <img
-            src="https://www.svgrepo.com/show/475656/google-color.svg"
-            className="w-5 h-5"
-          />
-          Sign in with Google
-        </button>
-
-        {/* Microsoft */}
-        <button className="btn-secondary w-full flex items-center justify-center gap-2">
-          <img
-            src="https://www.svgrepo.com/show/303157/microsoft.svg"
-            className="w-5 h-5"
-          />
-          Sign in with Microsoft
+        {/* CTA */}
+        <button className="btn-primary w-full">
+          Continue →
         </button>
       </div>
     </div>
   );
 }
-
