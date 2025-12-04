@@ -80,46 +80,85 @@ export default function CloudiCore() {
   // AI ASSIST (Client-Side OpenAI call)
   // ============================================================
 
-  async function runAIAssist() {
-    setAiLoading(true);
+  // ============================================================
+// AI ASSIST v2 — OFFLINE, NO OPENAI
+// ============================================================
 
-    try {
-      const key = import.meta.env.VITE_OPENAI_API_KEY;
-      if (!key) {
-        alert("Missing VITE_OPENAI_API_KEY in Render!");
-        setAiLoading(false);
-        return;
-      }
+function runAIAssist() {
+  setAiLoading(true);
 
-      const res = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${key}`,
-        },
-        body: JSON.stringify({
-          model: "gpt-4o-mini",
-          messages: [
-            {
-              role: "system",
-              content:
-                "You are CloudiCore AI Assist. Generate a concise, actionable business decision scenario.",
-            },
-            { role: "user", content: "Generate a clear what-if business decision scenario." },
-          ],
-        }),
-      });
+  setTimeout(() => {
+    const { businessType, revenue, cost, goal } = inputs;
 
-      const data = await res.json();
-      const text = data.choices?.[0]?.message?.content || "";
+    const templates: any = {
+      SaaS: [
+        `Increase subscription pricing by 8–12% to improve margins while offering new feature bundles.`,
+        `Launch a limited-time annual billing discount to improve cash flow and reduce churn.`,
+        `Introduce a usage-based add-on to increase expansion revenue from power users.`,
+      ],
+      "E-commerce": [
+        `Increase ad spend by 20% during peak traffic weeks to boost conversion and AOV.`,
+        `Introduce a free-shipping threshold to lift average order value.`,
+        `Launch bundle promotions to increase cart size and reduce shipping cost per unit.`,
+      ],
+      Agency: [
+        `Raise retainers by 15% for legacy clients while offering premium service tiers.`,
+        `Hire one senior strategist to increase capacity for higher-ticket projects.`,
+        `Reduce low-margin service offerings to improve profitability.`,
+      ],
+      Startup: [
+        `Expand GTM into one adjacent niche market to accelerate early revenue.`,
+        `Cut burn by reducing non-essential SaaS expenses by ~15%.`,
+        `Launch early-adopter pricing for first 50 customers.`,
+      ],
+      Marketplace: [
+        `Lower transaction fees temporarily to increase seller acquisition.`,
+        `Introduce premium listings for power sellers to increase revenue.`,
+        `Expand supply categories to increase marketplace liquidity.`,
+      ],
+      "Local Business": [
+        `Increase service pricing by 10% and introduce membership packages.`,
+        `Run targeted local ads to increase walk-in conversions.`,
+        `Add complementary services to increase per-customer revenue.`,
+      ],
+    };
 
-      setInputs({ ...inputs, scenario: text });
-    } catch (err) {
-      alert("AI Assist failed. Check API key.");
-    }
+    const goals: any = {
+      growth: [
+        "Capture new customers aggressively over the next 30–60 days.",
+        "Increase revenue velocity while maintaining stable CAC.",
+        "Accelerate top-line growth via targeted demand generation.",
+      ],
+      profit: [
+        "Improve net margins through operational efficiency.",
+        "Reduce low-ROI costs without hurting revenue capacity.",
+        "Focus on sustainable profitability over expansion.",
+      ],
+      stability: [
+        "Maintain predictable cash flow and reduce operational risk.",
+        "Strengthen financial stability through cost rebalancing.",
+        "Focus on dependable recurring revenue streams.",
+      ],
+    };
 
+    const tBusiness = templates[businessType] || [];
+    const tGoal = goals[goal] || [];
+
+    const generated = `
+${tBusiness[Math.floor(Math.random() * tBusiness.length)]}
+
+Goal: ${tGoal[Math.floor(Math.random() * tGoal.length)]}
+
+Context:
+• Current revenue: $${revenue || "—"}
+• Monthly cost: $${cost || "—"}
+• Business type: ${businessType}
+`;
+
+    setInputs({ ...inputs, scenario: generated.trim() });
     setAiLoading(false);
-  }
+  }, 700);
+}
 
   // ============================================================
   // SIMULATION ENGINE
@@ -540,3 +579,4 @@ function Auth({ close }: any) {
     </div>
   );
 }
+
