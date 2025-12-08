@@ -7,10 +7,9 @@ import CloudiCoreSection from "./components/CloudiCoreSection";
 import Pricing from "./components/Pricing";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
-import CloudiCore from "./pages/cloudicore";
 
-// Google OAuth Pages
-import Login from "./pages/Login";
+// Pages
+import CloudiCore from "./pages/cloudicore";
 import AuthCallback from "./pages/AuthCallback";
 
 function Home() {
@@ -36,13 +35,10 @@ function App() {
         {/* Landing Page */}
         <Route path="/" element={<Home />} />
 
-        {/* CloudiCore Page */}
+        {/* CloudiCore Simulator Page */}
         <Route path="/cloudicore" element={<CloudiCore />} />
 
-        {/* Google Login Page */}
-        <Route path="/login" element={<Login />} />
-
-        {/* Google OAuth Redirect */}
+        {/* Google OAuth Redirect Page */}
         <Route path="/auth/callback" element={<AuthCallback />} />
       </Routes>
     </Router>
