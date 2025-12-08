@@ -1,5 +1,5 @@
 // =====================================================
-// CloudiCore.tsx  (Complete + Google/Microsoft + Email Auth + Save Simulation)
+// CloudiCore.tsx — COMPLETE FINAL VERSION
 // =====================================================
 
 import { useState, useEffect } from "react";
@@ -8,14 +8,6 @@ import Footer from "../components/Footer";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { supabase } from "../supabaseClient";
-
-// ==========================
-// GOOGLE AUTH REDIRECT
-// ==========================
-const CLIENT_ID =
-  "757924400568-0at91ohkm7hau66gm2od6lta14kc27tu.apps.googleusercontent.com";
-
-const redirectURI = "https://cloudisoft.com/auth/callback";
 
 // ==========================
 // MAIN PAGE
@@ -52,19 +44,19 @@ export default function CloudiCore() {
     setTimeout(() => {
       const templates: any = {
         SaaS: [
-          "Increase subscription revenue with bundled premium features.",
-          "Launch annual discounted plan.",
-          "Introduce AI-powered upgrades."
+          "Increase subscription revenue by bundling premium features.",
+          "Launch annual plan for higher cashflow.",
+          "Offer AI add-ons to boost ARPU."
         ],
         "E-commerce": [
-          "Increase conversion with discounted shipping.",
-          "Upsell high-margin bundles.",
-          "Increase AOV through cart customization."
+          "Increase conversions with discounted shipping.",
+          "Upsell bundled product packs.",
+          "Introduce loyalty points rewards."
         ],
         Agency: [
-          "Switch to retainer model.",
-          "Increase consultation rates.",
-          "Target high-ticket clientele."
+          "Raise retainers by 15%.",
+          "Package premium consulting tiers.",
+          "Productize recurring services."
         ]
       };
 
@@ -94,14 +86,14 @@ export default function CloudiCore() {
     setError("");
 
     const optimistic = rev * 1.22 * t - cst * 1.12 * t;
-    const expected = rev * 1.10 * t - cst * 1.05 * t;
-    const cautious = rev * 0.92 * t - cst * t;
-    const breakEven = expected > 0 ? Math.round(t / 1.5) : null;
-    const risk = Math.floor(Math.random() * 30) + 35;
+    const expected   = rev * 1.10 * t - cst * 1.05 * t;
+    const cautious   = rev * 0.92  * t - cst * t;
+    const breakEven  = expected > 0 ? Math.round(t / 1.5) : null;
+    const risk       = Math.floor(Math.random() * 30) + 35;
 
     setResult({ optimistic, expected, cautious, breakEven, risk });
 
-    // SAVE TO SUPABASE (Safe — no await)
+    // SAVE TO SUPABASE
     supabase
       .from("simulations")
       .insert({
@@ -136,8 +128,10 @@ export default function CloudiCore() {
   return (
     <div className="bg-cloudi-bg min-h-screen text-white pb-32">
 
+      {/* HEADER */}
       <section className="section text-center pt-24 pb-10">
-        <h1 className="text-5xl font-extrabold">CloudiCore<br/>
+        <h1 className="text-5xl font-extrabold">
+          CloudiCore<br/>
           <span className="gradient-text">Decision Simulator</span>
         </h1>
 
@@ -146,6 +140,8 @@ export default function CloudiCore() {
         )}
       </section>
 
+
+      {/* SIMULATOR */}
       <section className="section grid grid-cols-1 lg:grid-cols-2 gap-10">
 
         {/* LEFT */}
@@ -180,7 +176,11 @@ export default function CloudiCore() {
             <input
               key={f}
               className="w-full bg-cloudi-card/60 rounded-xl p-3 border border-slate-800 mb-3"
-              placeholder={f === "revenue" ? "Monthly revenue" : f === "cost" ? "Monthly cost" : "Timeframe (months)"}
+              placeholder={f === "revenue"
+                ? "Monthly revenue"
+                : f === "cost"
+                ? "Monthly cost"
+                : "Timeframe (months)"}
               value={(inputs as any)[f]}
               onChange={(e) => setInputs({ ...inputs, [f]: e.target.value })}
             />
@@ -193,6 +193,7 @@ export default function CloudiCore() {
           </button>
         </div>
 
+
         {/* RESULTS */}
         <div className="card min-h-[300px]" id="sim-results">
           {!result ? (
@@ -200,9 +201,9 @@ export default function CloudiCore() {
           ) : (
             <>
               <h2 className="text-2xl font-semibold mb-2">Results</h2>
-              <div className="text-xl">Optimistic: {result.optimistic}</div>
-              <div className="text-xl">Expected: {result.expected}</div>
-              <div className="text-xl">Cautious: {result.cautious}</div>
+              <div className="text-xl">Optimistic: ₹{result.optimistic}</div>
+              <div className="text-xl">Expected: ₹{result.expected}</div>
+              <div className="text-xl">Cautious: ₹{result.cautious}</div>
               <div className="mt-2 text-lg">
                 Break-even: {result.breakEven ? `${result.breakEven} months` : "No recovery"}
               </div>
@@ -217,8 +218,14 @@ export default function CloudiCore() {
 
       </section>
 
+
+      {/* FULL PRICING SECTION */}
       <PricingSection />
+
+      {/* FULL FAQ SECTION */}
       <FAQSection />
+
+      {/* FOOTER */}
       <Footer />
 
       {authOpen && <AuthModal close={() => setAuthOpen(false)} />}
@@ -227,9 +234,10 @@ export default function CloudiCore() {
 }
 
 
-// ==========================
+
+// =====================================================
 // AUTH MODAL
-// ==========================
+// =====================================================
 function AuthModal({ close }: any) {
 
   const [email, setEmail] = useState("");
@@ -253,11 +261,13 @@ function AuthModal({ close }: any) {
     const { error } = await supabase.auth.signUp({
       email,
       password: pass,
-      options: { emailRedirectTo: "https://cloudisoft.com/verified" }
+      options: {
+        emailRedirectTo: "https://cloudisoft.com/verified"
+      }
     });
     setLoading(false);
     if (error) setError(error.message);
-    else setError("Verification link sent! Check email.");
+    else setError("Verification link sent!");
   }
 
   async function loginGoogle() {
@@ -320,28 +330,133 @@ function AuthModal({ close }: any) {
 }
 
 
-// ==========================
-// PRICING SECTION
-// ==========================
+
+// =====================================================
+// FULL PRICING SECTION
+// =====================================================
 function PricingSection() {
   return (
     <section className="section mt-24 text-center">
       <h2 className="text-4xl font-bold">Choose Your Plan</h2>
       <p className="text-slate-400 mt-3">Start free. Upgrade anytime.</p>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mt-12">
+
+        {[
+          {
+            name: "Free",
+            price: "0",
+            features: ["2 simulations/month", "Basic reports", "Email support"],
+            cta: "Start Free"
+          },
+          {
+            name: "Starter",
+            price: "19.99",
+            features: [
+              "10 simulations/month",
+              "Summary reports",
+              "Basic templates",
+              "Email support"
+            ],
+            cta: "Start Starter"
+          },
+          {
+            name: "Pro",
+            price: "49.99",
+            highlight: true,
+            features: [
+              "25 simulations/month",
+              "Dashboard",
+              "History",
+              "Advanced templates",
+              "Priority support"
+            ],
+            cta: "Upgrade to Pro"
+          },
+          {
+            name: "Enterprise",
+            price: "99.99",
+            features: [
+              "Unlimited simulations",
+              "Team access",
+              "Advanced analytics",
+              "API access"
+            ],
+            cta: "Contact Sales"
+          }
+        ].map((p, i) => (
+          <div
+            key={i}
+            className={`rounded-3xl p-8 border shadow-xl ${
+              p.highlight
+                ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white border-transparent"
+                : "bg-cloudi-card border-slate-800"
+            }`}
+          >
+            <h3 className="text-2xl font-bold">{p.name}</h3>
+            <p className="text-4xl font-extrabold mt-3">
+              ${p.price}
+              <span className="text-lg opacity-70">/mo</span>
+            </p>
+            <ul className="mt-4 space-y-2 text-left text-sm">
+              {p.features.map((f, idx) => (
+                <li key={idx} className="flex gap-2">
+                  <span>✔️</span>
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <button className="btn-primary w-full mt-6">{p.cta}</button>
+          </div>
+        ))}
+
+      </div>
     </section>
   );
 }
 
 
-// ==========================
-// FAQ SECTION
-// ==========================
+
+// =====================================================
+// FULL FAQ SECTION
+// =====================================================
 function FAQSection() {
+  const faqs = [
+    {
+      q: "How accurate are the simulations?",
+      a: "It gives directional forecasts, helping you understand financial impact and risks."
+    },
+    {
+      q: "Can I export results?",
+      a: "Yes — simulations can be exported as PDF to share with your team."
+    },
+    {
+      q: "Do you store my data?",
+      a: "Yes — securely stored and tied to your authenticated Supabase account."
+    },
+    {
+      q: "Can I upgrade later?",
+      a: "You can upgrade to Pro or Enterprise anytime."
+    }
+  ];
+
   return (
     <section className="section mt-24">
       <h2 className="text-3xl font-bold text-center mb-10">
         Frequently Asked Questions
       </h2>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {faqs.map((f, i) => (
+          <details
+            key={i}
+            className="bg-cloudi-card/60 p-4 rounded-xl border border-slate-800"
+          >
+            <summary className="cursor-pointer font-semibold">{f.q}</summary>
+            <p className="text-slate-300 mt-2">{f.a}</p>
+          </details>
+        ))}
+      </div>
     </section>
   );
 }
