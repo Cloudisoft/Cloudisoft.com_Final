@@ -6,15 +6,14 @@ const AuthCallback: React.FC = () => {
     const code = params.get("code");
 
     console.log("Google OAuth Code:", code);
-
-    // Later: Exchange this `code` for Google tokens
-    // For now: Just store code OR show success UI
+    
+    // Next Step: Exchange "code" with Google for token
+    // (We can build this next if you want)
   }, []);
 
   return (
-    <div style={{ padding: "30px" }}>
-      <h2>Redirecting...</h2>
-      <p>Please wait while we complete authentication.</p>
+    <div className="min-h-screen flex justify-center items-center bg-black text-white">
+      <h2>Authenticating...</h2>
     </div>
   );
 };
