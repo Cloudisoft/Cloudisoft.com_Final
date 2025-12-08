@@ -12,6 +12,7 @@ import Footer from "./components/Footer";
 import CloudiCore from "./pages/cloudicore";
 import AuthCallback from "./pages/AuthCallback";
 import Dashboard from "./pages/Dashboard";
+import Verified from "./pages/Verified";
 
 function Home() {
   return (
@@ -42,8 +43,8 @@ function App() {
         {/* OAuth Redirect Page (Google + Microsoft + Email verification) */}
         <Route path="/auth/callback" element={<AuthCallback />} />
 
-        {/* After Email Verify → Redirect to Dashboard */}
-        <Route path="/verified" element={<Dashboard />} />
+        {/* After Email Verification Redirect */}
+        <Route path="/verified" element={<Verified />} />
 
         {/* Dashboard Page */}
         <Route path="/dashboard" element={<Dashboard />} />
