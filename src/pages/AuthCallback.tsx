@@ -1,21 +1,37 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
+import { supabase } from "../supabaseClient";
 
-const AuthCallback: React.FC = () => {
+export default function AuthCallback() {
+
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get("code");
-
-    console.log("Google OAuth Code:", code);
-    
-    // Next Step: Exchange "code" with Google for token
-    // (We can build this next if you want)
+    handleAuth();
   }, []);
 
+  async function handleAuth() {
+    const { data, error } = await supabase.auth.getSession();
+    
+    if (error) {
+      console.error("AUTH CALLBACK ERROR:", error);
+      window.location.href = "/";
+      return;
+    }
+
+    if (data.session?.user) {
+      // Save user to localStorage
+      localStorage.setItem("cloudicore_user", JSON.stringify(data.session.user));
+
+      // Redirect to Dashboard
+      window.location.href = "/dashboard";
+      return;
+    }
+
+    // If no session, redirect to homepage
+    window.location.href = "/";
+  }
+
   return (
-    <div className="min-h-screen flex justify-center items-center bg-black text-white">
+    <div className="text-white text-center p-10">
       <h2>Authenticating...</h2>
     </div>
   );
-};
-
-export default AuthCallback;
+}
