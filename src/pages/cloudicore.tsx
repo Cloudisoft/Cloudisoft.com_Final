@@ -262,6 +262,26 @@ Context:
     </div>
   );
 }
+// SAVE TO DATABASE
+const { error } = await supabase
+  .from("simulations")
+  .insert({
+    user_id: user.id,
+    scenario: inputs.scenario,
+    revenue: rev,
+    cost: cst,
+    months: t,
+    results: {
+      optimistic,
+      expected,
+      cautious,
+      breakEven,
+      risk
+    }
+  });
+
+if (error) console.log("SAVE ERROR:", error);
+
 
 // ==========================
 // AUTH MODAL (FINAL VERSION)
@@ -545,4 +565,5 @@ function FAQSection() {
     </section>
   );
 }
+
 
