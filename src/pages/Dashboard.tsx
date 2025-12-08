@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 
 export default function Dashboard() {
   const [user, setUser] = useState<any>(null);
+  const [history, setHistory] = useState<any[]>([]);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -11,8 +12,24 @@ export default function Dashboard() {
     });
   }, []);
 
+  // LOAD SIMULATION HISTORY
+  useEffect(() => {
+    async function loadHistory() {
+      if (!user) return;
+      const { data, error } = await supabase
+        .from("simulations")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+
+      if (!error) setHistory(data);
+    }
+    loadHistory();
+  }, [user]);
+
   async function logout() {
     await supabase.auth.signOut();
+    localStorage.removeItem("cloudicore_user");
     window.location.href = "/";
   }
 
@@ -67,8 +84,39 @@ export default function Dashboard() {
         </button>
       </section>
 
+      {/* ================== SIMULATION HISTORY ================== */}
+      <section className="section mt-24">
+        <h2 className="text-3xl font-bold text-center mb-10">Simulation History</h2>
+
+        {history.length === 0 ? (
+          <p className="text-slate-400 text-center">No history yet. Run your first simulation.</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {history.map((h: any) => (
+              <div
+                key={h.id}
+                className="bg-cloudi-card/60 p-6 rounded-xl border border-slate-800 shadow-xl"
+              >
+                <p className="text-slate-500 text-sm">
+                  {new Date(h.created_at).toLocaleString()}
+                </p>
+                <p className="font-semibold text-lg mt-2">
+                  {h.scenario.slice(0, 60)}...
+                </p>
+                <div className="text-slate-300 text-sm mt-2 space-y-1">
+                  <p><b>Revenue:</b> ₹{h.revenue}</p>
+                  <p><b>Cost:</b> ₹{h.cost}</p>
+                  <p><b>Months:</b> {h.months}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
       {/* FOOTER */}
       <Footer />
     </div>
   );
 }
+
