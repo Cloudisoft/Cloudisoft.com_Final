@@ -127,31 +127,52 @@ Context:
   // SIMULATION ENGINE
   // ==========================
   function runSimulation() {
-    if (!user) {
-      setAuthOpen(true);
-      setShouldRunAfterAuth(true);
-      return;
-    }
+  const rev = Number(inputs.revenue);
+  const cst = Number(inputs.cost);
+  const t = Number(inputs.months);
 
-    const rev = Number(inputs.revenue);
-    const cst = Number(inputs.cost);
-    const t = Number(inputs.months);
-
-    if (!inputs.scenario) return setError("Describe your decision.");
-    if (!rev) return setError("Enter revenue.");
-    if (!cst) return setError("Enter cost.");
-    if (!t) return setError("Enter months.");
-
-    setError("");
-
-    const optimistic = rev * 1.22 * t - cst * 1.12 * t;
-    const expected = rev * 1.1 * t - cst * 1.05 * t;
-    const cautious = rev * 0.92 * t - cst * t;
-    const breakEven = expected > 0 ? Math.round(t / 1.5) : null;
-    const risk = Math.floor(Math.random() * 30) + 35;
-
-    setResult({ optimistic, expected, cautious, breakEven, risk });
+  if (!user) {
+    setAuthOpen(true);
+    setShouldRunAfterAuth(true);
+    return;
   }
+  if (!inputs.scenario) return setError("Describe your decision.");
+  if (!rev) return setError("Enter revenue.");
+  if (!cst) return setError("Enter cost.");
+  if (!t) return setError("Enter months.");
+
+  setError("");
+
+  const optimistic = rev * 1.22 * t - cst * 1.12 * t;
+  const expected = rev * 1.1 * t - cst * 1.05 * t;
+  const cautious = rev * 0.92 * t - cst * t;
+  const breakEven = expected > 0 ? Math.round(t / 1.5) : null;
+  const risk = Math.floor(Math.random() * 30) + 35;
+
+  setResult({ optimistic, expected, cautious, breakEven, risk });
+
+  // =====================
+  // SAVE TO DATABASE
+  // =====================
+  async function saveSimulation() {
+    const { error } = await supabase
+      .from("simulations")
+      .insert({
+        user_id: user.id,
+        scenario: inputs.scenario,
+        revenue: rev,
+        cost: cst,
+        months: t,
+        results: { optimistic, expected, cautious, breakEven, risk }
+      });
+
+    if (error) {
+      console.log("SAVE ERROR:", error);
+    }
+  }
+
+  saveSimulation();
+}
 
   // ==========================
   // EXPORT PDF
@@ -565,5 +586,6 @@ function FAQSection() {
     </section>
   );
 }
+
 
 
