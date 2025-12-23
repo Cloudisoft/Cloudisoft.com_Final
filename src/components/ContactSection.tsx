@@ -1,59 +1,14 @@
-import { FormEvent, useState } from "react";
-
-// In production, set this via VITE_API_URL in Render.
-// For quick test you can hardcode:
-// const API_URL = "https://your-contact-api.onrender.com";
-const API_URL = import.meta.env.VITE_API_URL || "";
+import { useForm, ValidationError } from "@formspree/react";
 
 export default function ContactSection() {
-  const [status, setStatus] =
-    useState<"idle" | "loading" | "success" | "error">("idle");
-  const [errorMsg, setErrorMsg] = useState("");
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setStatus("loading");
-    setErrorMsg("");
-
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-
-    const payload: Record<string, string> = {};
-    formData.forEach((value, key) => {
-      payload[key] = String(value);
-    });
-
-    try {
-      const res = await fetch(`${API_URL}/api/contact`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await res.json().catch(() => ({}));
-
-      if (res.ok && data.success) {
-        setStatus("success");
-        form.reset();
-      } else {
-        setStatus("error");
-        setErrorMsg(
-          data.message || "Failed to send email. Please try again in a moment."
-        );
-      }
-    } catch (err) {
-      console.error(err);
-      setStatus("error");
-      setErrorMsg("Network error. Please try again.");
-    }
-  };
+  // 🔴 Replace with your real Formspree Form ID
+  const [state, handleSubmit] = useForm("meejvlpq");
 
   return (
     <section id="contact" className="section space-y-8">
       <h2 className="text-4xl font-bold text-center">
-        Let&apos;s Build the <span className="gradient-text">Future Together</span>
+        Let&apos;s Build the{" "}
+        <span className="gradient-text">Future Together</span>
       </h2>
 
       <form
@@ -85,6 +40,12 @@ export default function ContactSection() {
             required
             className="w-full bg-black/30 border border-slate-700 p-3 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
+          <ValidationError
+            prefix="Email"
+            field="email"
+            errors={state.errors}
+            className="text-xs text-red-400 mt-1"
+          />
         </div>
 
         <div>
@@ -103,27 +64,27 @@ export default function ContactSection() {
             rows={5}
             className="w-full bg-black/30 border border-slate-700 p-3 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
+          <ValidationError
+            prefix="Message"
+            field="message"
+            errors={state.errors}
+            className="text-xs text-red-400 mt-1"
+          />
         </div>
 
         <div className="md:col-span-2">
           <button
             type="submit"
+            disabled={state.submitting}
             className="btn-primary w-full disabled:opacity-70"
-            disabled={status === "loading"}
           >
-            {status === "loading" ? "Sending..." : "Submit Inquiry ✈️"}
+            {state.submitting ? "Sending..." : "Submit Inquiry ✈️"}
           </button>
         </div>
 
-        {status === "success" && (
+        {state.succeeded && (
           <p className="md:col-span-2 text-sm text-green-400">
             ✅ Thank you! Your message has been sent.
-          </p>
-        )}
-
-        {status === "error" && (
-          <p className="md:col-span-2 text-sm text-red-400">
-            ⚠ {errorMsg}
           </p>
         )}
       </form>
