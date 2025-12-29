@@ -29,9 +29,9 @@ export default function Hero() {
     Explore AI Agents ✨
   </a>
 
-  <Link className="btn-secondary" to="/cloudicore">
+  <a className="btn-secondary" href="https://cloudicore.cloudisoft.com">
     Start Your Free Trial 🚀
-  </Link>
+  </a>
 </div>
     </section>
   );
