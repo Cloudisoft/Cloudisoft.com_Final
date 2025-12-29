@@ -23,11 +23,13 @@ export default function PricingSection() {
           target="_blank"
           rel="noreferrer"
         > */}
-      <Link className="btn-primary inline-flex items-center gap-2 mt-4 flex flex-col items-center justify-center gap-3 md:flex-row" to="/cloudicore">
-          Start Your Free Trial
-          <span>▶</span>
-        </Link>
-        {/* </a> */}
+      <a
+  href="https://cloudicore.cloudisoft.com?source=cloudisoft&trial=true"
+  className="btn-primary inline-flex items-center justify-center gap-3 mt-4 flex flex-col md:flex-row"
+>
+  Start Your Free Trial
+  <span>▶</span>
+</a>
 
         <p className="text-xs text-slate-500">
           7 days full access · Unlimited simulations · Cancel anytime during trial
