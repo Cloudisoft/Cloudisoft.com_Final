@@ -1,7 +1,7 @@
 const links = [
   { label: "Home", href: "#home" },
   { label: "AI Agents", href: "#agents" },
-  { label: "CloudiCore", href: "#cloudicore" },
+  { label: "CloudiCore", href: "https://cloudicore.cloudisoft.com" },
   { label: "Contact", href: "#contact" }
 ];
 
