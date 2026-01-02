@@ -4,8 +4,8 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import AgentsSection from "./components/AgentsSection";
 import CloudiCoreSection from "./components/CloudiCoreSection";
-import RapidBuildSection from "./components/RapidBuildSection";
 import Pricing from "./components/Pricing";
+import RapidBuildSection from "./components/RapidBuildSection";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 
