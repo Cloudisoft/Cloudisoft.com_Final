@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import AgentsSection from "./components/AgentsSection";
+import RapidBuildSection from "@/components/RapidBuildSection";
 import CloudiCoreSection from "./components/CloudiCoreSection";
 import Pricing from "./components/Pricing";
 import ContactSection from "./components/ContactSection";
@@ -20,7 +21,8 @@ function Home() {
       <Navbar />
       <main className="pt-20 space-y-32 pb-24">
         <Hero />
-        <AgentsSection />
+        <AgentsSection /> 
+        <RapidBuildSection />
         <CloudiCoreSection />
         <Pricing />
         <ContactSection />
