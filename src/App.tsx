@@ -2,9 +2,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
-import RapidBuildSection from "./components/RapidBuildSection";
 import AgentsSection from "./components/AgentsSection";
 import CloudiCoreSection from "./components/CloudiCoreSection";
+import RapidBuildSection from "./components/RapidBuildSection";
 import Pricing from "./components/Pricing";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
@@ -21,9 +21,9 @@ function Home() {
       <Navbar />
       <main className="pt-20 space-y-32 pb-24">
         <Hero />  
-        <RapidBuildSection />
         <AgentsSection />  
         <CloudiCoreSection /> 
+        <RapidBuildSection />
         <Pricing /> 
         <ContactSection />
       </main>
