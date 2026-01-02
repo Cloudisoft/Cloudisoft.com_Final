@@ -23,8 +23,8 @@ function Home() {
         <Hero />  
         <AgentsSection />  
         <CloudiCoreSection /> 
-        <RapidBuildSection />
         <Pricing /> 
+        <RapidBuildSection />
         <ContactSection />
       </main>
       <Footer />
