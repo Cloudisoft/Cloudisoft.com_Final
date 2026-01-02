@@ -21,8 +21,8 @@ function Home() {
       <Navbar />
       <main className="pt-20 space-y-32 pb-24">
         <Hero />  
-        <AgentsSection />  
         <RapidBuildSection />
+        <AgentsSection />  
         <CloudiCoreSection /> 
         <Pricing /> 
         <ContactSection />
