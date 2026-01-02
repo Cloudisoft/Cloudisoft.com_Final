@@ -1,6 +1,6 @@
 export default function RapidBuildSection() {
   return (
-    <section className="relative py-28 px-6 overflow-hidden">
+    <section className="py-16 md:py-20">
       {/* background glow */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#7c7cff10] to-transparent pointer-events-none" />
 
