@@ -13,6 +13,7 @@ export default function Footer() {
           <h4 className="font-semibold mb-1">Contact</h4>
           <p>connect@cloudisoft.com</p>
           <p>+1(973) 841-4949</p>
+          <p>+91 8866819132</p>
         </div>
 
         <div>
