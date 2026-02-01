@@ -12,13 +12,14 @@ export default function Footer() {
         <div>
           <h4 className="font-semibold mb-1">Contact</h4>
           <p>connect@cloudisoft.com</p>
-          <p>+1 205-696-8477</p>
+          <p>+1(973) 841-4949</p>
         </div>
 
         <div>
           <h4 className="font-semibold mb-1">Location</h4>
           <p>473 Mundet Place</p>
           <p>Hillside, NJ 07205</p>
+          <p>C-1224, Siddhivinayak Towers, Makarba, Ahmedabad - 380051</p>
         </div>
       </div>
 
