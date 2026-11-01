@@ -7,6 +7,7 @@ import ReelSection from "../components/ReelSection";
 import Process from "../components/Process";
 import Pricing from "../components/Pricing";
 import FAQ from "../components/FAQ";
+import InsightsSection from "../components/InsightsSection";
 import CtaBand from "../components/CtaBand";
 import ContactSection from "../components/ContactSection";
 
@@ -20,6 +21,7 @@ export default function Home() {
       <Products />
       <Process />
       <Pricing />
+      <InsightsSection />
       <FAQ />
       <CtaBand />
       <ContactSection />

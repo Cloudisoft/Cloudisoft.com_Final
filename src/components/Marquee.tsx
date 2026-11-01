@@ -3,7 +3,7 @@ import { SERVICES, TOOLS, usd } from "../lib/site";
 const SERVICE_ITEMS = SERVICES.map((s) => (s.from ? `${s.name} · from ${usd(s.from)}` : s.name));
 
 export default function Marquee() {
-  const row = (hidden = false, items: string[] = TOOLS, cls = "text-bone/45") => (
+  const row = (hidden = false, items: string[] = TOOLS, cls = "text-bone/70") => (
     <ul className="flex shrink-0 items-center gap-12 pr-12" aria-hidden={hidden || undefined}>
       {items.map((t) => (
         <li key={t} className={`flex items-center gap-12 whitespace-nowrap font-display text-xl sm:text-2xl ${cls}`}>
@@ -28,7 +28,7 @@ export default function Marquee() {
         <div className="marquee-track reverse flex w-max">
           {[0, 1, 2, 3].map((k) => (
             <span key={k} className="contents">
-              {row(k > 0, SERVICE_ITEMS, "text-transparent [-webkit-text-stroke:1px_rgba(255,159,28,0.55)]")}
+              {row(k > 0, SERVICE_ITEMS, "text-transparent [-webkit-text-stroke:1px_rgba(255,170,60,0.95)]")}
             </span>
           ))}
         </div>

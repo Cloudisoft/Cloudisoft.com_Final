@@ -19,6 +19,10 @@ Final pricing depends on scope; Cloudisoft sends a fixed quote before work begin
 - [CloudiVoice](https://cloudivoice.cloudisoft.com/): AI voice agents that answer calls, qualify leads, book appointments, screen candidates and hand off to a human.
 - [ApplyFlux](https://applyflux.cloudisoft.com/): Upload a resume once; ApplyFlux finds matching roles, fills and tracks applications, and pauses whenever a human decision is needed.
 
+## Full content
+
+- [llms-full.txt](https://www.cloudisoft.com/llms-full.txt): every service, price, FAQ and article on one page, in Markdown.
+
 ## Pages
 
 - [Services & pricing](https://www.cloudisoft.com/services)
@@ -27,7 +31,20 @@ Final pricing depends on scope; Cloudisoft sends a fixed quote before work begin
 - [CRM setup & integration](https://www.cloudisoft.com/services/crm-setup)
 - [AI voice agents (from $1,000)](https://www.cloudisoft.com/services/ai-voice-agents)
 - [Cloud, security & SOC 2 readiness (from $1,500)](https://www.cloudisoft.com/services/cloud-security-compliance)
+- [Pricing](https://www.cloudisoft.com/pricing)
+- [Contact](https://www.cloudisoft.com/contact)
 - [About Cloudisoft](https://www.cloudisoft.com/about)
+- [Cloudisoft in Ahmedabad](https://www.cloudisoft.com/locations/ahmedabad)
+- [Cloudisoft in New Jersey](https://www.cloudisoft.com/locations/new-jersey)
+
+## Insights (guides)
+
+- [How much does a business website cost in 2026?](https://www.cloudisoft.com/insights/how-much-does-a-business-website-cost)
+- [What is an AI voice agent and how does it work?](https://www.cloudisoft.com/insights/what-is-an-ai-voice-agent)
+- [AI receptionist vs human receptionist](https://www.cloudisoft.com/insights/ai-receptionist-vs-human-receptionist)
+- [SOC 2 readiness checklist for startups and small businesses](https://www.cloudisoft.com/insights/soc-2-readiness-checklist)
+- [10 business processes to automate first](https://www.cloudisoft.com/insights/business-processes-to-automate-first)
+- [HubSpot vs Zoho CRM vs Salesforce for small business](https://www.cloudisoft.com/insights/hubspot-vs-zoho-vs-salesforce)
 - [Privacy Policy](https://www.cloudisoft.com/privacy)
 - [Terms & Conditions](https://www.cloudisoft.com/terms)
 

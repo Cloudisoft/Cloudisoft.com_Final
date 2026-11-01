@@ -219,6 +219,7 @@ details[open] .faq-icon { transform: rotate(45deg); }
    Motion graphics
 ------------------------------------------------------------------- */
 .gfx-mono { font-family: "Geist Mono", ui-monospace, monospace; }
+.gfx text { font-family: "Geist Mono", ui-monospace, monospace; }
 .gfx * { transform-box: fill-box; }
 
 @keyframes gfx-build {
@@ -317,6 +318,7 @@ details[open] .faq-icon { transform: rotate(45deg); }
 .prose-legal p, .prose-legal li { @apply text-[15.5px] leading-relaxed text-bone/70; }
 .prose-legal p { @apply mt-4; }
 .prose-legal ul { @apply mt-4 list-disc space-y-2 pl-5 marker:text-amber; }
+.prose-legal ol { @apply mt-4 list-decimal space-y-2 pl-5 marker:text-amber marker:font-mono; }
 .prose-legal a { @apply text-bone underline decoration-amber/60 underline-offset-4 hover:decoration-amber; }
 
 /* ------------------------------------------------------------------

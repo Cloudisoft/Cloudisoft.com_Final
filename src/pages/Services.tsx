@@ -15,6 +15,7 @@ export default function Services() {
   return (
     <Layout>
       <PageHero
+        crumbs={[{ name: "Home", to: "/" }, { name: "Services" }]}
         eyebrow="Services"
         title={
           <>

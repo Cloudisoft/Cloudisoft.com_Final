@@ -1,7 +1,18 @@
 import type { ReactNode } from "react";
 import CircuitBg from "./CircuitBg";
+import Breadcrumbs, { type Crumb } from "./Breadcrumbs";
 
-export default function PageHero({ eyebrow, title, children }: { eyebrow: string; title: ReactNode; children?: ReactNode }) {
+export default function PageHero({
+  eyebrow,
+  title,
+  children,
+  crumbs,
+}: {
+  eyebrow: string;
+  title: ReactNode;
+  children?: ReactNode;
+  crumbs?: Crumb[];
+}) {
   return (
     <section className="relative isolate overflow-hidden pb-20 pt-36 sm:pt-44 lg:pb-28">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
@@ -14,6 +25,7 @@ export default function PageHero({ eyebrow, title, children }: { eyebrow: string
         </div>
       </div>
       <div className="section">
+        {crumbs && <Breadcrumbs items={crumbs} />}
         <p className="reveal eyebrow flex items-center gap-3">
           <span className="h-px w-8 bg-amber/70" />
           {eyebrow}
