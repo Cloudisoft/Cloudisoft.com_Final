@@ -190,7 +190,7 @@
   to { transform: translateX(-50%); }
 }
 .marquee-track {
-  animation: marquee 38s linear infinite;
+  animation: marquee 76s linear infinite;
 }
 
 /* Voice demo */
@@ -389,21 +389,16 @@ details[open] .faq-icon { transform: rotate(45deg); }
 .orb { animation: orb-move var(--dur, 22s) ease-in-out infinite; }
 
 /* Reverse marquee */
-.marquee-track.reverse { animation-direction: reverse; animation-duration: 46s; }
-.marquee-wrap:hover .marquee-track { animation-play-state: paused; }
+.marquee-track.reverse { animation-direction: reverse; animation-duration: 92s; }
 
 /* Rotating ring decoration */
 @keyframes spin-slow { to { transform: rotate(360deg); } }
 .spin-slow { animation: spin-slow 40s linear infinite; }
 
+/* Decorative loops (marquee, particles, orbs, floats, circuit pulses, service graphics)
+   always run, as requested by the site owner — even when the OS asks for reduced motion.
+   For those visitors we only drop the movement that's tied to scrolling or the cursor. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  /* keep gentle fades, drop the large movement */
-  .js .reveal, .js .split-line > span, .js .stagger > * { transform: none !important; }
-  .js h2.reveal { filter: none !important; }
-  .marquee-track, .float-y, .float-a, .float-b, .float-c, .particle, .orb, .spin-slow, .circuit-pulse { animation-duration: 0s !important; animation-iteration-count: 1 !important; }
-  .particle { display: none; }
   .tilt, .tilt:hover { transform: none; }
-  .trace-x, .trace-y { transform: none; }
-  .chart-path { stroke-dashoffset: 0; transition: none; }
 }
