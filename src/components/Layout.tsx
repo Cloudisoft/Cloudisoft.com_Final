@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import WhatsAppFloat from "./WhatsAppFloat";
+import Ambient from "./Ambient";
 import useScrollFx from "../hooks/useScrollFx";
 import { PAGES } from "../lib/site";
 
@@ -33,8 +34,9 @@ export default function Layout({ children }: { children: ReactNode }) {
         Skip to content
       </a>
       <div className="scroll-progress" aria-hidden="true" />
+      <Ambient />
       <Navbar />
-      <main id="main">{children}</main>
+      <main id="main" className="relative">{children}</main>
       <Footer />
       <WhatsAppFloat />
     </div>

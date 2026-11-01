@@ -6,7 +6,7 @@ import { ArrowRight, Check } from "./Icons";
 export default function Pricing({ eyebrow = "Pricing" }: { eyebrow?: string }) {
   return (
     <section id="pricing" aria-labelledby="pricing-title" className="relative border-t hairline py-28 lg:py-36">
-      <div aria-hidden="true" className="glow left-1/2 top-24 h-[380px] w-[640px] -translate-x-1/2 bg-ember/10" />
+      <div aria-hidden="true" data-parallax="0.2" className="absolute inset-0"><div className="glow left-1/2 top-24 h-[380px] w-[640px] -translate-x-1/2 bg-ember/10" /></div>
       <div className="section relative">
         <div className="mx-auto max-w-2xl text-center">
           <p className="reveal eyebrow">{eyebrow}</p>

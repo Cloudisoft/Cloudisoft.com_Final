@@ -10,6 +10,14 @@ const line = (words: string, base: number, accent?: boolean) => (
   </span>
 );
 
+const CHIPS = [
+  { t: "Websites", k: "$200+", c: "#ffd93d", m: "18", pos: { left: "8%", top: "-30px" } },
+  { t: "AI voice", k: "24/7", c: "#ff9f1c", m: "-14", pos: { right: "-40px", top: "-26px" } },
+  { t: "Automations", k: "$750+", c: "#ff5a1f", m: "22", pos: { left: "-104px", top: "80%" } },
+  { t: "CRM", k: "", c: "#f4efe6", m: "-20", pos: { right: "-34px", top: "46%" } },
+  { t: "SOC 2 ready", k: "", c: "#ffd93d", m: "16", pos: { right: "12%", bottom: "-22px" } },
+];
+
 export default function Hero() {
   const playDemo = () => {
     document.getElementById("demo")?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -20,9 +28,13 @@ export default function Hero() {
     <section id="home" className="relative isolate overflow-hidden pt-32 sm:pt-36 lg:pt-40">
       {/* atmosphere */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-        <div className="glow left-[-10%] top-[-10%] h-[520px] w-[520px] bg-ember/20" />
-        <div className="glow right-[-8%] top-[20%] h-[460px] w-[460px] bg-amber/10" />
-        <CircuitBg />
+        <div data-parallax="0.25" className="absolute inset-0">
+          <div className="glow left-[-10%] top-[-10%] h-[520px] w-[520px] bg-ember/20" />
+          <div className="glow right-[-8%] top-[20%] h-[460px] w-[460px] bg-amber/10" />
+        </div>
+        <div data-parallax="0.12" className="absolute inset-0">
+          <CircuitBg />
+        </div>
       </div>
 
       <div className="section grid items-center gap-14 pb-20 [&>*]:min-w-0 lg:grid-cols-[1.08fr_1fr] lg:gap-16 lg:pb-28">
@@ -67,8 +79,25 @@ export default function Hero() {
           </dl>
         </div>
 
-        <div id="demo" className="reveal reveal-scale" style={{ ["--d" as any]: "300ms" }}>
-          <VoiceDemo />
+        <div className="relative">
+          {/* floating chips orbiting the demo */}
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 hidden lg:block">
+            {CHIPS.map((c, i) => (
+              <div key={c.t} className="follow chip-in absolute" data-mouse={c.m} style={{ ...c.pos, animationDelay: `${900 + i * 160}ms` }}>
+                <div
+                  className={`${["float-a", "float-b", "float-c"][i % 3]} flex items-center gap-2 whitespace-nowrap rounded-full border border-white/10 bg-ink-800/90 px-3.5 py-2 text-[12.5px] text-bone/90 shadow-[0_12px_30px_-12px_rgba(0,0,0,0.8)] backdrop-blur`}
+                  style={{ ["--fd" as any]: `${i * -1.3}s` }}
+                >
+                  <i className="h-1.5 w-1.5 rounded-full" style={{ background: c.c }} />
+                  {c.t}
+                  {c.k && <span className="font-mono text-[11px] text-amber">{c.k}</span>}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div id="demo" className="reveal reveal-scale" style={{ ["--d" as any]: "300ms" }}>
+            <VoiceDemo />
+          </div>
         </div>
       </div>
     </section>

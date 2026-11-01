@@ -16,7 +16,7 @@ export default function ContactOptions() {
           <a
             href={href}
             {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-            className="spotlight group flex items-center gap-4 rounded-2xl border hairline bg-ink-800/50 p-4 transition hover:-translate-y-0.5 hover:border-amber/40"
+            className="spotlight tilt group flex items-center gap-4 rounded-2xl border hairline bg-ink-800/50 p-4 hover:border-amber/40"
           >
             <span
               className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl transition ${

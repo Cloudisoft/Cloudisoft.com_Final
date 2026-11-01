@@ -6,6 +6,7 @@ import Process from "../components/Process";
 import FAQ from "../components/FAQ";
 import CtaBand from "../components/CtaBand";
 import ContactSection from "../components/ContactSection";
+import ReelSection from "../components/ReelSection";
 import { Check, ArrowRight } from "../components/Icons";
 import { Link } from "react-router-dom";
 import { SERVICES, serviceUrl, usd } from "../lib/site";
@@ -38,7 +39,9 @@ export default function Services() {
           <div className="section grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
             <div className={`reveal reveal-scale ${i % 2 ? "lg:order-2" : ""}`}>
               <div className="spotlight aspect-[16/10] overflow-hidden rounded-[22px] border hairline bg-ink-800/50 bg-[radial-gradient(ellipse_at_center,rgba(255,159,28,0.08),transparent_70%)]">
-                <ServiceGfx id={s.id} />
+                <div className="float-a h-full w-full" style={{ ["--fd" as any]: `${i * -1.7}s` }}>
+                  <ServiceGfx id={s.id} />
+                </div>
               </div>
             </div>
             <div>
@@ -73,6 +76,7 @@ export default function Services() {
         </section>
       ))}
 
+      <ReelSection />
       <Pricing />
       <Process />
       <FAQ />

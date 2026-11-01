@@ -5,9 +5,13 @@ export default function PageHero({ eyebrow, title, children }: { eyebrow: string
   return (
     <section className="relative isolate overflow-hidden pb-20 pt-36 sm:pt-44 lg:pb-28">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-        <div className="glow left-[-10%] top-[-20%] h-[480px] w-[480px] bg-ember/20" />
-        <div className="glow right-[-10%] top-[10%] h-[420px] w-[420px] bg-amber/10" />
-        <CircuitBg className="opacity-80" />
+        <div data-parallax="0.25" className="absolute inset-0">
+          <div className="glow left-[-10%] top-[-20%] h-[480px] w-[480px] bg-ember/20" />
+          <div className="glow right-[-10%] top-[10%] h-[420px] w-[420px] bg-amber/10" />
+        </div>
+        <div data-parallax="0.12" className="absolute inset-0">
+          <CircuitBg className="opacity-80" />
+        </div>
       </div>
       <div className="section">
         <p className="reveal eyebrow flex items-center gap-3">
