@@ -45,7 +45,9 @@ export default function ServicePage({ id }: { id: ServiceId }) {
         <div className="section grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
           <div className="reveal reveal-scale">
             <div className="spotlight aspect-[16/10] overflow-hidden rounded-[22px] border hairline bg-ink-800/50 bg-[radial-gradient(ellipse_at_center,rgba(255,159,28,0.08),transparent_70%)]">
-              <ServiceGfx id={id} />
+              <div className="float-a h-full w-full">
+                <ServiceGfx id={id} />
+              </div>
             </div>
           </div>
           <div>

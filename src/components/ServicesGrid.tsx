@@ -26,10 +26,12 @@ export default function ServicesGrid({ eyebrow = "Services" }: { eyebrow?: strin
             <li key={s.id} className={`reveal ${span[i]} ${i === 4 ? "sm:col-span-2 lg:col-span-2" : ""}`} style={{ ["--d" as any]: `${(i % 3) * 90}ms` }}>
               <Link
                 to={serviceUrl(s.id)}
-                className="spotlight group flex h-full flex-col overflow-hidden rounded-2xl border hairline bg-ink-800/50 transition duration-500 hover:-translate-y-1 hover:border-amber/30"
+                className="spotlight tilt group flex h-full flex-col overflow-hidden rounded-2xl border hairline bg-ink-800/50 hover:border-amber/30"
               >
-                <div className="relative aspect-[16/10] border-b hairline bg-[radial-gradient(ellipse_at_center,rgba(255,159,28,0.06),transparent_70%)]">
-                  <ServiceGfx id={s.id} />
+                <div className="relative aspect-[16/10] overflow-hidden border-b hairline bg-[radial-gradient(ellipse_at_center,rgba(255,159,28,0.06),transparent_70%)]">
+                  <div className="h-full w-full transition-transform duration-700 group-hover:scale-[1.06]">
+                    <ServiceGfx id={s.id} />
+                  </div>
                 </div>
                 <div className="flex flex-1 flex-col p-6">
                   <div className="flex items-baseline justify-between gap-3">

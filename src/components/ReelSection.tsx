@@ -1,24 +1,45 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CONTACT, SOCIAL } from "../lib/site";
-import { InstagramIcon, LinkedInIcon, WhatsApp } from "./Icons";
+import { InstagramIcon, LinkedInIcon, Pause, Play, WhatsApp } from "./Icons";
 
-/** 30-second services reel, played muted when scrolled into view. */
+/** 30-second services reel. Always playing (muted, looped) while on screen; visitors can pause it. */
 export default function ReelSection() {
   const ref = useRef<HTMLVideoElement>(null);
+  const userPaused = useRef(false);
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     const v = ref.current;
-    if (!v || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) v.play().catch(() => {});
-        else v.pause();
-      },
-      { threshold: 0.35 }
-    );
+    if (!v) return;
+    const tryPlay = () => {
+      if (!userPaused.current) v.play().catch(() => {});
+    };
+    tryPlay();
+    // Pause only while off screen (saves battery), resume as soon as it's visible again.
+    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? tryPlay() : v.pause()), { threshold: 0.05 });
     io.observe(v);
-    return () => io.disconnect();
+    // Some mobile browsers block autoplay until the first interaction.
+    const kick = () => tryPlay();
+    window.addEventListener("touchstart", kick, { once: true, passive: true });
+    window.addEventListener("scroll", kick, { once: true, passive: true });
+    return () => {
+      io.disconnect();
+      window.removeEventListener("touchstart", kick);
+      window.removeEventListener("scroll", kick);
+    };
   }, []);
+
+  const toggle = () => {
+    const v = ref.current;
+    if (!v) return;
+    if (v.paused) {
+      userPaused.current = false;
+      v.play().catch(() => {});
+    } else {
+      userPaused.current = true;
+      v.pause();
+    }
+  };
 
   const ig = SOCIAL.find((s) => s.label === "Instagram")!;
   const li = SOCIAL.find((s) => s.label === "LinkedIn")!;
@@ -49,19 +70,38 @@ export default function ReelSection() {
           </div>
         </div>
 
-        <div className="reveal reveal-scale mx-auto w-full max-w-[340px]">
-          <div className="float-y relative overflow-hidden rounded-[30px] border hairline bg-ink-800 shadow-[0_40px_100px_-30px_rgba(255,110,30,0.45)]">
+        <div className="reveal reveal-scale relative mx-auto w-full max-w-[340px]">
+          <div data-parallax="-0.08" aria-hidden="true" className="absolute -inset-10 -z-10">
+            <svg viewBox="0 0 200 200" className="spin-slow h-full w-full opacity-40">
+              <circle cx="100" cy="100" r="96" fill="none" stroke="#ff9f1c" strokeOpacity=".35" strokeDasharray="2 6" />
+              <circle cx="100" cy="100" r="80" fill="none" stroke="#f4efe6" strokeOpacity=".08" />
+              <circle cx="196" cy="100" r="3" fill="#ffd93d" />
+              <circle cx="20" cy="100" r="2.5" fill="#ff5a1f" />
+            </svg>
+          </div>
+          <div className="float-a relative overflow-hidden rounded-[30px] border hairline bg-ink-800 shadow-[0_40px_100px_-30px_rgba(255,110,30,0.45)]">
             <video
               ref={ref}
               className="block aspect-[9/16] w-full"
               src="/media/cloudisoft-reel-720.mp4"
               poster="/media/cloudisoft-reel-poster.jpg"
+              autoPlay
               muted
               loop
               playsInline
-              preload="none"
+              preload="metadata"
+              onPlay={() => setPlaying(true)}
+              onPause={() => setPlaying(false)}
               aria-label="30-second video: Cloudisoft services — websites, automations, CRM, AI voice agents, and cloud & security"
             />
+            <button
+              type="button"
+              onClick={toggle}
+              aria-label={playing ? "Pause video" : "Play video"}
+              className="absolute bottom-3 right-3 grid h-9 w-9 place-items-center rounded-full bg-ink/70 text-bone backdrop-blur transition hover:bg-ink"
+            >
+              {playing ? <Pause className="h-4 w-4" /> : <Play className="ml-0.5 h-4 w-4" />}
+            </button>
           </div>
         </div>
       </div>

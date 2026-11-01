@@ -5,8 +5,9 @@ export default function CtaBand() {
   return (
     <section aria-label="Get in touch" className="section py-10">
       <div className="reveal reveal-scale sheen relative overflow-hidden rounded-[28px] px-7 py-14 text-ink sm:px-14 sm:py-16" style={{ background: "var(--brand-grad)" }}>
-        <svg aria-hidden="true" className="float-y absolute -right-10 -top-10 h-64 w-64 opacity-20" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="48" fill="none" stroke="#0b031c" strokeWidth=".6" />
+        <svg aria-hidden="true" className="spin-slow absolute -right-10 -top-10 h-64 w-64 opacity-20" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="48" fill="none" stroke="#0b031c" strokeWidth=".6" strokeDasharray="1.5 3" />
+          <circle cx="98" cy="50" r="2" fill="#0b031c" />
           <circle cx="50" cy="50" r="34" fill="none" stroke="#0b031c" strokeWidth=".6" />
           <circle cx="50" cy="50" r="20" fill="none" stroke="#0b031c" strokeWidth=".6" />
         </svg>

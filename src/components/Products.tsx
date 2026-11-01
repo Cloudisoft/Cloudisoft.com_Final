@@ -23,10 +23,12 @@ export default function Products({ eyebrow = "Our products" }: { eyebrow?: strin
                 href={p.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="spotlight group flex h-full flex-col overflow-hidden rounded-[22px] border hairline bg-ink-800/50 transition duration-500 hover:-translate-y-1 hover:border-amber/30"
+                className="spotlight tilt group flex h-full flex-col overflow-hidden rounded-[22px] border hairline bg-ink-800/50 hover:border-amber/30"
               >
                 <div className="relative aspect-[16/8] border-b hairline bg-[radial-gradient(ellipse_at_center,rgba(255,159,28,0.07),transparent_70%)]">
-                  {p.id === "cloudivoice" ? <ServiceGfx id="voice" /> : <ApplyGfx />}
+                  <div className="float-c h-full w-full" style={{ ["--fd" as any]: `${i * -3}s` }}>
+                    {p.id === "cloudivoice" ? <ServiceGfx id="voice" /> : <ApplyGfx />}
+                  </div>
                 </div>
                 <div className="flex flex-1 flex-col p-7 sm:p-8">
                   <div className="flex items-baseline justify-between gap-4">
