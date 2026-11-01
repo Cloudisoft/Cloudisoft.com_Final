@@ -27,7 +27,16 @@ export default function ContactOptions() {
             </span>
             <span className="min-w-0">
               <span className="block font-mono text-[10.5px] uppercase tracking-[0.16em] text-mute">{label}</span>
-              <span className="mt-0.5 block break-all text-[14px] text-bone">{value}</span>
+              <span className="mt-0.5 block text-[14px] text-bone [overflow-wrap:normal]">
+                {value.includes("@") ? (
+                  <>
+                    {value.split("@")[0]}
+                    <wbr />@{value.split("@")[1]}
+                  </>
+                ) : (
+                  value
+                )}
+              </span>
             </span>
           </a>
         </li>

@@ -3,6 +3,7 @@ import { ArrowRight } from "./Icons";
 import ContactOptions from "./ContactOptions";
 import OfficeMap from "./OfficeMap";
 import Social from "./Social";
+import GoogleProfile from "./GoogleProfile";
 
 const FORM_ENDPOINT = "https://formspree.io/f/meejvlpq";
 const TOPICS = ["Website", "Automations", "CRM setup", "AI voice agent", "Cloud, security & compliance", "ApplyFlux / CloudiVoice", "Something else"];
@@ -69,6 +70,9 @@ export default function ContactSection() {
           <div className="reveal mt-8 flex items-center gap-4" style={{ ["--d" as any]: "300ms" }}>
             <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-mute">Follow us</span>
             <Social />
+          </div>
+          <div className="reveal mt-6" style={{ ["--d" as any]: "340ms" }}>
+            <GoogleProfile />
           </div>
         </div>
 

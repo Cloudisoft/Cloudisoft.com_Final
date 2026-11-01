@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
 import Social from "./Social";
+import GoogleProfile from "./GoogleProfile";
 import { CONTACT, LINKS, SERVICES, serviceUrl } from "../lib/site";
 
 export default function Footer() {
@@ -22,6 +23,9 @@ export default function Footer() {
             Websites, automations, CRM, AI voice agents and secure cloud infrastructure for businesses in the US and India.
           </p>
           <Social className="mt-6" />
+          <div className="mt-5">
+            <GoogleProfile compact />
+          </div>
         </div>
 
         <nav aria-label="Company">

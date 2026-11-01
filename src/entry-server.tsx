@@ -3,7 +3,7 @@ import { StaticRouter } from "react-router-dom/server";
 import { AppRoutes } from "./App";
 import { ARTICLES } from "./content/articles";
 import { LOCATIONS } from "./content/locations";
-import { CONTACT, FAQS, PAGES, PRICING_FAQS, PRICING, PRODUCTS, SERVICES, SERVICE_DETAILS, SITE_URL, SOCIAL } from "./lib/site";
+import { GOOGLE_PROFILE, CONTACT, FAQS, PAGES, PRICING_FAQS, PRICING, PRODUCTS, SERVICES, SERVICE_DETAILS, SITE_URL, SOCIAL } from "./lib/site";
 export { PRERENDERED } from "./App";
 export { PAGES };
 export { ARTICLES } from "./content/articles";
@@ -47,7 +47,8 @@ export function structuredData(url = "/") {
       "SOC 2 readiness",
     ],
     areaServed: [{ "@type": "Country", name: "United States" }, { "@type": "Country", name: "India" }],
-    sameAs: SOCIAL.filter((s) => s.href.startsWith("http")).map((s) => s.href),
+    sameAs: [...SOCIAL.filter((s) => s.href.startsWith("http")).map((s) => s.href), GOOGLE_PROFILE.mapsUrl],
+    hasMap: GOOGLE_PROFILE.mapsUrl,
     contactPoint: [
       { "@type": "ContactPoint", telephone: CONTACT.phone.raw, contactType: "sales", areaServed: "US", availableLanguage: ["English"] },
       { "@type": "ContactPoint", telephone: "+918866819132", contactType: "customer support", areaServed: "IN", availableLanguage: ["English", "Hindi", "Gujarati"], contactOption: "WhatsApp" },
