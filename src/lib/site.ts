@@ -61,6 +61,13 @@ export const CONTACT = {
   ],
 };
 
+/** Google Business Profile (place ID decoded from the Google QR code). */
+export const GOOGLE_PROFILE = {
+  placeId: "ChIJ3WoeINT4Va0R8WXT5Dq7kwI",
+  mapsUrl: "https://www.google.com/maps/place/?q=place_id:ChIJ3WoeINT4Va0R8WXT5Dq7kwI",
+  reviewUrl: "https://search.google.com/local/writereview?placeid=ChIJ3WoeINT4Va0R8WXT5Dq7kwI",
+};
+
 export const SOCIAL = [
   { label: "Instagram", handle: "@cloudisoftllc", href: "https://www.instagram.com/cloudisoftllc/" },
   { label: "LinkedIn", handle: "Cloudisoft", href: "https://in.linkedin.com/company/cloudisoft-com" },
