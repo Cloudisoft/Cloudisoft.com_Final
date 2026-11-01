@@ -90,7 +90,7 @@ export default function useScrollFx(key = "") {
         const end = vh * 0.6;
         const total = r.height + (start - end);
         const p = Math.min(1, Math.max(0, (start - r.top) / total));
-        el.style.setProperty("--trace", reduce ? "1" : p.toFixed(4));
+        el.style.setProperty("--trace", p.toFixed(4));
       }
       if (reduce) return;
       for (const el of parallax) {

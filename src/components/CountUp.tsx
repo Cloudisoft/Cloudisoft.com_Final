@@ -7,7 +7,7 @@ export default function CountUp({ to, prefix = "", duration = 1400 }: { to: numb
 
   useEffect(() => {
     const el = ref.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!el) return;
     const r = el.getBoundingClientRect();
     if (r.top < window.innerHeight && r.bottom > 0) return; // already visible: don't flicker
     setV(0);

@@ -22,10 +22,15 @@ export default function Marquee() {
         <div className="marquee-track flex w-max">
           {row()}
           {row(true)}
+          {row(true)}
+          {row(true)}
         </div>
         <div className="marquee-track reverse flex w-max">
-          {row(false, SERVICE_ITEMS, "text-transparent [-webkit-text-stroke:1px_rgba(255,159,28,0.55)]")}
-          {row(true, SERVICE_ITEMS, "text-transparent [-webkit-text-stroke:1px_rgba(255,159,28,0.55)]")}
+          {[0, 1, 2, 3].map((k) => (
+            <span key={k} className="contents">
+              {row(k > 0, SERVICE_ITEMS, "text-transparent [-webkit-text-stroke:1px_rgba(255,159,28,0.55)]")}
+            </span>
+          ))}
         </div>
       </div>
     </div>
