@@ -5,7 +5,7 @@ export default function FAQ() {
     <section id="faq" aria-labelledby="faq-title" className="border-t hairline py-28 lg:py-36">
       <div className="section grid gap-12 lg:grid-cols-[0.8fr_1.4fr] lg:gap-20">
         <div className="lg:sticky lg:top-32 lg:self-start">
-          <p className="reveal eyebrow">05 — Questions</p>
+          <p className="reveal eyebrow">Questions</p>
           <h2 id="faq-title" className="reveal mt-5 text-4xl font-semibold leading-[1.05] sm:text-5xl" style={{ ["--d" as any]: "80ms" }}>
             Straight answers.
           </h2>

@@ -16,9 +16,6 @@ module.exports = {
         ember: "#FF5A1F",
         amber: "#FF9F1C",
         sun: "#FFD93D",
-        // kept for the /cloudicore and /dashboard pages
-        "cloudi-bg": "#0B031C",
-        "cloudi-card": "#120A27",
       },
       fontFamily: {
         display: ['"Bricolage Grotesque"', "ui-sans-serif", "system-ui", "sans-serif"],

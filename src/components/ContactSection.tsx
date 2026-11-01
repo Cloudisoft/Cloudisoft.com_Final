@@ -1,9 +1,11 @@
 import { FormEvent, useState } from "react";
-import { CONTACT } from "../lib/site";
 import { ArrowRight } from "./Icons";
+import ContactOptions from "./ContactOptions";
+import OfficeMap from "./OfficeMap";
+import Social from "./Social";
 
 const FORM_ENDPOINT = "https://formspree.io/f/meejvlpq";
-const TOPICS = ["A custom AI agent", "CloudiVoice", "ApplyFlux", "CloudiCore", "RapidBuild website", "Something else"];
+const TOPICS = ["Website", "Automations", "CRM setup", "AI voice agent", "Cloud, security & compliance", "ApplyFlux / CloudiVoice", "Something else"];
 
 export default function ContactSection() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -51,46 +53,22 @@ export default function ContactSection() {
       <div aria-hidden="true" className="glow bottom-[-200px] left-1/2 h-[420px] w-[720px] -translate-x-1/2 bg-ember/15" />
       <div className="section relative grid gap-16 lg:grid-cols-[1fr_1.15fr] lg:gap-20">
         <div>
-          <p className="reveal eyebrow">06 — Contact</p>
+          <p className="reveal eyebrow">Contact</p>
           <h2 id="contact-title" className="reveal mt-5 text-4xl font-semibold leading-[1.05] sm:text-5xl lg:text-6xl" style={{ ["--d" as any]: "80ms" }}>
-            Tell us the job.
+            Tell us what you need.
             <br />
-            <span className="gradient-text">We’ll tell you if an agent can do it.</span>
+            <span className="gradient-text">We’ll take it from there.</span>
           </h2>
           <p className="reveal mt-6 max-w-md text-[15.5px] leading-relaxed text-bone/65" style={{ ["--d" as any]: "160ms" }}>
-            A short description is enough. We reply within one business day with questions, a rough plan or an honest “not yet”.
+            WhatsApp, call, text or use the form — a short description is enough. We reply with questions, a plan and a quote.
           </p>
 
-          <div className="reveal mt-12 grid gap-8 sm:grid-cols-2" style={{ ["--d" as any]: "240ms" }}>
-            <div>
-              <p className={label}>Email</p>
-              <a href={`mailto:${CONTACT.email}`} className="text-bone hover:text-sun">
-                {CONTACT.email}
-              </a>
-              <p className={`${label} mt-6`}>Phone</p>
-              <ul className="space-y-1 text-bone/85">
-                {CONTACT.phones.map((p) => (
-                  <li key={p.tel}>
-                    <a href={`tel:${p.tel}`} className="hover:text-sun">
-                      {p.display}
-                    </a>{" "}
-                    <span className="text-xs text-mute">{p.label}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              {CONTACT.offices.map((o) => (
-                <address key={o.city} className="mb-6 not-italic">
-                  <p className={label}>{o.city}</p>
-                  {o.lines.map((l) => (
-                    <span key={l} className="block text-bone/85">
-                      {l}
-                    </span>
-                  ))}
-                </address>
-              ))}
-            </div>
+          <div className="reveal mt-10" style={{ ["--d" as any]: "240ms" }}>
+            <ContactOptions />
+          </div>
+          <div className="reveal mt-8 flex items-center gap-4" style={{ ["--d" as any]: "300ms" }}>
+            <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-mute">Follow us</span>
+            <Social />
           </div>
         </div>
 
@@ -128,7 +106,7 @@ export default function ContactSection() {
             </select>
           </div>
           <div className="sm:col-span-2">
-            <label htmlFor="c-message" className={label}>What should the agent do? *</label>
+            <label htmlFor="c-message" className={label}>How can we help? *</label>
             <textarea
               id="c-message"
               name="message"
@@ -136,7 +114,7 @@ export default function ContactSection() {
               rows={5}
               minLength={10}
               maxLength={4000}
-              placeholder="e.g. Answer clinic calls after 6pm and book appointments into our calendar."
+              placeholder="e.g. A 5-page website with online booking, or an AI agent to answer calls after hours."
               className="field resize-y"
             />
           </div>
@@ -153,6 +131,16 @@ export default function ContactSection() {
             {status === "error" && <p className="text-sm text-ember">{errorMsg}</p>}
           </div>
         </form>
+      </div>
+
+      <div className="section relative mt-20">
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+          <h3 className="reveal text-2xl font-semibold sm:text-3xl">Visit us</h3>
+          <p className="reveal text-[13.5px] text-mute">Offices in Ahmedabad, India and Hillside, New Jersey.</p>
+        </div>
+        <div className="reveal reveal-scale">
+          <OfficeMap />
+        </div>
       </div>
     </section>
   );

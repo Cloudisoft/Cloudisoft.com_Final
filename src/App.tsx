@@ -1,25 +1,22 @@
-import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./Home";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Services from "./pages/Services";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 
-// Secondary routes are code-split so the landing page stays light.
-const CloudiCore = lazy(() => import("./pages/cloudicore"));
-const AuthCallback = lazy(() => import("./pages/AuthCallback"));
-const Dashboard = lazy(() => import("./pages/Dashboard"));
-const Verified = lazy(() => import("./pages/Verified"));
+export const PRERENDERED = ["/", "/about", "/services", "/privacy", "/terms"];
 
 export function AppRoutes() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-ink" />}>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/cloudicore" element={<CloudiCore />} />
-        <Route path="/auth/callback" element={<AuthCallback />} />
-        <Route path="/verified" element={<Verified />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="*" element={<Home />} />
-      </Routes>
-    </Suspense>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/services" element={<Services />} />
+      <Route path="/privacy" element={<Privacy />} />
+      <Route path="/terms" element={<Terms />} />
+      <Route path="*" element={<Home />} />
+    </Routes>
   );
 }
 

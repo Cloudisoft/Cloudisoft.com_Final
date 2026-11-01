@@ -1,25 +1,37 @@
 # Cloudisoft
 
-> Cloudisoft builds custom AI agents, AI voice agents, workflow automation and business decision tools for growing businesses in the United States and India. Offices in Hillside, New Jersey and Ahmedabad, Gujarat.
+> Cloudisoft (Cloudisoft LLC) builds websites, workflow automations, CRM systems, AI voice agents and secure cloud infrastructure for growing businesses in the United States and India. Offices in Hillside, New Jersey and Ahmedabad, Gujarat.
 
 Tagline: Automate Intelligence. Amplify Growth.
 
+## Services and starting prices (USD, not final quotes)
+
+- Websites — from $200: landing pages, business websites and web apps; design, SEO and analytics setup, forms, booking and payments, hosting and SSL.
+- Automations — from $750: workflow mapping, API and webhook integrations, AI document and email handling, monitoring and alerts.
+- CRM setup — quoted with automations: pipeline design, data import and clean-up, lead routing and follow-ups, reports and dashboards.
+- AI voice agents — from $1,000: inbound and outbound calling, calendar and CRM booking, human handoff, transcripts and QA, in English, Hindi and nine more Indian languages.
+- Cloud infrastructure, security and SOC 2 compliance readiness — from $1,500: cloud build or migration, identity and access, backups, hardening and monitoring, security policies and audit evidence.
+
+Final pricing depends on scope; Cloudisoft sends a fixed quote before work begins.
+
 ## Products
 
-- [CloudiVoice](https://cloudivoice.cloudisoft.com/): AI voice agents that answer inbound calls, run outbound campaigns, qualify leads, book appointments, screen candidates and hand off to a human. Speaks Hindi, Indian English, Gujarati, Marathi, Punjabi, Bengali, Tamil, Telugu, Kannada, Malayalam and Odia.
-- [ApplyFlux](https://applyflux.cloudisoft.com/): Upload a resume once; ApplyFlux finds matching roles, fills and tracks applications with an AI agent, and pauses whenever a human decision is needed.
-- [CloudiCore](https://cloudicore.cloudisoft.com/): AI business decision simulator. Model pricing, hiring or expansion decisions and compare optimistic, expected and cautious outcomes with a risk index. 7-day free trial, no credit card.
-- [RapidBuild](https://rapidbuild.cloudisoft.com/): Custom websites and landing pages with full frontend and backend, delivered quickly at lower cost than traditional agencies.
+- [CloudiVoice](https://cloudivoice.cloudisoft.com/): AI voice agents that answer calls, qualify leads, book appointments, screen candidates and hand off to a human.
+- [ApplyFlux](https://applyflux.cloudisoft.com/): Upload a resume once; ApplyFlux finds matching roles, fills and tracks applications, and pauses whenever a human decision is needed.
 
-## Custom AI agents
+## Pages
 
-Cloudisoft designs agents around one repeated job: voice and phone agents, lead capture and follow-up, customer support from a company's own documents, back-office automation across CRMs, Google Sheets and calendars, recruitment screening, and decision modelling. Process: map the work, build a pilot, test with the team, run and improve. Pricing is custom, based on volume and integration work.
+- [Services & pricing](https://www.cloudisoft.com/services)
+- [About Cloudisoft](https://www.cloudisoft.com/about)
+- [Privacy Policy](https://www.cloudisoft.com/privacy)
+- [Terms & Conditions](https://www.cloudisoft.com/terms)
 
 ## Contact
 
+- WhatsApp: +91 88668 19132
+- Call or text (US): +1 (484) 990-7692
 - Email: connect@cloudisoft.com
-- Phone (US): +1 (973) 841-4949, +1 (484) 990-7692
-- Phone (India): +91 88668 19132
+- Instagram: https://www.instagram.com/cloudisoftllc/
+- LinkedIn: https://in.linkedin.com/company/cloudisoft-com
+- India office: C-1229, Siddhivinayak Towers, Makarba, Ahmedabad, Gujarat 380051, India
 - US office: 473 Mundet Place, Hillside, NJ 07205, USA
-- India office: C-1219, Siddhivinayak Towers, Makarba, Ahmedabad 380051, Gujarat, India
-- Website: https://www.cloudisoft.com/

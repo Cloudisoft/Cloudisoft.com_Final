@@ -6,7 +6,7 @@ import { useEffect } from "react";
  *  - `--p` on the root drives the top progress bar
  *  - `[data-trace]` elements get `--trace` (0 → 1) as they travel through the viewport
  */
-export default function useScrollFx() {
+export default function useScrollFx(key = "") {
   useEffect(() => {
     const root = document.documentElement;
     (window as any).__cloudiReady = true;
@@ -32,6 +32,16 @@ export default function useScrollFx() {
       );
       targets.forEach((el) => io!.observe(el));
     }
+
+    // Cursor-following spotlight on `.spotlight` cards
+    const onPointer = (e: PointerEvent) => {
+      const card = (e.target as Element | null)?.closest?.(".spotlight") as HTMLElement | null;
+      if (!card) return;
+      const r = card.getBoundingClientRect();
+      card.style.setProperty("--mx", `${e.clientX - r.left}px`);
+      card.style.setProperty("--my", `${e.clientY - r.top}px`);
+    };
+    document.addEventListener("pointermove", onPointer, { passive: true });
 
     const traces = Array.from(document.querySelectorAll<HTMLElement>("[data-trace]"));
     let frame = 0;
@@ -59,9 +69,10 @@ export default function useScrollFx() {
 
     return () => {
       io?.disconnect();
+      document.removeEventListener("pointermove", onPointer);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       if (frame) cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [key]);
 }

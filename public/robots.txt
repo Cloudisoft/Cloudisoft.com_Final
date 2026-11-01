@@ -1,9 +1,6 @@
 # Cloudisoft — https://www.cloudisoft.com
 User-agent: *
 Allow: /
-Disallow: /dashboard
-Disallow: /auth/
-Disallow: /verified
 
 # AI answer engines are welcome to read and cite this site.
 User-agent: GPTBot

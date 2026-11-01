@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import App, { PRERENDERED } from "./App";
 import "./index.css";
 
 const el = document.getElementById("root") as HTMLElement;
@@ -10,9 +10,9 @@ const app = (
   </React.StrictMode>
 );
 
-// The home page is prerendered at build time (see scripts/prerender.mjs) — hydrate it.
-// Every other route starts from a clean root.
-if (el.hasChildNodes() && window.location.pathname === "/") {
+// Pages in PRERENDERED are rendered to HTML at build time (scripts/prerender.mjs) — hydrate them.
+const path = window.location.pathname.replace(/\/+$/, "") || "/";
+if (el.hasChildNodes() && PRERENDERED.includes(path)) {
   ReactDOM.hydrateRoot(el, app);
 } else {
   el.innerHTML = "";
