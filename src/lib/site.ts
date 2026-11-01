@@ -1,3 +1,6 @@
+import { ARTICLES } from "../content/articles";
+import { LOCATIONS } from "../content/locations";
+
 // Single source of truth for links, services, pricing, contact details and FAQs.
 // Used by the pages *and* by the structured data, so keep them in sync.
 
@@ -129,9 +132,9 @@ export type ServiceDetail = {
 export const SERVICE_DETAILS: Record<ServiceId, ServiceDetail> = {
   web: {
     slug: "website-development",
-    title: "Website Development from $200 — Business Websites & Landing Pages | Cloudisoft",
+    title: "Website Development from $200 — Business Websites | Cloudisoft",
     metaDescription:
-      "Fast, mobile-first business websites and landing pages from $200. Design, SEO, forms, booking, payments and hosting by Cloudisoft (US & India). Get a quote on WhatsApp.",
+      "Fast, mobile-first business websites and landing pages from $200 — design, SEO, booking, payments and hosting. US & India. Get a quote on WhatsApp.",
     headline: "Websites that load fast, rank and bring in enquiries.",
     intro:
       "We design and build business websites, landing pages and web apps that look sharp on every phone, show up on Google and turn visitors into WhatsApp messages, calls and form enquiries.",
@@ -154,7 +157,7 @@ export const SERVICE_DETAILS: Record<ServiceId, ServiceDetail> = {
   },
   automation: {
     slug: "business-automation",
-    title: "Business Process Automation from $750 — Workflow & AI Automation | Cloudisoft",
+    title: "Business Process Automation from $750 | Cloudisoft",
     metaDescription:
       "Automate data entry, lead handling, invoicing and reporting. We connect Google Workspace, WhatsApp, CRMs, Sheets and APIs with AI. Automations from $750.",
     headline: "Stop copying data between tools. Let it move on its own.",
@@ -204,7 +207,7 @@ export const SERVICE_DETAILS: Record<ServiceId, ServiceDetail> = {
   },
   voice: {
     slug: "ai-voice-agents",
-    title: "AI Voice Agents from $1,000 — AI Phone Receptionist & Calling | Cloudisoft",
+    title: "AI Voice Agents from $1,000 — AI Phone Receptionist | Cloudisoft",
     metaDescription:
       "AI voice agents that answer calls 24/7, qualify leads and book appointments in English, Hindi and 9 Indian languages. Hear a sample call. From $1,000.",
     headline: "An AI phone agent that never misses a call.",
@@ -229,9 +232,9 @@ export const SERVICE_DETAILS: Record<ServiceId, ServiceDetail> = {
   },
   cloud: {
     slug: "cloud-security-compliance",
-    title: "Cloud Infrastructure, Security & SOC 2 Readiness from $1,500 | Cloudisoft",
+    title: "Cloud Security & SOC 2 Readiness from $1,500 | Cloudisoft",
     metaDescription:
-      "Remote IT infrastructure on AWS, Azure or Google Cloud, security hardening and SOC 2 compliance readiness — access control, backups, logging and policies. From $1,500.",
+      "Cloud infrastructure on AWS, Azure or Google Cloud, security hardening and SOC 2 readiness — access control, backups, logging, policies. From $1,500.",
     headline: "Cloud infrastructure that’s secure and audit-ready.",
     intro:
       "We design, build or migrate your cloud infrastructure, lock it down with strong identity, backups and monitoring, and prepare your company for SOC 2 and similar audits with the policies and evidence auditors ask for.",
@@ -363,7 +366,7 @@ export const PAGES: Record<string, { title: string; description: string; og?: st
   "/": {
     title: "Cloudisoft — Websites, Automations, CRM & AI Voice Agents",
     description:
-      "Cloudisoft builds websites (from $200), workflow automations and CRMs (from $750), AI voice agents (from $1,000) and secure cloud infrastructure for businesses in the US and India.",
+      "Websites from $200, automations and CRM from $750, AI voice agents from $1,000 and secure cloud for businesses in the US and India. Get a quote on WhatsApp.",
   },
   "/about": {
     title: "About Cloudisoft — Software & AI Studio in New Jersey and Ahmedabad",
@@ -371,24 +374,51 @@ export const PAGES: Record<string, { title: string; description: string; og?: st
       "Cloudisoft is a software and AI studio with teams in Hillside, New Jersey and Ahmedabad, India, building practical websites, automations and AI voice agents.",
   },
   "/services": {
-    title: "Services & Pricing — Websites, Automations, CRM, AI Voice, Cloud | Cloudisoft",
+    title: "Services & Pricing: Websites, Automation, CRM, AI Voice | Cloudisoft",
     description:
       "Websites from $200, automations from $750, AI voice agents from $1,000, cloud infrastructure, security and SOC 2 readiness from $1,500. See what's included.",
   },
   "/privacy": {
     title: "Privacy Policy | Cloudisoft",
-    description: "How Cloudisoft collects, uses and protects personal information.",
+    description: "How Cloudisoft LLC collects, uses, shares and protects personal information from our website, enquiries and client projects — and your rights.",
   },
   "/terms": {
     title: "Terms & Conditions | Cloudisoft",
-    description: "The terms that govern use of the Cloudisoft website and services.",
+    description: "The terms that govern use of the Cloudisoft website and our services — quotes, payment, ownership, confidentiality, liability and governing law.",
   },
 };
 
+
+Object.assign(PAGES, {
+  "/pricing": {
+    title: "Pricing — Websites from $200, AI Voice Agents from $1,000 | Cloudisoft",
+    description:
+      "Websites from $200, automations & CRM from $750, AI voice agents from $1,000, cloud security & SOC 2 readiness from $1,500. Fixed written quotes.",
+  },
+  "/contact": {
+    title: "Contact Cloudisoft — WhatsApp, Call, Text or Email",
+    description:
+      "Contact Cloudisoft: WhatsApp +91 88668 19132, call or text +1 (484) 990-7692, or email connect@cloudisoft.com. Offices in Ahmedabad, India and Hillside, New Jersey.",
+  },
+  "/insights": {
+    title: "Insights: Websites, Automation, AI Voice & Security | Cloudisoft",
+    description:
+      "Practical guides from Cloudisoft: website costs, AI voice agents, AI vs human receptionists, SOC 2 readiness, what to automate first and choosing a CRM.",
+  },
+});
+for (const a of ARTICLES) PAGES[`/insights/${a.slug}`] = { title: a.metaTitle, description: a.description };
+for (const l of LOCATIONS) PAGES[`/locations/${l.slug}`] = { title: l.title, description: l.description };
 
 for (const s of SERVICES) {
   const d = SERVICE_DETAILS[s.id];
   PAGES[`/services/${d.slug}`] = { title: d.title, description: d.metaDescription, og: `/og/${d.slug}.jpg` };
 }
+
+export const PRICING_FAQS = [
+  { q: "Are these final prices?", a: "No. They are starting prices. Your final price depends on scope, integrations and volume, and we confirm it in a fixed written quote before work begins." },
+  { q: "Are prices in US dollars?", a: "Yes, prices are listed in USD. Tell us where your business is based when you ask for a quote." },
+  { q: "Are there ongoing costs?", a: "Some services have running costs that we list separately in your quote — for example hosting and domains for websites, call minutes for AI voice agents, and software licences you choose to use." },
+  { q: "Do you offer support after launch?", a: "Yes. Every project includes launch support, and ongoing support and improvements can be added." },
+];
 
 export const usd = (n: number) => `$${n.toLocaleString("en-US")}`;

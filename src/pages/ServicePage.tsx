@@ -4,6 +4,8 @@ import PageHero from "../components/PageHero";
 import ServiceGfx from "../components/ServiceGfx";
 import Process from "../components/Process";
 import FAQ from "../components/FAQ";
+import InsightsSection from "../components/InsightsSection";
+import { ARTICLES } from "../content/articles";
 import CtaBand from "../components/CtaBand";
 import ContactSection from "../components/ContactSection";
 import { ArrowRight, Check, LinkedInIcon, MailIcon, WhatsApp } from "../components/Icons";
@@ -19,6 +21,7 @@ export default function ServicePage({ id }: { id: ServiceId }) {
   return (
     <Layout>
       <PageHero
+        crumbs={[{ name: "Home", to: "/" }, { name: "Services", to: "/services" }, { name: s.name }]}
         eyebrow={`Services / ${s.name}${s.from ? ` · from ${usd(s.from)}` : ""}`}
         title={
           <>
@@ -101,6 +104,11 @@ export default function ServicePage({ id }: { id: ServiceId }) {
 
       <Process />
       <FAQ items={d.faqs} title={`${s.name}: questions`} />
+      <InsightsSection
+        items={[...ARTICLES.filter((x) => x.service === id), ...ARTICLES.filter((x) => x.service !== id)].slice(0, 3)}
+        eyebrow="Guides"
+        title={`Learn more about ${s.name.toLowerCase()}`}
+      />
 
       <section className="border-t hairline py-20">
         <div className="section">

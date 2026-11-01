@@ -25,6 +25,7 @@ export default function About() {
   return (
     <Layout>
       <PageHero
+        crumbs={[{ name: "Home", to: "/" }, { name: "About Us" }]}
         eyebrow="About Cloudisoft"
         title={
           <>

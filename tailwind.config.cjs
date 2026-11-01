@@ -18,8 +18,8 @@ module.exports = {
         sun: "#FFD93D",
       },
       fontFamily: {
-        display: ['"Bricolage Grotesque"', "ui-sans-serif", "system-ui", "sans-serif"],
-        sans: ['"Geist"', "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ['"Bricolage Grotesque Variable"', '"Bricolage Grotesque"', "ui-sans-serif", "system-ui", "sans-serif"],
+        sans: ['"Geist Variable"', '"Geist"', "ui-sans-serif", "system-ui", "sans-serif"],
         mono: ['"Geist Mono"', "ui-monospace", "SFMono-Regular", "monospace"],
       },
       maxWidth: {

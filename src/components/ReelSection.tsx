@@ -84,7 +84,7 @@ export default function ReelSection() {
               ref={ref}
               className="block aspect-[9/16] w-full"
               src="/media/cloudisoft-reel-720.mp4"
-              poster="/media/cloudisoft-reel-poster.jpg"
+              poster="/media/cloudisoft-reel-poster.webp"
               autoPlay
               muted
               loop

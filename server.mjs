@@ -28,6 +28,7 @@ const TYPES = {
   ".jpg": "image/jpeg",
   ".jpeg": "image/jpeg",
   ".webp": "image/webp",
+  ".woff": "font/woff",
   ".ico": "image/x-icon",
   ".mp3": "audio/mpeg",
   ".mp4": "video/mp4",
@@ -38,8 +39,8 @@ const COMPRESSIBLE = new Set([".html", ".js", ".mjs", ".css", ".json", ".webmani
 const CSP = [
   "default-src 'self'",
   "script-src 'self'",
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  "font-src 'self' https://fonts.gstatic.com",
+  "style-src 'self' 'unsafe-inline'",
+  "font-src 'self'",
   "img-src 'self' data: blob:",
   "media-src 'self'",
   "frame-src https://www.google.com https://maps.google.com",
@@ -80,6 +81,7 @@ function resolveFile(urlPath) {
 
 function cacheControl(urlPath, ext) {
   if (urlPath.startsWith("/assets/")) return "public, max-age=31536000, immutable";
+  if (/^\/(brand|og|media|samples)\//.test(urlPath) || /\.(png|ico|webp|jpg)$/.test(urlPath)) return "public, max-age=2592000";
   if (ext === ".html") return "public, max-age=0, must-revalidate";
   return "public, max-age=86400";
 }

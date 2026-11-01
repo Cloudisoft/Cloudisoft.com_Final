@@ -30,6 +30,9 @@ export default function Footer() {
             <li><Link to="/" className={link}>Home</Link></li>
             <li><Link to="/about" className={link}>About Us</Link></li>
             <li><Link to="/services" className={link}>Services</Link></li>
+            <li><Link to="/pricing" className={link}>Pricing</Link></li>
+            <li><Link to="/insights" className={link}>Insights</Link></li>
+            <li><Link to="/contact" className={link}>Contact</Link></li>
             <li><a href={LINKS.applyflux} target="_blank" rel="noopener noreferrer" className={link}>ApplyFlux ↗</a></li>
             <li><a href={LINKS.cloudivoice} target="_blank" rel="noopener noreferrer" className={link}>CloudiVoice ↗</a></li>
           </ul>
@@ -56,7 +59,11 @@ export default function Footer() {
           </ul>
           <div className="mt-5 space-y-3 text-[13px] text-mute">
             {CONTACT.offices.map((o) => (
-              <address key={o.id} className="not-italic">{o.lines.join(", ")}</address>
+              <address key={o.id} className="not-italic">
+                <Link to={o.id === "ahmedabad" ? "/locations/ahmedabad" : "/locations/new-jersey"} className="hover:text-sun">
+                  {o.lines.join(", ")}
+                </Link>
+              </address>
             ))}
           </div>
         </div>
