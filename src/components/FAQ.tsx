@@ -1,13 +1,13 @@
 import { FAQS } from "../lib/site";
 
-export default function FAQ() {
+export default function FAQ({ items = FAQS, title = "Straight answers." }: { items?: { q: string; a: string }[]; title?: string }) {
   return (
     <section id="faq" aria-labelledby="faq-title" className="border-t hairline py-28 lg:py-36">
       <div className="section grid gap-12 lg:grid-cols-[0.8fr_1.4fr] lg:gap-20">
         <div className="lg:sticky lg:top-32 lg:self-start">
           <p className="reveal eyebrow">Questions</p>
           <h2 id="faq-title" className="reveal mt-5 text-4xl font-semibold leading-[1.05] sm:text-5xl" style={{ ["--d" as any]: "80ms" }}>
-            Straight answers.
+            {title}
           </h2>
           <p className="reveal mt-6 max-w-sm text-[15px] text-bone/60" style={{ ["--d" as any]: "160ms" }}>
             Something we missed? Email{" "}
@@ -19,7 +19,7 @@ export default function FAQ() {
         </div>
 
         <div className="border-t hairline">
-          {FAQS.map((f, i) => (
+          {items.map((f, i) => (
             <details key={f.q} className="reveal group border-b hairline" style={{ ["--d" as any]: `${i * 50}ms` }} open={i === 0}>
               <summary className="flex items-center justify-between gap-6 py-6 text-left">
                 <h3 className="text-lg font-medium leading-snug transition group-hover:text-sun sm:text-xl">{f.q}</h3>

@@ -22,6 +22,11 @@ Final pricing depends on scope; Cloudisoft sends a fixed quote before work begin
 ## Pages
 
 - [Services & pricing](https://www.cloudisoft.com/services)
+- [Website development (from $200)](https://www.cloudisoft.com/services/website-development)
+- [Business automation (from $750)](https://www.cloudisoft.com/services/business-automation)
+- [CRM setup & integration](https://www.cloudisoft.com/services/crm-setup)
+- [AI voice agents (from $1,000)](https://www.cloudisoft.com/services/ai-voice-agents)
+- [Cloud, security & SOC 2 readiness (from $1,500)](https://www.cloudisoft.com/services/cloud-security-compliance)
 - [About Cloudisoft](https://www.cloudisoft.com/about)
 - [Privacy Policy](https://www.cloudisoft.com/privacy)
 - [Terms & Conditions](https://www.cloudisoft.com/terms)
@@ -31,6 +36,7 @@ Final pricing depends on scope; Cloudisoft sends a fixed quote before work begin
 - WhatsApp: +91 88668 19132
 - Call or text (US): +1 (484) 990-7692
 - Email: connect@cloudisoft.com
+- Fastest way to get a quote: WhatsApp https://wa.me/918866819132
 - Instagram: https://www.instagram.com/cloudisoftllc/
 - LinkedIn: https://in.linkedin.com/company/cloudisoft-com
 - India office: C-1229, Siddhivinayak Towers, Makarba, Ahmedabad, Gujarat 380051, India

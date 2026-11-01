@@ -1,0 +1,225 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;box-sizing:border-box}
+:root{--ink:#0b031c;--bone:#f4efe6;--mute:#a7a0b8;--amber:#ff9f1c;--sun:#ffd93d;--ember:#ff5a1f;--grad:linear-gradient(90deg,#ff4d1a,#ff9f1c 55%,#ffe14d)}
+body{width:1080px;height:1920px;background:var(--ink);color:var(--bone);font-family:Geist,sans-serif;overflow:hidden;position:relative}
+.abs{position:absolute}
+.glow{position:absolute;border-radius:50%;filter:blur(140px)}
+.mono{font-family:"Geist Mono",monospace}
+.disp{font-family:"Bricolage Grotesque";letter-spacing:-.03em}
+.grad{background:var(--grad);-webkit-background-clip:text;color:transparent}
+/* intro */
+#intro{inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#intro img{width:420px}
+#intro .name{font-family:"Bricolage Grotesque";font-weight:600;letter-spacing:.32em;font-size:64px;margin-top:40px;padding-left:.32em}
+#intro .tag{font-size:40px;margin-top:28px;color:rgba(244,239,230,.75)}
+/* caption */
+#cap{left:80px;right:80px;top:230px;text-align:center}
+#cap .lbl{font-size:28px;letter-spacing:.2em;color:var(--mute)}
+#cap .ttl{font-size:92px;font-weight:650;line-height:1;margin-top:22px;font-family:"Bricolage Grotesque";letter-spacing:-.03em}
+#cap .sub{font-size:34px;color:rgba(244,239,230,.72);margin-top:20px}
+.chip{display:inline-block;padding:12px 28px;border-radius:999px;background:var(--grad);color:var(--ink);font-weight:600;font-size:32px;margin-top:26px}
+/* phone */
+#phoneWrap{left:50%;top:640px;width:520px;height:1060px;margin-left:-260px}
+#phone{width:100%;height:100%;border-radius:78px;background:linear-gradient(145deg,#2a2145,#0e0820);padding:16px;box-shadow:0 60px 120px -30px rgba(0,0,0,.9),0 0 0 2px rgba(244,239,230,.12) inset,0 0 80px -10px rgba(255,120,30,.35)}
+#screen{width:100%;height:100%;border-radius:64px;background:#0d0620;overflow:hidden;position:relative}
+.island{position:absolute;top:18px;left:50%;width:150px;height:40px;margin-left:-75px;background:#000;border-radius:30px;z-index:5}
+.status{position:absolute;top:24px;left:44px;right:44px;display:flex;justify-content:space-between;font-size:22px;font-weight:600;z-index:4}
+.scr{position:absolute;inset:0;padding:100px 34px 40px;opacity:0}
+.card{background:rgba(244,239,230,.05);border:1px solid rgba(244,239,230,.1);border-radius:24px}
+.row{display:flex;align-items:center;gap:16px}
+.ok{width:40px;height:40px;border-radius:50%;background:rgba(255,159,28,.18);color:var(--sun);display:grid;place-items:center;font-size:22px;flex-shrink:0}
+.bar{height:14px;border-radius:7px;background:rgba(244,239,230,.18)}
+.small{font-size:22px;color:var(--mute)}
+.chipF{position:absolute;z-index:6;padding:14px 24px;border-radius:999px;font-size:26px;background:rgba(18,10,39,.85);border:1px solid rgba(244,239,230,.14);white-space:nowrap}
+#dots{left:0;right:0;top:1760px;display:flex;justify-content:center;gap:14px}
+#dots i{width:14px;height:14px;border-radius:7px;background:rgba(244,239,230,.2);transition:none}
+/* outro */
+#outro{left:70px;right:70px;top:1080px;text-align:center;opacity:0}
+#outro .h{font-family:"Bricolage Grotesque";font-weight:650;font-size:84px;letter-spacing:-.03em;line-height:1.02}
+.cta{display:flex;align-items:center;gap:22px;justify-content:center;margin-top:26px;font-size:38px;font-weight:500}
+.cta .ic{width:68px;height:68px;border-radius:20px;display:grid;place-items:center}
+</style></head><body>
+<div class="glow" style="width:900px;height:900px;left:-350px;top:-300px;background:rgba(255,90,31,.30)"></div>
+<div class="glow" id="g2" style="width:800px;height:800px;right:-300px;bottom:-200px;background:rgba(255,159,28,.16)"></div>
+<svg class="abs" style="inset:0" width="1080" height="1920" viewBox="0 0 1080 1920" id="circ"></svg>
+
+<div id="intro" class="abs"><img src="mark.png"><div class="name">CLOUDISOFT</div><div class="tag">Automate Intelligence. <span class="grad">Amplify Growth.</span></div></div>
+
+<div id="cap" class="abs" style="opacity:0"><div class="lbl mono" id="lbl"></div><div class="ttl" id="ttl"></div><div class="sub" id="sub"></div><div class="chip" id="price"></div></div>
+
+<div id="phoneWrap" class="abs" style="opacity:0">
+  <div id="floaters"></div>
+  <div id="phone"><div id="screen"><div class="island"></div><div class="status"><span>9:41</span><span>●●● ▮</span></div>
+
+  <!-- 1 website -->
+  <div class="scr" id="s0">
+    <div class="card" style="padding:14px 20px;font-size:22px" ><span class="mono small">🔒 yourbusiness.com</span></div>
+    <div class="b" style="margin-top:34px;height:300px;border-radius:26px;background:linear-gradient(135deg,rgba(255,90,31,.8),rgba(255,217,61,.6))"></div>
+    <div class="b bar" style="margin-top:34px;width:85%;height:30px;background:rgba(244,239,230,.85)"></div>
+    <div class="b bar" style="margin-top:18px;width:65%;height:30px;background:rgba(244,239,230,.85)"></div>
+    <div class="b bar" style="margin-top:24px;width:92%"></div>
+    <div class="b bar" style="margin-top:12px;width:70%"></div>
+    <div class="b" style="margin-top:34px;display:inline-block;padding:20px 40px;border-radius:999px;background:var(--grad);color:var(--ink);font-weight:600;font-size:28px">Book now</div>
+    <div class="b row" style="margin-top:34px;gap:14px"><div class="card" style="flex:1;height:120px"></div><div class="card" style="flex:1;height:120px"></div></div>
+    <div id="toast0" class="card row" style="position:absolute;left:30px;right:30px;bottom:50px;padding:20px;background:#1a1233;opacity:0"><div class="ok">✓</div><div><div style="font-size:24px;font-weight:600">New booking request</div><div class="small">via your website · just now</div></div></div>
+  </div>
+
+  <!-- 2 automations -->
+  <div class="scr" id="s1">
+    <div class="mono small" style="letter-spacing:.14em">WORKFLOW · RUNNING</div>
+    <div class="disp" style="font-size:44px;font-weight:600;margin-top:12px">New lead → done</div>
+    <div id="flow" style="margin-top:30px;display:flex;flex-direction:column;gap:18px"></div>
+  </div>
+
+  <!-- 3 CRM -->
+  <div class="scr" id="s2">
+    <div class="mono small" style="letter-spacing:.14em">PIPELINE</div>
+    <div class="disp" style="font-size:44px;font-weight:600;margin-top:12px">Every lead, one place</div>
+    <div style="display:flex;gap:12px;margin-top:30px;position:relative" id="cols"></div>
+  </div>
+
+  <!-- 4 voice -->
+  <div class="scr" id="s3" style="text-align:center">
+    <div class="small mono" style="letter-spacing:.14em;margin-top:20px">AI AGENT · ON CALL</div>
+    <div id="avatar" style="width:180px;height:180px;border-radius:50%;margin:36px auto 0;background:var(--grad);display:grid;place-items:center;position:relative">
+      <svg width="80" height="80" viewBox="0 0 24 24"><path fill="#0b031c" d="M5 4h3.5l1.6 4.2-2.1 1.4a11 11 0 0 0 5.4 5.4l1.4-2.1L19 14.5V18a2 2 0 0 1-2.2 2A16 16 0 0 1 3 6.2 2 2 0 0 1 5 4Z"/></svg>
+      <i class="ring" style="position:absolute;inset:0;border-radius:50%;border:3px solid var(--amber)"></i><i class="ring" style="position:absolute;inset:0;border-radius:50%;border:3px solid var(--amber)"></i>
+    </div>
+    <div class="disp" style="font-size:42px;font-weight:600;margin-top:28px">Ananya</div>
+    <div class="small">AI receptionist · <span id="ctime">0:00</span></div>
+    <div id="eq" style="display:flex;gap:7px;justify-content:center;align-items:center;height:90px;margin-top:20px"></div>
+    <div id="tx" style="text-align:left;margin-top:16px;display:flex;flex-direction:column;gap:14px;font-size:24px;line-height:1.35"></div>
+  </div>
+
+  <!-- 5 cloud -->
+  <div class="scr" id="s4">
+    <div class="mono small" style="letter-spacing:.14em">SECURITY POSTURE</div>
+    <div class="disp" style="font-size:44px;font-weight:600;margin-top:12px">Audit-ready</div>
+    <div style="position:relative;height:330px;margin-top:20px">
+      <svg width="452" height="330" viewBox="0 0 452 330" id="shieldSvg"><ellipse cx="226" cy="165" rx="200" ry="120" fill="none" stroke="rgba(244,239,230,.15)" stroke-dasharray="4 8"/>
+      <path d="M226 50 L300 80 V160 C300 215 266 250 226 270 C186 250 152 215 152 160 V80 Z" fill="rgba(255,159,28,.15)" stroke="#ff9f1c" stroke-width="3"/>
+      <path id="chk" d="M196 160 l22 22 l40 -46" fill="none" stroke="#ffd93d" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1 1"/>
+      <g id="orb"><circle cx="426" cy="165" r="10" fill="#ffd93d"/><circle cx="26" cy="165" r="8" fill="#ff5a1f"/></g></svg>
+    </div>
+    <div id="checks" style="display:flex;flex-direction:column;gap:14px;margin-top:6px"></div>
+  </div>
+  <div class="scr" id="s5" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0"><img src="mark.png" style="width:300px"><div style="font-family:'Bricolage Grotesque';font-weight:600;letter-spacing:.3em;font-size:40px;margin-top:30px;padding-left:.3em">CLOUDISOFT</div></div>
+  </div></div>
+</div>
+
+<div id="dots" class="abs"><i></i><i></i><i></i><i></i><i></i></div>
+
+<div id="outro" class="abs">
+  <div class="h">Let’s build yours.</div>
+  <div class="cta" style="margin-top:50px"><span class="ic" style="background:rgba(37,211,102,.18);color:#25D366"><svg width="40" height="40" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2a9.9 9.9 0 0 0-8.5 14.98L2 22l5.17-1.5A9.93 9.93 0 1 0 12.04 2Zm4.5 11.99c-.25-.12-1.46-.72-1.69-.8-.23-.08-.39-.12-.55.12-.17.25-.64.8-.78.97-.14.16-.29.18-.53.06a6.7 6.7 0 0 1-3.32-2.9c-.25-.43.25-.4.72-1.33.08-.16.04-.3-.02-.43l-.75-1.8c-.2-.48-.4-.41-.55-.42h-.47a.9.9 0 0 0-.65.3 2.74 2.74 0 0 0-.86 2.04 4.76 4.76 0 0 0 1 2.53 10.9 10.9 0 0 0 4.17 3.68c1.55.67 2.16.73 2.94.61.47-.07 1.46-.6 1.66-1.17.2-.58.2-1.07.15-1.17-.06-.1-.22-.17-.47-.29Z"/></svg></span>WhatsApp +91 88668 19132</div>
+  <div class="cta"><span class="ic" style="background:rgba(255,159,28,.15);color:#ff9f1c"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h3.5l1.6 4.2-2.1 1.4a11 11 0 0 0 5.4 5.4l1.4-2.1L19 14.5V18a2 2 0 0 1-2.2 2A16 16 0 0 1 3 6.2 2 2 0 0 1 5 4Z"/></svg></span>Call / text +1 (484) 990-7692</div>
+  <div class="mono" style="margin-top:60px;font-size:34px;color:var(--mute)">cloudisoft.com · @cloudisoftllc</div>
+  <div style="display:inline-block;margin-top:44px;padding:22px 48px;border-radius:999px;background:var(--grad);color:var(--ink);font-weight:600;font-size:38px">Get a free quote →</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease=x=>1-Math.pow(1-clamp(x),3);
+const inout=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+const prog=(t,a,b)=>clamp((t-a)/(b-a));
+
+const SV=[
+ {lbl:'01 / WEBSITES',ttl:'Websites',sub:'Fast, mobile-first, built to rank',price:'from $200'},
+ {lbl:'02 / AUTOMATIONS',ttl:'Automations',sub:'Your tools, talking to each other',price:'from $750'},
+ {lbl:'03 / CRM',ttl:'CRM setup',sub:'One pipeline for every lead',price:'HubSpot · Zoho · Salesforce'},
+ {lbl:'04 / AI VOICE AGENTS',ttl:'AI voice agents',sub:'Answers every call, 24/7',price:'from $1,000'},
+ {lbl:'05 / CLOUD & SECURITY',ttl:'Cloud & SOC 2',sub:'Secure infrastructure, audit-ready',price:'from $1,500'},
+];
+const FLOAT=[['Websites',-300,120],['WhatsApp',330,260],['CRM',-310,520],['AI Voice',320,700],['SOC 2',-290,880],['Automations',300,980]];
+const T0=3.0, SEG=4.2, T_END=T0+SEG*5, DUR=28;
+
+// circuit decor
+(function(){const c=$('circ');const P=['M0 520 H200 L240 480 H420','M1080 420 H900 L860 380 H700','M0 1500 H160 L200 1540 H360','M1080 1640 H880 L840 1600 H700','M0 300 H120 L160 260 H300'];
+ c.innerHTML=P.map((d,i)=>`<path d="${d}" fill="none" stroke="rgba(244,239,230,.08)" stroke-width="2"/><path class="pulse" d="${d}" pathLength="1" fill="none" stroke="url(#pg)" stroke-width="3" stroke-linecap="round" stroke-dasharray=".12 .88"/>`).join('')+'<defs><linearGradient id="pg"><stop offset="0" stop-color="#ff5a1f"/><stop offset="1" stop-color="#ffd93d"/></linearGradient></defs>';})();
+// floaters
+$('floaters').innerHTML=FLOAT.map(f=>`<div class="chipF">${f[0]}</div>`).join('');
+// flow
+const FLOW=[['📝','New lead from website form'],['🤖','AI reads & qualifies the enquiry'],['📇','Added to CRM · assigned to sales'],['💬','WhatsApp reply sent instantly'],['🧾','Quote & invoice drafted'],['🔔','Team notified on Slack']];
+$('flow').innerHTML=FLOW.map(f=>`<div class="card row fi" style="padding:18px 20px;opacity:0"><div class="ok" style="font-size:22px">${f[0]}</div><div style="font-size:24px;flex:1">${f[1]}</div><div style="color:#ffd93d;font-size:26px">✓</div></div>`).join('');
+// crm
+const COLS=['New','Qualified','Won'];
+$('cols').innerHTML=COLS.map((c,i)=>`<div style="flex:1"><div class="mono small" style="margin-bottom:12px">${c.toUpperCase()}</div>${[0,1,2].map(k=>`<div class="card" style="height:${120}px;margin-bottom:12px;padding:16px;${(i===1&&k===2)||(i===2&&k===0)?'opacity:0':''}"><div class="bar" style="width:70%"></div><div class="bar" style="width:45%;margin-top:12px;background:rgba(244,239,230,.1)"></div></div>`).join('')}</div>`).join('')+
+ `<div id="deal" class="card" style="position:absolute;left:0;top:42px;width:calc((100% - 24px)/3);height:120px;padding:16px;background:rgba(255,159,28,.18);border-color:#ff9f1c"><div class="bar" style="width:70%;background:#ffd93d"></div><div class="small" style="margin-top:12px;color:#ffd93d;font-size:20px">Acme Clinic</div></div>`+
+ `<div id="won" class="card row" style="position:absolute;left:0;right:0;top:520px;padding:20px;background:#1a1233;opacity:0"><div class="ok">✓</div><div><div style="font-size:24px;font-weight:600">Deal moved to Won</div><div class="small">Follow-up sent automatically</div></div></div>`;
+// eq
+$('eq').innerHTML=Array.from({length:22},()=>'<i style="width:9px;border-radius:5px;background:var(--amber);display:block"></i>').join('');
+const TX=[['Ananya','Hello! Sunrise Clinic, how can I help?'],['Priya','I’d like an appointment this week.'],['Ananya','Tomorrow at 11:30 or 5 — which suits you?']];
+$('tx').innerHTML=TX.map((x,i)=>`<div class="tl" style="opacity:0;${i%2?'padding-left:40px':''}"><span class="mono" style="font-size:18px;color:${i%2?'#a7a0b8':'#ff9f1c'};letter-spacing:.1em">${x[0].toUpperCase()}</span><br>${x[1]}</div>`).join('')+
+ '<div id="booked" class="mono" style="opacity:0;padding:14px 18px;border-radius:16px;border:1px solid rgba(255,159,28,.4);background:rgba(255,159,28,.08);color:#ffd93d;font-size:20px">✓ book_appointment · tomorrow 11:30</div>';
+const CHK=['MFA enforced for every account','Backups encrypted & tested','Logging & alerts switched on','SOC 2 policies & evidence ready'];
+$('checks').innerHTML=CHK.map(c=>`<div class="card row ck" style="padding:16px 18px;opacity:0"><div class="ok">✓</div><div style="font-size:23px">${c}</div></div>`).join('');
+
+function render(t){
+  // background pulses
+  document.querySelectorAll('.pulse').forEach((p,i)=>p.setAttribute('stroke-dashoffset',String(-((t/(4+i%3))+i*.2)%1)));
+  $('g2').style.transform=`translate(${Math.sin(t*.4)*60}px,${Math.cos(t*.3)*60}px)`;
+
+  // intro 0-3.2
+  const io=ease(prog(t,0,1)), oo=prog(t,2.5,3.1);
+  const intro=$('intro'); intro.style.opacity=io*(1-oo);
+  intro.style.transform=`scale(${0.92+0.08*io+0.1*oo}) translateY(${(1-io)*40}px)`;
+  intro.querySelector('img').style.transform=`rotate(${(1-io)*-8}deg)`;
+  intro.querySelector('.name').style.letterSpacing=`${0.6-0.28*ease(prog(t,0.2,1.4))}em`;
+  intro.querySelector('.tag').style.opacity=ease(prog(t,0.9,1.6));
+
+  // phone enter / float / exit
+  const pin=ease(prog(t,2.9,3.9)), pout=inout(prog(t,T_END,T_END+0.9));
+  const pw=$('phoneWrap');
+  const fy=Math.sin(t*1.5)*16, rot=Math.sin(t*0.8)*2.4, ry=Math.sin(t*0.6)*6;
+  pw.style.opacity=pin;
+  pw.style.transform=`translateY(${(1-pin)*500 - pout*430 + fy}px) scale(${1-pout*0.42}) perspective(1600px) rotateY(${ry}deg) rotate(${rot}deg)`;
+  // floaters
+  document.querySelectorAll('.chipF').forEach((el,i)=>{const f=FLOAT[i];const a=ease(prog(t,3.4+i*0.15,4.2+i*0.15))*(1-prog(t,T_END-0.3,T_END+0.3));
+    el.style.opacity=a*0.95; el.style.left=f[1]<0?`${-170 + Math.sin(i)*20}px`:`${470 + Math.cos(i)*20}px`; el.style.top=`${f[2]+Math.sin(t*1.2+i)*14}px`; el.style.transform=`scale(${0.8+0.2*a})`;
+    const active=Math.floor((t-T0)/SEG); el.style.borderColor=(['Websites','Automations','CRM','AI Voice','SOC 2'].indexOf(f[0])===active)?'#ff9f1c':'rgba(244,239,230,.14)';});
+
+  // caption + screens
+  const k=clamp(Math.floor((t-T0)/SEG),0,4), lt=t-T0-k*SEG;
+  const capIn=ease(prog(lt,0,0.5)), capOut=k<4?prog(lt,SEG-0.35,SEG):prog(t,T_END-0.2,T_END+0.4);
+  const cap=$('cap'); cap.style.opacity=(t<T0?0:capIn*(1-capOut));
+  cap.style.transform=`translateY(${(1-capIn)*30 - capOut*20}px)`;
+  $('lbl').textContent=SV[k].lbl; $('ttl').innerHTML=SV[k].ttl.replace(/(\S+)$/,'<span class="grad">$1</span>'); $('sub').textContent=SV[k].sub; $('price').textContent=SV[k].price;
+  for(let i=0;i<5;i++){const s=$('s'+i); const on=(i===k&&t>=T0-0.3); const l=t-T0-i*SEG;
+    const a=on?ease(prog(l,-0.1,0.4))*(1-prog(l,SEG-0.3,SEG)):0; s.style.opacity=a; s.style.transform=`translateX(${(1-ease(prog(l,-0.1,0.45)))*60}px)`;}
+  const l0=t-T0, l1=l0-SEG, l2=l0-2*SEG, l3=l0-3*SEG, l4=l0-4*SEG;
+  // s0 website build
+  document.querySelectorAll('#s0 .b').forEach((b,i)=>{const p=ease(prog(l0,0.3+i*0.22,0.8+i*0.22));b.style.opacity=p;b.style.transform=`scale(${0.9+0.1*p})`;b.style.transformOrigin='left center'});
+  const tst=ease(prog(l0,2.6,3.0)); $('toast0').style.opacity=tst; $('toast0').style.transform=`translateY(${(1-tst)*40}px)`;
+  // s1 flow
+  document.querySelectorAll('.fi').forEach((f,i)=>{const p=ease(prog(l1,0.35+i*0.45,0.75+i*0.45)); f.style.opacity=p; f.style.transform=`translateX(${(1-p)*-40}px)`; f.style.borderColor=(p>0.99&&l1<0.75+i*0.45+0.5)?'#ff9f1c':'rgba(244,239,230,.1)'});
+  // s2 crm deal move
+  const d1=inout(prog(l2,0.8,1.6)), d2=inout(prog(l2,2.0,2.8)); const deal=$('deal');
+  if(deal){const colW=(452-24)/3+12; deal.style.transform=`translate(${(d1+d2)*colW}px, ${d1*(1-d2)*264}px)`;}
+  const wn=ease(prog(l2,2.9,3.3)); $('won').style.opacity=wn; $('won').style.transform=`translateY(${(1-wn)*30}px)`;
+  // s3 voice
+  document.querySelectorAll('.ring').forEach((r,i)=>{const p=((l3*0.7+i*0.5)%1+1)%1; r.style.transform=`scale(${1+p*0.8})`; r.style.opacity=1-p});
+  document.querySelectorAll('#eq i').forEach((e,i)=>{const h=18+Math.abs(Math.sin(l3*7+i*0.7)*Math.sin(l3*3.1+i))*70; e.style.height=h+'px'; e.style.background=(Math.floor(l3/1.1)%2)?'#f4efe6':'#ff9f1c'});
+  const sec=Math.max(0,Math.floor(l3)); $('ctime').textContent=`0:${String(sec).padStart(2,'0')}`;
+  document.querySelectorAll('.tl').forEach((e,i)=>{const p=ease(prog(l3,0.5+i*0.95,0.9+i*0.95)); e.style.opacity=p; e.style.transform=`translateY(${(1-p)*20}px)`});
+  const bk=ease(prog(l3,3.4,3.8)); $('booked').style.opacity=bk;
+  // s4 cloud
+  $('orb').setAttribute('transform',`rotate(${l4*60} 226 165)`);
+  $('chk').setAttribute('stroke-dashoffset',String(1-ease(prog(l4,0.3,1.0))));
+  document.querySelectorAll('.ck').forEach((e,i)=>{const p=ease(prog(l4,0.8+i*0.5,1.2+i*0.5)); e.style.opacity=p; e.style.transform=`translateY(${(1-p)*24}px)`});
+
+  const l5=ease(prog(t,T_END-0.2,T_END+0.5)); $('s5').style.opacity=l5; $('s5').style.transform=`scale(${0.9+0.1*l5})`;
+  // dots
+  document.querySelectorAll('#dots i').forEach((d,i)=>{d.style.width=(i===k&&t>=T0&&t<T_END)?'54px':'14px'; d.style.background=(i===k&&t>=T0&&t<T_END)?'#ff9f1c':(i<k||t>=T_END)&&t>=T0?'rgba(255,159,28,.5)':'rgba(244,239,230,.2)'});
+  $('dots').style.opacity=prog(t,T0,T0+0.5)*(1-prog(t,T_END,T_END+0.5));
+
+  // outro
+  const ot=ease(prog(t,T_END+0.4,T_END+1.2)); const out=$('outro'); out.style.opacity=ot; out.style.transform=`translateY(${(1-ot)*60}px)`;
+  [...out.children].forEach((c,i)=>{const p=ease(prog(t,T_END+0.5+i*0.18,T_END+1.1+i*0.18)); c.style.opacity=p; c.style.transform=`translateY(${(1-p)*30}px)`});
+  const fade=prog(t,DUR-0.4,DUR); document.body.style.filter=`brightness(${1-fade*0.0})`;
+}
+window.render=render; window.DUR=DUR;
+render(0);
+</script></body></html>

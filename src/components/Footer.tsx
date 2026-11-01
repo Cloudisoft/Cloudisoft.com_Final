@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
 import Social from "./Social";
-import { CONTACT, LINKS, SERVICES } from "../lib/site";
+import { CONTACT, LINKS, SERVICES, serviceUrl } from "../lib/site";
 
 export default function Footer() {
   const head = "mb-4 font-mono text-[11px] uppercase tracking-[0.18em] text-mute";
@@ -40,7 +40,7 @@ export default function Footer() {
           <ul className="space-y-2.5 text-[14px]">
             {SERVICES.map((s) => (
               <li key={s.id}>
-                <Link to={`/services#${s.id}`} className={link}>{s.name}</Link>
+                <Link to={serviceUrl(s.id)} className={link}>{s.name}</Link>
               </li>
             ))}
           </ul>
