@@ -1,58 +1,32 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./Home";
 
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import AgentsSection from "./components/AgentsSection";
-import CloudiCoreSection from "./components/CloudiCoreSection";
-import Pricing from "./components/Pricing";
-import RapidBuildSection from "./components/RapidBuildSection";
-import ContactSection from "./components/ContactSection";
-import Footer from "./components/Footer";
+// Secondary routes are code-split so the landing page stays light.
+const CloudiCore = lazy(() => import("./pages/cloudicore"));
+const AuthCallback = lazy(() => import("./pages/AuthCallback"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Verified = lazy(() => import("./pages/Verified"));
 
-// Pages
-import CloudiCore from "./pages/cloudicore";
-import AuthCallback from "./pages/AuthCallback";
-import Dashboard from "./pages/Dashboard";
-import Verified from "./pages/Verified";
-
-function Home() {
+export function AppRoutes() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-cloudi-bg to-black text-white">
-      <Navbar />
-      <main className="pt-20 space-y-32 pb-24">
-        <Hero />  
-        <AgentsSection />  
-        <CloudiCoreSection /> 
-        <Pricing /> 
-        <RapidBuildSection />
-        <ContactSection />
-      </main>
-      <Footer />
-    </div>
-  );
-}
-
-function App() {
-  return (
-    <Router>
+    <Suspense fallback={<div className="min-h-screen bg-ink" />}>
       <Routes>
-        {/* Landing Page */}
         <Route path="/" element={<Home />} />
-
-        {/* CloudiCore Simulator Page */}
         <Route path="/cloudicore" element={<CloudiCore />} />
-
-        {/* OAuth Redirect Page (Google + Microsoft + Email verification) */}
         <Route path="/auth/callback" element={<AuthCallback />} />
-
-        {/* After Email Verification Redirect */}
         <Route path="/verified" element={<Verified />} />
-
-        {/* Dashboard Page */}
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="*" element={<Home />} />
       </Routes>
-    </Router>
+    </Suspense>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  );
+}

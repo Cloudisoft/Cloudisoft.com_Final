@@ -1,32 +1,30 @@
-# 🌩️ Cloudisoft — Automate Intelligence. Amplify Growth.
+# Cloudisoft — www.cloudisoft.com
 
-This repository contains the landing page for **Cloudisoft**, a platform that delivers custom AI Agents and predictive business simulations to automate workflows, increase efficiency, and empower smarter decision-making.
+Marketing site for Cloudisoft: custom AI agents, CloudiVoice, ApplyFlux, CloudiCore and RapidBuild.
 
-Built with:
-- ⚛️ React (TypeScript)
-- ⚡ Vite
-- 🎨 Tailwind CSS
+React + TypeScript + Vite + Tailwind. The home page is **prerendered at build time** so search engines
+and AI answer engines receive real HTML, structured data (Organization, WebSite, FAQPage) and a CSP.
 
----
+## Scripts
 
-## 🚀 Features
+```bash
+npm install
+npm run dev        # local dev server
+npm run build      # client build → SSR build → prerender into dist/index.html
+npm run preview    # serve dist/
+npm run typecheck
+```
 
-### 🧠 Custom AI Agents
-- Autonomous 24/7 systems tailored to your business
-- CRM, API, and Google Sheets integrations
-- Natural language communication (email/voice/chat)
+## Where things live
 
-### 🔮 CloudiCore Decision Simulator
-- Test business scenarios before executing them
-- Predict outcomes, risks, and profitability
+| What | Where |
+| --- | --- |
+| Links, products, contact details, FAQs (single source of truth) | `src/lib/site.ts` |
+| Voice demo (English sample calls + timed transcripts) | `src/components/VoiceDemo.tsx`, `src/data/voiceSamples.json`, `public/samples/` |
+| Scroll animations | `src/hooks/useScrollFx.ts`, `.reveal` / `.split-line` / `.trace-*` in `src/index.css` |
+| Prerender + CSP + JSON-LD | `scripts/prerender.mjs`, `src/entry-server.tsx` |
+| SEO / AEO files | `public/robots.txt`, `public/sitemap.xml`, `public/llms.txt`, `public/og-image.jpg` |
+| Security headers | `render.yaml` (Render), `public/_headers` (Netlify / Cloudflare Pages) |
+| Contact API (optional; the form posts to Formspree) | `server/` |
 
-### 📦 Pricing System
-- Starter • Pro • Enterprise
-- Upgradable with AI Strategy Add-on
-
-### 📬 Contact / Inquiry Form
-- Collect business leads with requirements
-
----
-
-## 📁 Project Structure
+Brand colours come from the logo: ink `#0B031C`, ember `#FF5A1F`, amber `#FF9F1C`, sun `#FFD93D`.
