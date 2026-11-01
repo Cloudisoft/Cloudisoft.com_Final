@@ -36,18 +36,27 @@ for (const url of PRERENDERED) {
   const ogImage = `${SITE}/og/${ogName}.jpg`;
   const json = JSON.stringify(structuredData(url)).replace(/</g, "\\u003c");
 
-  let html = template
-    .replace("<!--app-html-->", render(url))
-    .replace("<!--json-ld-->", `<script type="application/ld+json">${json}</script>`)
-    .replace("<!--csp-->", `<meta http-equiv="Content-Security-Policy" content="${csp}" />`)
-    .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(meta.title)}</title>`)
-    .replace(/(<meta\s+name="description"\s+content=")[^"]*(")/, `$1${esc(meta.description)}$2`)
-    .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${canonical}$2`)
-    .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${canonical}$2`)
-    .replace(/(<meta (?:property="og:title"|name="twitter:title") content=")[^"]*(")/g, `$1${esc(meta.title)}$2`)
-    .replace(/(<meta (?:property="og:description"|name="twitter:description") content=")[^"]*(")/g, `$1${esc(meta.description)}$2`)
-    .replace(/(<meta (?:property="og:image"|name="twitter:image") content=")[^"]*(")/g, `$1${ogImage}$2`)
-    .replace(/(<meta property="og:image:alt" content=")[^"]*(")/, `$1${esc(meta.title)}$2`);
+  // Function replacers: a "$" in the page text (e.g. "from $200") must never be read as a regex back-reference.
+  const attr = (re, value) => (h) => h.replace(re, (_m, a, b) => `${a}${value}${b}`);
+  const steps = [
+    (h) => h.replace("<!--app-html-->", () => render(url)),
+    (h) => h.replace("<!--json-ld-->", () => `<script type="application/ld+json">${json}</script>`),
+    (h) => h.replace("<!--csp-->", () => `<meta http-equiv="Content-Security-Policy" content="${csp}" />`),
+    (h) => h.replace(/<title>[\s\S]*?<\/title>/, () => `<title>${esc(meta.title)}</title>`),
+    attr(/(<meta\s+name="description"\s+content=")[^"]*(")/, esc(meta.description)),
+    attr(/(<link rel="canonical" href=")[^"]*(")/, canonical),
+    attr(/(<meta property="og:url" content=")[^"]*(")/, canonical),
+    attr(/(<meta (?:property="og:title"|name="twitter:title") content=")[^"]*(")/g, esc(meta.title)),
+    attr(/(<meta (?:property="og:description"|name="twitter:description") content=")[^"]*(")/g, esc(meta.description)),
+    attr(/(<meta (?:property="og:image"|name="twitter:image") content=")[^"]*(")/g, ogImage),
+    attr(/(<meta property="og:image:alt" content=")[^"]*(")/, esc(meta.title)),
+  ];
+  let html = steps.reduce((h, step) => step(h), template);
+
+  // Guard: fail the build if the head doesn't carry this page's exact metadata.
+  for (const needle of [`<title>${esc(meta.title)}</title>`, `name="description" content="${esc(meta.description)}"`, `href="${canonical}"`]) {
+    if (!html.includes(needle)) throw new Error(`prerender ${url}: metadata missing or corrupted → ${needle.slice(0, 80)}`);
+  }
 
   if (url === "/") {
     fs.writeFileSync(path.join(dist, "index.html"), html);
