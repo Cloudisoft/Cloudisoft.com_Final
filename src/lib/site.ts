@@ -115,6 +115,148 @@ export const SERVICES: {
   },
 ];
 
+export type ServiceDetail = {
+  slug: string;
+  title: string; // <title>
+  metaDescription: string;
+  headline: string;
+  intro: string;
+  goodFit: string[];
+  outcomes: { k: string; v: string }[];
+  faqs: { q: string; a: string }[];
+};
+
+export const SERVICE_DETAILS: Record<ServiceId, ServiceDetail> = {
+  web: {
+    slug: "website-development",
+    title: "Website Development from $200 — Business Websites & Landing Pages | Cloudisoft",
+    metaDescription:
+      "Fast, mobile-first business websites and landing pages from $200. Design, SEO, forms, booking, payments and hosting by Cloudisoft (US & India). Get a quote on WhatsApp.",
+    headline: "Websites that load fast, rank and bring in enquiries.",
+    intro:
+      "We design and build business websites, landing pages and web apps that look sharp on every phone, show up on Google and turn visitors into WhatsApp messages, calls and form enquiries.",
+    goodFit: [
+      "You need a new website or your current one looks dated",
+      "You run ads and need a landing page that converts",
+      "Customers should be able to book, pay or enquire online",
+      "You want to own your site, domain and data",
+    ],
+    outcomes: [
+      { k: "from $200", v: "landing pages and small business sites" },
+      { k: "Days", v: "to launch a landing page" },
+      { k: "100%", v: "yours — code, domain and content" },
+    ],
+    faqs: [
+      { q: "How much does a website cost?", a: "A landing page or small business website starts from $200. Larger sites, online stores and web apps are quoted on scope — you get a fixed price before we start." },
+      { q: "Will my website show up on Google?", a: "Every site we build includes technical SEO: fast loading, proper titles and descriptions, structured data, a sitemap and Google Search Console setup." },
+      { q: "Can you redesign my existing website?", a: "Yes. We can redesign on your current platform or rebuild it, keeping your domain and existing search rankings." },
+    ],
+  },
+  automation: {
+    slug: "business-automation",
+    title: "Business Process Automation from $750 — Workflow & AI Automation | Cloudisoft",
+    metaDescription:
+      "Automate data entry, lead handling, invoicing and reporting. We connect Google Workspace, WhatsApp, CRMs, Sheets and APIs with AI. Automations from $750.",
+    headline: "Stop copying data between tools. Let it move on its own.",
+    intro:
+      "We map how work moves through your business, then connect your forms, inboxes, spreadsheets, CRM and accounting tools so leads, orders and invoices flow automatically — with AI handling the reading, sorting and drafting.",
+    goodFit: [
+      "Your team re-types the same data into several tools",
+      "Leads from forms, ads or WhatsApp get missed or answered late",
+      "Invoices, reports or follow-ups are done by hand every week",
+      "You want alerts when something needs a person",
+    ],
+    outcomes: [
+      { k: "from $750", v: "per automated workflow" },
+      { k: "24/7", v: "runs without anyone watching" },
+      { k: "Alerts", v: "when a human needs to step in" },
+    ],
+    faqs: [
+      { q: "What can be automated?", a: "Lead capture and routing, follow-up emails and WhatsApp messages, invoice and order processing, data sync between apps, document reading with AI, and scheduled reports." },
+      { q: "Which tools do you connect?", a: "Google Workspace, Microsoft 365, WhatsApp Business, HubSpot, Zoho, Salesforce, Shopify, Stripe, Slack and most tools with an API or webhook." },
+      { q: "What happens if an automation fails?", a: "We add monitoring and alerts, so failures are flagged to you straight away instead of silently losing data." },
+    ],
+  },
+  crm: {
+    slug: "crm-setup",
+    title: "CRM Setup & Integration — HubSpot, Zoho, Salesforce | Cloudisoft",
+    metaDescription:
+      "CRM setup, clean-up and integration: pipelines, lead routing, follow-up sequences and dashboards, connected to your website, WhatsApp, calls and email.",
+    headline: "One clear pipeline for every lead and customer.",
+    intro:
+      "We set up or clean up your CRM so every lead is captured, assigned and followed up — and connect it to your website, WhatsApp, phone calls and email so nothing lives in someone’s inbox.",
+    goodFit: [
+      "Leads are tracked in spreadsheets or WhatsApp chats",
+      "Your CRM is set up but nobody trusts the data",
+      "You can’t see where deals get stuck",
+      "You want follow-ups to happen automatically",
+    ],
+    outcomes: [
+      { k: "1", v: "source of truth for every lead" },
+      { k: "Auto", v: "lead routing and follow-ups" },
+      { k: "Live", v: "pipeline dashboards" },
+    ],
+    faqs: [
+      { q: "Which CRM should I use?", a: "It depends on team size, budget and the tools you already use. We commonly work with HubSpot, Zoho CRM and Salesforce, and recommend one after a short discovery call." },
+      { q: "Can you move my data from spreadsheets?", a: "Yes. We import, de-duplicate and clean your existing contacts and deals as part of the setup." },
+      { q: "How is CRM work priced?", a: "CRM setup is quoted together with automations, which start from $750. You get a fixed price before work begins." },
+    ],
+  },
+  voice: {
+    slug: "ai-voice-agents",
+    title: "AI Voice Agents from $1,000 — AI Phone Receptionist & Calling | Cloudisoft",
+    metaDescription:
+      "AI voice agents that answer calls 24/7, qualify leads and book appointments in English, Hindi and 9 Indian languages. Hear a sample call. From $1,000.",
+    headline: "An AI phone agent that never misses a call.",
+    intro:
+      "Our AI voice agents, built on CloudiVoice, answer inbound calls, make outbound follow-ups, qualify leads and book appointments into your calendar — in English, Hindi and nine more Indian languages — and transfer to your team when a caller asks for a person.",
+    goodFit: [
+      "You miss calls after hours or when lines are busy",
+      "Your team spends hours on repetitive enquiry calls",
+      "You need to follow up hundreds of leads by phone",
+      "Callers speak Hindi, Gujarati or other Indian languages",
+    ],
+    outcomes: [
+      { k: "from $1,000", v: "for a production voice agent" },
+      { k: "11", v: "languages, incl. Hindi & Gujarati" },
+      { k: "24/7", v: "answers every call" },
+    ],
+    faqs: [
+      { q: "Does the AI voice agent sound natural?", a: "Yes. You can play real sample calls on our home page. Agents handle interruptions, confirm details back to the caller and switch between Hindi and English naturally." },
+      { q: "Can the agent transfer calls to a human?", a: "Yes. When a caller asks for a person, or the agent can’t help, it transfers the call to your team with the context." },
+      { q: "Can it book appointments and update my CRM?", a: "Yes. Agents check availability, book into your calendar and log every call, transcript and outcome in your CRM." },
+    ],
+  },
+  cloud: {
+    slug: "cloud-security-compliance",
+    title: "Cloud Infrastructure, Security & SOC 2 Readiness from $1,500 | Cloudisoft",
+    metaDescription:
+      "Remote IT infrastructure on AWS, Azure or Google Cloud, security hardening and SOC 2 compliance readiness — access control, backups, logging and policies. From $1,500.",
+    headline: "Cloud infrastructure that’s secure and audit-ready.",
+    intro:
+      "We design, build or migrate your cloud infrastructure, lock it down with strong identity, backups and monitoring, and prepare your company for SOC 2 and similar audits with the policies and evidence auditors ask for.",
+    goodFit: [
+      "You’re moving from local servers or shared hosting to the cloud",
+      "A customer has asked for SOC 2 or a security questionnaire",
+      "You don’t know who has access to what",
+      "You have no tested backup or incident plan",
+    ],
+    outcomes: [
+      { k: "from $1,500", v: "for cloud and security projects" },
+      { k: "SOC 2", v: "readiness, policies and evidence" },
+      { k: "AWS · Azure · GCP", v: "remote infrastructure" },
+    ],
+    faqs: [
+      { q: "Can you make us SOC 2 compliant?", a: "We prepare you for the audit — controls, policies, access reviews, logging, backups and evidence collection. The SOC 2 report itself is issued by an independent CPA firm, which we can coordinate with." },
+      { q: "Which cloud providers do you work with?", a: "AWS, Microsoft Azure and Google Cloud, as well as Microsoft 365 and Google Workspace administration." },
+      { q: "Can you manage our IT remotely?", a: "Yes. We can build and run remote IT infrastructure — user accounts, devices, access, backups and monitoring — for teams in the US and India." },
+    ],
+  },
+};
+
+export const serviceUrl = (id: ServiceId) => `/services/${SERVICE_DETAILS[id].slug}`;
+export const waLink = (text: string) => `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`;
+
 export const PRICING = [
   {
     id: "web",
@@ -217,7 +359,7 @@ export const FAQS = [
 ];
 
 /** Per-route metadata, used for prerendering and client-side title updates. */
-export const PAGES: Record<string, { title: string; description: string }> = {
+export const PAGES: Record<string, { title: string; description: string; og?: string }> = {
   "/": {
     title: "Cloudisoft — Websites, Automations, CRM & AI Voice Agents",
     description:
@@ -242,5 +384,11 @@ export const PAGES: Record<string, { title: string; description: string }> = {
     description: "The terms that govern use of the Cloudisoft website and services.",
   },
 };
+
+
+for (const s of SERVICES) {
+  const d = SERVICE_DETAILS[s.id];
+  PAGES[`/services/${d.slug}`] = { title: d.title, description: d.metaDescription, og: `/og/${d.slug}.jpg` };
+}
 
 export const usd = (n: number) => `$${n.toLocaleString("en-US")}`;

@@ -4,7 +4,7 @@
   var pre = ["/", "/about", "/services", "/privacy", "/terms"];
   var path = location.pathname.replace(/\/+$/, "") || "/";
   d.classList.add("js");
-  if (pre.indexOf(path) === -1) d.setAttribute("data-route", "other");
+  if (pre.indexOf(path) === -1 && path.indexOf("/services/") !== 0) d.setAttribute("data-route", "other");
   // Safety net: if the app bundle fails to load, never leave content hidden.
   setTimeout(function () {
     if (!window.__cloudiReady) {

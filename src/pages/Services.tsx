@@ -7,7 +7,8 @@ import FAQ from "../components/FAQ";
 import CtaBand from "../components/CtaBand";
 import ContactSection from "../components/ContactSection";
 import { Check, ArrowRight } from "../components/Icons";
-import { SERVICES, usd } from "../lib/site";
+import { Link } from "react-router-dom";
+import { SERVICES, serviceUrl, usd } from "../lib/site";
 
 export default function Services() {
   return (
@@ -61,9 +62,12 @@ export default function Services() {
                   </li>
                 ))}
               </ul>
-              <a href="#contact" className="reveal btn-secondary mt-9" style={{ ["--d" as any]: "360ms" }}>
-                Get a quote for {s.name.toLowerCase()} <ArrowRight />
-              </a>
+              <div className="reveal mt-9 flex flex-wrap gap-3" style={{ ["--d" as any]: "360ms" }}>
+                <Link to={serviceUrl(s.id)} className="btn-primary">
+                  Explore {s.name.toLowerCase()} <ArrowRight />
+                </Link>
+                <a href="#contact" className="btn-secondary">Get a quote</a>
+              </div>
             </div>
           </div>
         </section>

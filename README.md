@@ -15,6 +15,24 @@ npm run preview    # serve dist/
 npm run typecheck
 ```
 
+## Deploying (Railway)
+
+`railway.json` builds with `npm ci && npm run build` and starts `node server.mjs`
+(zero-dependency server: security headers, clean URLs, gzip, byte ranges, real 404s,
+`/healthz`, and a 301 from `cloudisoft.com` → `https://www.cloudisoft.com`).
+
+1. Railway → New Project → Deploy from GitHub repo → this repo, branch `main`.
+2. Settings → Networking → add custom domains `www.cloudisoft.com` and `cloudisoft.com`.
+3. At your DNS provider, replace the old records (the bare domain still points at Lovable)
+   with the CNAME targets Railway shows. Use CNAME flattening / ALIAS for the bare domain.
+4. Google Search Console → add `https://www.cloudisoft.com` → submit `/sitemap.xml`.
+
+## Marketing assets
+
+- `marketing/cloudisoft-reel-1080x1920.mp4` — 28-second 9:16 reel for Instagram/LinkedIn
+- `marketing/reel/` — the source; edit `reel.html`, then run `capture.cjs` + ffmpeg to re-render
+- `public/og/*.jpg` — per-page social share images
+
 ## Where things live
 
 | What | Where |

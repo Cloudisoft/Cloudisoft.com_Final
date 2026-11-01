@@ -3,6 +3,7 @@ import Hero from "../components/Hero";
 import Marquee from "../components/Marquee";
 import ServicesGrid from "../components/ServicesGrid";
 import Products from "../components/Products";
+import ReelSection from "../components/ReelSection";
 import Process from "../components/Process";
 import Pricing from "../components/Pricing";
 import FAQ from "../components/FAQ";
@@ -15,6 +16,7 @@ export default function Home() {
       <Hero />
       <Marquee />
       <ServicesGrid />
+      <ReelSection />
       <Products />
       <Process />
       <Pricing />
