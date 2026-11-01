@@ -17,7 +17,7 @@ npm run typecheck
 
 ## Deploying (Railway)
 
-`railway.json` builds with `npm ci && npm run build` and starts `node server.mjs`
+`railway.json` builds with `npm run build` and starts `node server.mjs`
 (zero-dependency server: security headers, clean URLs, gzip, byte ranges, real 404s,
 `/healthz`, and a 301 from `cloudisoft.com` → `https://www.cloudisoft.com`).
 
