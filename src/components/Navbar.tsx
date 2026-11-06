@@ -42,7 +42,7 @@ export default function Navbar() {
           <Logo />
         </Link>
 
-        <ul className="hidden items-center gap-8 text-[14px] text-mute md:flex">
+        <ul className="hidden items-center gap-7 text-[14px] text-mute lg:flex">
           {NAV.map((l) => (
             <li key={l.label}>
               {l.to ? (
@@ -67,7 +67,7 @@ export default function Navbar() {
 
         <button
           type="button"
-          className="relative h-10 w-10 rounded-full border hairline md:hidden"
+          className="relative h-10 w-10 rounded-full border hairline lg:hidden"
           aria-expanded={open}
           aria-controls="mobile-nav"
           aria-label={open ? "Close menu" : "Open menu"}
@@ -78,7 +78,7 @@ export default function Navbar() {
         </button>
       </nav>
 
-      <div id="mobile-nav" hidden={!open} className="section h-[calc(100dvh-68px)] overflow-y-auto pb-10 pt-4 md:hidden">
+      <div id="mobile-nav" hidden={!open} className="section h-[calc(100dvh-68px)] overflow-y-auto pb-10 pt-4 lg:hidden">
         <ul className="divide-y divide-white/[0.07] border-y hairline">
           {NAV.map((l, i) => (
             <li key={l.label} className="chip-in" style={{ animationDelay: `${i * 50}ms` }}>

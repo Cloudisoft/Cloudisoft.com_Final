@@ -10,6 +10,7 @@ export const COMPANY = "Cloudisoft LLC";
 export const LINKS = {
   cloudivoice: "https://cloudivoice.cloudisoft.com/",
   applyflux: "https://applyflux.cloudisoft.com/",
+  vyomira: "https://vyomira.cloudisoft.com/",
 };
 
 export const NAV = [
@@ -18,6 +19,7 @@ export const NAV = [
   { label: "Services", to: "/services" },
   { label: "ApplyFlux", href: LINKS.applyflux },
   { label: "CloudiVoice", href: LINKS.cloudivoice },
+  { label: "Vyomira", href: LINKS.vyomira },
 ];
 
 const WA_NUMBER = "918866819132";
@@ -320,6 +322,16 @@ export const PRODUCTS = [
     href: LINKS.applyflux,
     cta: "Explore ApplyFlux",
   },
+  {
+    id: "vyomira",
+    name: "Vyomira",
+    kicker: "Vedic astrology",
+    summary:
+      "Vedic birth charts computed from real astronomy, Vimshottari dasha timelines, and AURA — an AI companion that explains your chart in plain language and shows the placements behind every answer.",
+    points: ["Free Kundli", "Real ephemeris", "AURA AI guide"],
+    href: LINKS.vyomira,
+    cta: "Explore Vyomira",
+  },
 ];
 
 export const TOOLS = [
@@ -340,7 +352,7 @@ export const TOOLS = [
 export const FAQS = [
   {
     q: "What does Cloudisoft do?",
-    a: "Cloudisoft builds websites, workflow automations, CRM systems, AI voice agents and secure cloud infrastructure for growing businesses in the US and India. We also run two products: CloudiVoice (AI voice agents) and ApplyFlux (assisted job applications).",
+    a: "Cloudisoft builds websites, workflow automations, CRM systems, AI voice agents and secure cloud infrastructure for growing businesses in the US and India. We also run three products: CloudiVoice (AI voice agents), ApplyFlux (assisted job applications) and Vyomira (Vedic astrology with an AI guide).",
   },
   {
     q: "How much does a project cost?",

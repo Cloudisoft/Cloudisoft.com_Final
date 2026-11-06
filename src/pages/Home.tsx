@@ -3,6 +3,7 @@ import Hero from "../components/Hero";
 import Marquee from "../components/Marquee";
 import ServicesGrid from "../components/ServicesGrid";
 import Products from "../components/Products";
+import VyomiraSection from "../components/VyomiraSection";
 import ReelSection from "../components/ReelSection";
 import Process from "../components/Process";
 import Pricing from "../components/Pricing";
@@ -19,6 +20,7 @@ export default function Home() {
       <ServicesGrid />
       <ReelSection />
       <Products />
+      <VyomiraSection />
       <Process />
       <Pricing />
       <InsightsSection />

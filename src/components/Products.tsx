@@ -1,6 +1,7 @@
 import { PRODUCTS } from "../lib/site";
 import { ArrowUpRight } from "./Icons";
 import ServiceGfx from "./ServiceGfx";
+import { KundliGfx } from "./VyomiraSection";
 
 export default function Products({ eyebrow = "Our products" }: { eyebrow?: string }) {
   return (
@@ -12,13 +13,13 @@ export default function Products({ eyebrow = "Our products" }: { eyebrow?: strin
             Built by us. <span className="text-mute">Running every day.</span>
           </h2>
           <p className="reveal mt-6 max-w-lg text-[15.5px] leading-relaxed text-bone/65" style={{ ["--d" as any]: "160ms" }}>
-            Two products that started as client work and now run on their own — and power the solutions we build for you.
+            Three products we built and run ourselves — the same engineering that goes into the solutions we build for you.
           </p>
         </div>
 
-        <ul className="mt-14 grid gap-5 lg:grid-cols-2">
+        <ul className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {PRODUCTS.map((p, i) => (
-            <li key={p.id} id={p.id} className="reveal" style={{ ["--d" as any]: `${i * 120}ms` }}>
+            <li key={p.id} id={`product-${p.id}`} className="reveal" style={{ ["--d" as any]: `${i * 120}ms` }}>
               <a
                 href={p.href}
                 target="_blank"
@@ -26,8 +27,8 @@ export default function Products({ eyebrow = "Our products" }: { eyebrow?: strin
                 className="spotlight tilt group flex h-full flex-col overflow-hidden rounded-[22px] border hairline bg-ink-800/50 hover:border-amber/30"
               >
                 <div className="relative aspect-[16/8] border-b hairline bg-[radial-gradient(ellipse_at_center,rgba(255,159,28,0.07),transparent_70%)]">
-                  <div className="float-c h-full w-full" style={{ ["--fd" as any]: `${i * -3}s` }}>
-                    {p.id === "cloudivoice" ? <ServiceGfx id="voice" /> : <ApplyGfx />}
+                  <div className="float-c absolute inset-0" style={{ ["--fd" as any]: `${i * -3}s` }}>
+                    {p.id === "cloudivoice" ? <ServiceGfx id="voice" /> : p.id === "vyomira" ? <KundliGfx compact /> : <ApplyGfx />}
                   </div>
                 </div>
                 <div className="flex flex-1 flex-col p-7 sm:p-8">

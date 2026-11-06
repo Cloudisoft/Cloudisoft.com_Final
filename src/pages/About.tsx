@@ -17,7 +17,7 @@ const PRINCIPLES = [
 const FACTS = [
   { k: "2", v: "offices — New Jersey & Ahmedabad" },
   { k: "5", v: "core services, one team" },
-  { k: "2", v: "products in production" },
+  { k: "3", v: "products in production" },
   { k: "11", v: "languages our voice agents speak" },
 ];
 
@@ -58,8 +58,9 @@ export default function About() {
             </p>
             <p className="reveal" style={{ ["--d" as any]: "160ms" }}>
               The tools we kept rebuilding for clients became products of their own:{" "}
-              <a className="text-bone underline decoration-amber/60 underline-offset-4" href="https://cloudivoice.cloudisoft.com/" target="_blank" rel="noopener noreferrer">CloudiVoice</a> for AI voice agents and{" "}
-              <a className="text-bone underline decoration-amber/60 underline-offset-4" href="https://applyflux.cloudisoft.com/" target="_blank" rel="noopener noreferrer">ApplyFlux</a> for job applications.
+              <a className="text-bone underline decoration-amber/60 underline-offset-4" href="https://cloudivoice.cloudisoft.com/" target="_blank" rel="noopener noreferrer">CloudiVoice</a> for AI voice agents,{" "}
+              <a className="text-bone underline decoration-amber/60 underline-offset-4" href="https://applyflux.cloudisoft.com/" target="_blank" rel="noopener noreferrer">ApplyFlux</a> for job applications and{" "}
+              <a className="text-bone underline decoration-amber/60 underline-offset-4" href="https://vyomira.cloudisoft.com/" target="_blank" rel="noopener noreferrer">Vyomira</a> for Vedic astrology.
             </p>
             <div className="reveal flex flex-wrap items-center gap-5 pt-3" style={{ ["--d" as any]: "240ms" }}>
               <Link to="/services" className="btn-primary">Our services <ArrowRight /></Link>
