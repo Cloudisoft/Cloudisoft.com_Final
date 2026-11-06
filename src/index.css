@@ -390,6 +390,15 @@ details[open] .faq-icon { transform: rotate(45deg); }
 @keyframes orb-move { 0%, 100% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(var(--ox, 80px), var(--oy, -60px), 0) scale(1.15); } }
 .orb { animation: orb-move var(--dur, 22s) ease-in-out infinite; }
 
+/* Vyomira: twinkling stars and planets that glow in turn */
+@keyframes twinkle { 0%, 100% { opacity: .15; } 50% { opacity: .9; } }
+.twinkle { animation: twinkle 3.6s ease-in-out infinite; animation-delay: var(--i, 0s); }
+@keyframes planet-glow {
+  0%, 70%, 100% { opacity: .75; filter: none; }
+  80% { opacity: 1; filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 8px rgba(255, 217, 61, .6)); }
+}
+.planet-glow { animation: planet-glow 4.5s ease-in-out infinite; animation-delay: var(--i, 0s); }
+
 /* Reverse marquee */
 .marquee-track.reverse { animation-direction: reverse; animation-duration: 92s; }
 

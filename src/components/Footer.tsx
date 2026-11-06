@@ -39,6 +39,7 @@ export default function Footer() {
             <li><Link to="/contact" className={link}>Contact</Link></li>
             <li><a href={LINKS.applyflux} target="_blank" rel="noopener noreferrer" className={link}>ApplyFlux ↗</a></li>
             <li><a href={LINKS.cloudivoice} target="_blank" rel="noopener noreferrer" className={link}>CloudiVoice ↗</a></li>
+            <li><a href={LINKS.vyomira} target="_blank" rel="noopener noreferrer" className={link}>Vyomira ↗</a></li>
           </ul>
         </nav>
 

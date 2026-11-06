@@ -1,3 +1,4 @@
+import { useId } from "react";
 import type { ServiceId } from "../lib/site";
 
 /* Small looping motion graphics, one per service. Pure SVG + CSS/SMIL, no libraries. */
@@ -122,12 +123,13 @@ function CrmGfx() {
 
 function VoiceGfx() {
   const bars = Array.from({ length: 11 });
+  const core = `voice-core-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
   return (
     <svg viewBox="0 0 320 200" className="gfx h-full w-full" aria-hidden="true">
       {[0, 1, 2].map((i) => (
         <circle key={i} cx="160" cy="100" r="30" fill="none" stroke={AMBER} className="gfx-ring" style={d(i * 700)} />
       ))}
-      <circle cx="160" cy="100" r="28" fill="url(#voice-core)" />
+      <circle cx="160" cy="100" r="28" fill={`url(#${core})`} />
       <path d="M150 88h6l2.6 6.8-3.4 2.2a17 17 0 0 0 8.4 8.4l2.2-3.4 6.8 2.6v6a3 3 0 0 1-3.3 3A26 26 0 0 1 147 91.3a3 3 0 0 1 3-3.3Z" fill="#0b031c" />
       {bars.map((_, i) => (
         <rect key={`l${i}`} className="gfx-eq" style={d(i * 90)} x={30 + i * 8} y="70" width="4" height="60" rx="2" fill={i % 3 ? AMBER : SUN} opacity={0.35 + (i / bars.length) * 0.6} />
@@ -136,7 +138,7 @@ function VoiceGfx() {
         <rect key={`r${i}`} className="gfx-eq" style={d(500 + i * 90)} x={206 + i * 8} y="70" width="4" height="60" rx="2" fill="#f4efe6" opacity={0.95 - (i / bars.length) * 0.6} />
       ))}
       <defs>
-        <linearGradient id="voice-core" x1="0" y1="0" x2="1" y2="1">
+        <linearGradient id={core} x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stopColor={EMBER} />
           <stop offset="1" stopColor={SUN} />
         </linearGradient>

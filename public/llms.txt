@@ -17,6 +17,7 @@ Final pricing depends on scope; Cloudisoft sends a fixed quote before work begin
 ## Products
 
 - [CloudiVoice](https://cloudivoice.cloudisoft.com/): AI voice agents that answer calls, qualify leads, book appointments, screen candidates and hand off to a human.
+- [Vyomira](https://vyomira.cloudisoft.com/): Vedic astrology computed from real astronomy (Lahiri ayanamsa) — free Kundli, North and South Indian charts, Navamsa and Dashamsa, Vimshottari dasha timelines, and AURA, an AI companion that explains a chart and shows which placements it used.
 - [ApplyFlux](https://applyflux.cloudisoft.com/): Upload a resume once; ApplyFlux finds matching roles, fills and tracks applications, and pauses whenever a human decision is needed.
 
 ## Full content
