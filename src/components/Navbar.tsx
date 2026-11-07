@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import Logo from "./Logo";
 import { ArrowUpRight } from "./Icons";
@@ -8,14 +8,18 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
+  const sentinel = useRef<HTMLSpanElement>(null);
 
   useEffect(() => setOpen(false), [pathname]);
 
+  // "Scrolled" state from an IntersectionObserver on a 1px marker 12px down the page —
+  // no scroll listener, so the header never forces a layout while you scroll.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const el = sentinel.current;
+    if (!el || !("IntersectionObserver" in window)) return;
+    const io = new IntersectionObserver(([e]) => setScrolled(!e.isIntersecting));
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
 
   useEffect(() => {
@@ -32,9 +36,11 @@ export default function Navbar() {
     }`;
 
   return (
+    <>
+    <span ref={sentinel} aria-hidden="true" className="pointer-events-none absolute left-0 top-3 h-px w-px" />
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled || open ? "border-b hairline bg-ink/80 backdrop-blur-xl" : "border-b border-transparent"
+        scrolled || open ? "border-b hairline bg-ink/90 backdrop-blur-md" : "border-b border-transparent"
       }`}
     >
       <nav aria-label="Main" className="section flex h-[68px] items-center justify-between gap-6">
@@ -97,5 +103,6 @@ export default function Navbar() {
         </ul>
       </div>
     </header>
+    </>
   );
 }

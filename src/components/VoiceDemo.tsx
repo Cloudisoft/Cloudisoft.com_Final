@@ -124,7 +124,7 @@ export default function VoiceDemo() {
 
   return (
     <div
-      className={`relative overflow-hidden rounded-[22px] border hairline bg-ink-800/80 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)] backdrop-blur ${
+      className={`relative overflow-hidden rounded-[22px] border hairline bg-ink-800/95 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)] ${
         playing ? "is-playing" : ""
       }`}
       role="region"
