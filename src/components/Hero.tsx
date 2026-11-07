@@ -85,7 +85,7 @@ export default function Hero() {
             {CHIPS.map((c, i) => (
               <div key={c.t} className="follow chip-in absolute" data-mouse={c.m} style={{ ...c.pos, animationDelay: `${900 + i * 160}ms` }}>
                 <div
-                  className={`${["float-a", "float-b", "float-c"][i % 3]} flex items-center gap-2 whitespace-nowrap rounded-full border border-white/10 bg-ink-800/90 px-3.5 py-2 text-[12.5px] text-bone/90 shadow-[0_12px_30px_-12px_rgba(0,0,0,0.8)] backdrop-blur`}
+                  className={`${["float-a", "float-b", "float-c"][i % 3]} flex items-center gap-2 whitespace-nowrap rounded-full border border-white/10 bg-ink-800 px-3.5 py-2 text-[12.5px] text-bone/90 shadow-[0_12px_30px_-12px_rgba(0,0,0,0.8)]`}
                   style={{ ["--fd" as any]: `${i * -1.3}s` }}
                 >
                   <i className="h-1.5 w-1.5 rounded-full" style={{ background: c.c }} />
